@@ -1,30 +1,49 @@
+{% comment %}
+  Owala Feature Spotlight Section
+  Figtree font enforced, editable font sizes for all text elements, customizable colors.
+{% endcomment %}
+
 <style>
-  .owala-features {
-    padding: 4rem 1.5rem;
+  #owala-features-{{ section.id }} {
+    padding: {{ section.settings.padding_top | default: 60 }}px 1.5rem {{ section.settings.padding_bottom | default: 60 }}px 1.5rem;
     background-color: {{ section.settings.bg_color }};
+    font-family: 'Figtree', sans-serif !important;
   }
 
-  .owala-features__header {
+  #owala-features-{{ section.id }} * {
+    font-family: 'Figtree', sans-serif !important;
+  }
+
+  #owala-features-{{ section.id }} .owala-features__header {
     text-align: center;
     max-width: 700px;
-    margin: 0 auto 3rem auto;
+    margin: 0 auto {{ section.settings.header_margin_bottom | default: 40 }}px auto;
   }
 
-  .owala-features__title {
-    font-size: clamp(2rem, 4vw, 3rem);
+  #owala-features-{{ section.id }} .owala-features__title {
+    font-size: {{ section.settings.heading_size_mobile | default: 26 }}px;
     font-weight: 900;
     color: {{ section.settings.title_color }};
-    margin: 0 0 0.75rem 0;
+    margin: 0 0 {{ section.settings.heading_margin_bottom | default: 12 }}px 0;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
   }
 
-  .owala-features__subtitle {
-    font-size: 1.15rem;
+  @media screen and (min-width: 750px) {
+    #owala-features-{{ section.id }} .owala-features__title {
+      font-size: {{ section.settings.heading_size_desktop | default: 36 }}px;
+    }
+  }
+
+  #owala-features-{{ section.id }} .owala-features__subtitle {
+    font-size: {{ section.settings.subheading_size | default: 16 }}px;
     font-weight: 500;
     color: {{ section.settings.subtitle_color }};
     margin: 0;
+    line-height: 1.5;
   }
 
-  .owala-features__grid {
+  #owala-features-{{ section.id }} .owala-features__grid {
     max-width: 1200px;
     margin: 0 auto;
     display: grid;
@@ -33,31 +52,31 @@
   }
 
   @media screen and (max-width: 900px) {
-    .owala-features__grid {
+    #owala-features-{{ section.id }} .owala-features__grid {
       grid-template-columns: 1fr;
       gap: 1.5rem;
     }
   }
 
-  .owala-feature-card {
+  #owala-features-{{ section.id }} .owala-feature-card {
     background: {{ section.settings.card_bg }};
     border-radius: 24px;
     padding: 2.5rem 1.75rem;
     text-align: center;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
     border: 1px solid rgba(0, 0, 0, 0.05);
-    transition: transform 0.25 ease, box-shadow 0.25s ease;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
     display: flex;
     flex-direction: column;
     align-items: center;
   }
 
-  .owala-feature-card:hover {
+  #owala-features-{{ section.id }} .owala-feature-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 16px 40px rgba(0, 0, 0, 0.1);
   }
 
-  .owala-feature-card__icon-box {
+  #owala-features-{{ section.id }} .owala-feature-card__icon-box {
     width: 80px;
     height: 80px;
     border-radius: 50%;
@@ -67,49 +86,74 @@
     justify-content: center;
     margin-bottom: 1.5rem;
     color: {{ section.settings.icon_color }};
+    flex-shrink: 0;
   }
 
-  .owala-feature-card__icon-box svg {
-    width: 40px;
-    height: 40px;
+  #owala-features-{{ section.id }} .owala-feature-card__icon-box svg {
+    width: 38px;
+    height: 38px;
   }
 
-  .owala-feature-card__title {
-    font-size: 1.4rem;
+  #owala-features-{{ section.id }} .owala-feature-card__title {
+    font-size: {{ section.settings.card_title_size | default: 20 }}px;
     font-weight: 800;
     color: {{ section.settings.title_color }};
     margin: 0 0 0.75rem 0;
+    line-height: 1.25;
   }
 
-  .owala-feature-card__desc {
-    font-size: 1rem;
-    line-height: 1.6;
+  #owala-features-{{ section.id }} .owala-feature-card__desc {
+    font-size: {{ section.settings.card_desc_size | default: 15 }}px;
+    line-height: 1.55;
     color: {{ section.settings.subtitle_color }};
     margin: 0;
   }
 
-  .owala-feature-card__media-placeholder {
+  #owala-features-{{ section.id }} .owala-feature-card__media-container {
     width: 100%;
     aspect-ratio: 16 / 10;
-    background: #f8fafc;
     border-radius: 16px;
     margin-top: 1.5rem;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8fafc;
+  }
+
+  #owala-features-{{ section.id }} .owala-feature-card__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  #owala-features-{{ section.id }} .owala-feature-card__media-placeholder {
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     border: 2px dashed #cbd5e1;
+    border-radius: 16px;
     color: #64748b;
     font-size: 0.85rem;
     font-weight: 700;
+    box-sizing: border-box;
+    padding: 1rem;
   }
 </style>
 
 <div class="content-for-grouping {{ section.settings.visibility }}">
-<section class="owala-features">
+<section id="owala-features-{{ section.id }}" class="owala-features">
   <div class="owala-features__header">
-    <h2 class="owala-features__title">{{ section.settings.heading }}</h2>
-    <p class="owala-features__subtitle">{{ section.settings.subheading }}</p>
+    {%- if section.settings.heading != blank -%}
+      <h2 class="owala-features__title">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+    {%- if section.settings.subheading != blank -%}
+      <p class="owala-features__subtitle">{{ section.settings.subheading }}</p>
+    {%- endif -%}
   </div>
   <div class="owala-features__grid">
     {%- for block in section.blocks -%}
@@ -127,9 +171,22 @@
         <h3 class="owala-feature-card__title">{{ block.settings.title }}</h3>
         <p class="owala-feature-card__desc">{{ block.settings.description }}</p>
         
-        <div class="owala-feature-card__media-placeholder">
-          <span>[ FEATURE MEDIA PLACEHOLDER ]</span>
-          <span style="font-size: 0.75rem; opacity: 0.75; font-weight: 500;">Upload illustration/GIF</span>
+        <div class="owala-feature-card__media-container">
+          {%- if block.settings.image != blank -%}
+            <img
+              src="{{ block.settings.image | image_url: width: 800 }}"
+              alt="{{ block.settings.image.alt | default: block.settings.title | escape }}"
+              class="owala-feature-card__img"
+              loading="lazy"
+              width="{{ block.settings.image.width }}"
+              height="{{ block.settings.image.height }}"
+            >
+          {%- else -%}
+            <div class="owala-feature-card__media-placeholder">
+              <span>[ FEATURE MEDIA PLACEHOLDER ]</span>
+              <span style="font-size: 0.75rem; opacity: 0.75; font-weight: 500; margin-top: 0.25rem;">Upload photo / GIF in block settings</span>
+            </div>
+          {%- endif -%}
         </div>
       </div>
     {%- endfor -%}
@@ -153,6 +210,10 @@
       "label": "Visibility"
     },
     {
+      "type": "header",
+      "content": "Section Header Text"
+    },
+    {
       "type": "text",
       "id": "heading",
       "label": "Heading",
@@ -163,6 +224,74 @@
       "id": "subheading",
       "label": "Subheading",
       "default": "Engineered for maximum hydration and effortless everyday style."
+    },
+    {
+      "type": "header",
+      "content": "Typography & Font Sizes"
+    },
+    {
+      "type": "range",
+      "id": "heading_size_desktop",
+      "min": 20,
+      "max": 64,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Font Size (Desktop)",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "min": 16,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Font Size (Mobile)",
+      "default": 26
+    },
+    {
+      "type": "range",
+      "id": "heading_margin_bottom",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Spacing Below Heading",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "subheading_size",
+      "min": 12,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "label": "Subheading Font Size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "card_title_size",
+      "min": 14,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "label": "Card Title Font Size",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "card_desc_size",
+      "min": 12,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "label": "Card Description Font Size",
+      "default": 15
+    },
+    {
+      "type": "header",
+      "content": "Colors"
     },
     {
       "type": "color",
@@ -199,6 +328,40 @@
       "id": "icon_color",
       "label": "Icon Color",
       "default": "#0284c7"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 20,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 20,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "header_margin_bottom",
+      "min": 16,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Header Margin Bottom",
+      "default": 40
     }
   ],
   "blocks": [
@@ -217,6 +380,11 @@
           "id": "description",
           "label": "Description",
           "default": "Sip upright through the built-in straw or tilt back to swig from the wide-mouth opening."
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Feature Media (Image / GIF)"
         },
         {
           "type": "html",
