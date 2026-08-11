@@ -1,5 +1,233 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
+    "image_banner_n97QDn": {
+      "type": "image-banner",
+      "blocks": {
+        "heading_kACL6M": {
+          "type": "heading",
+          "settings": {
+            "visibility": "always-display",
+            "title": "Talk about your brand",
+            "heading_tag": "h3",
+            "heading_size": "h1",
+            "custom_desktop_size": 39,
+            "custom_mobile_size": 28,
+            "alignment": "left",
+            "mobile_alignment": "mobile-left",
+            "enable_custom_color": false,
+            "custom_color": "#FF0000",
+            "title_highlight_1": "solid-color",
+            "title_highlight_1_gradient": "linear-gradient(57deg, rgba(249, 119, 255, 1) 8%, rgba(54, 212, 255, 1) 47%, rgba(43, 252, 135, 1) 83%)",
+            "title_highlight_1_bg-color": "#F9EFFF",
+            "title_highlight_1_color": "#FFFFFF",
+            "highlighted-1_border_radius": 8,
+            "highlighted-1_border_width": 0,
+            "highlighted-1_border": "solid",
+            "highlighted-1_border_color": "#6D388B",
+            "highlighted-1_padding-block": 0.3,
+            "highlighted-1_padding-inline": 0.3,
+            "title_highlight_1_underline-thickness": 2,
+            "title_highlight_1_underline-color": "#6D388B",
+            "title_highlight_1_underline-color--gradient": "linear-gradient(57deg, rgba(249, 119, 255, 1) 8%, rgba(54, 212, 255, 1) 47%, rgba(43, 252, 135, 1) 83%)",
+            "title_highlight_1_underline-color-position": 25,
+            "title_highlight_1_handwritten-color": "#6D388B",
+            "title_highlight_1_handwritten-stroke-width": 3,
+            "title_highlight_1_handwritten-position": 60,
+            "title_highlight_2": "none",
+            "highlight_2_keep_italic": false,
+            "title_highlight_2_gradient": "linear-gradient(57deg, rgba(249, 119, 255, 1) 8%, rgba(54, 212, 255, 1) 47%, rgba(43, 252, 135, 1) 83%)",
+            "title_highlight_2_bg-color": "#F9EFFF",
+            "title_highlight_2_color": "#6D388B",
+            "highlighted-2_border_radius": 8,
+            "highlighted-2_border_width": 0,
+            "highlighted-2_border": "solid",
+            "highlighted-2_border_color": "#6D388B",
+            "highlighted-2_padding-block": 0.3,
+            "highlighted-2_padding-inline": 0.3,
+            "title_highlight_2_underline-thickness": 2,
+            "title_highlight_2_underline-color": "#6D388B",
+            "title_highlight_2_underline-color--gradient": "linear-gradient(57deg, rgba(249, 119, 255, 1) 8%, rgba(54, 212, 255, 1) 47%, rgba(43, 252, 135, 1) 83%)",
+            "title_highlight_2_underline-color-position": 25,
+            "title_highlight_2_handwritten-color": "#6D388B",
+            "title_highlight_2_handwritten-stroke-width": 3,
+            "title_highlight_2_handwritten-position": 60,
+            "text_animation": "none",
+            "split_type": "chars",
+            "split_delay": 30,
+            "split_duration": 600,
+            "split_y_offset": 40,
+            "split_animate_on_scroll": true,
+            "shiny_speed": 5,
+            "shiny_on_scroll": false,
+            "blur_type": "words",
+            "blur_direction": "top",
+            "blur_delay": 200,
+            "blur_duration": 350,
+            "blur_animate_on_scroll": true,
+            "highlight_bold_only": false,
+            "remove_bold_styling": false,
+            "highlight_color": "#ffd1dc",
+            "highlight_height": 40,
+            "highlight_position": 10,
+            "highlighter_underline_color": "#000000",
+            "highlighter_underline_thickness": 2,
+            "highlighter_underline_offset": 0,
+            "highlighter_strike_color": "#FF0000",
+            "highlighter_strike_thickness": 2,
+            "highlighter_strike_offset": 0,
+            "highlighter_animation_duration": 800,
+            "highlighter_animation_delay": 200,
+            "highlighter_animate_on_scroll": false,
+            "typing_speed": 50,
+            "typing_initial_delay": 0,
+            "typing_pause_duration": 2000,
+            "typing_deleting_speed": 30,
+            "typing_loop": true,
+            "typing_show_cursor": true,
+            "typing_cursor_character": "|",
+            "typing_cursor_blink_duration": 500,
+            "typing_hide_cursor_while_typing": false,
+            "typing_start_on_visible": false,
+            "typing_reverse_mode": false,
+            "margin_top": 15,
+            "margin_bottom": 15
+          },
+          "blocks": {}
+        },
+        "text_E9RbPf": {
+          "type": "text",
+          "disabled": true,
+          "settings": {
+            "visibility": "always-display",
+            "text": "<p>Use the flexible grid system to create any layout. Each block can be placed in any of the columns.</p>",
+            "alignment": "left",
+            "mobile_alignment": "mobile-center",
+            "text_size": 14,
+            "enable_custom_color": false,
+            "custom_text_color": "#FF0000",
+            "bold_text_style": "none",
+            "bold_solid_color": "#6D388B",
+            "bold_gradient_color": "linear-gradient(57deg, rgba(249, 119, 255, 1) 8%, rgba(54, 212, 255, 1) 47%, rgba(43, 252, 135, 1) 83%)",
+            "bold_bg_color": "#FFD700",
+            "bold_bg_text_color": "#000000",
+            "bold_bg_padding_inline": 0.7,
+            "bold_bg_padding_block": 0.2,
+            "bold_bg_border_radius": 8,
+            "bold_bg_border_width": 0,
+            "bold_bg_border_style": "solid",
+            "bold_bg_border_color": "#121212",
+            "bold_remove_weight": false,
+            "italic_text_style": "none",
+            "italic_solid_color": "#6D388B",
+            "italic_gradient_color": "linear-gradient(57deg, rgba(249, 119, 255, 1) 8%, rgba(54, 212, 255, 1) 47%, rgba(43, 252, 135, 1) 83%)",
+            "italic_bg_color": "#FFD700",
+            "italic_bg_text_color": "#121212",
+            "italic_bg_padding_inline": 0.7,
+            "italic_bg_padding_block": 0.2,
+            "italic_bg_border_radius": 8,
+            "italic_bg_border_width": 0,
+            "italic_bg_border_style": "solid",
+            "italic_bg_border_color": "#121212",
+            "italic_remove_style": false,
+            "text_animation": "none",
+            "split_type": "chars",
+            "split_delay": 30,
+            "split_duration": 600,
+            "split_y_offset": 40,
+            "split_animate_on_scroll": true,
+            "shiny_speed": 5,
+            "shiny_on_scroll": false,
+            "blur_type": "words",
+            "blur_direction": "top",
+            "blur_delay": 200,
+            "blur_duration": 350,
+            "blur_animate_on_scroll": true,
+            "highlight_bold_only": false,
+            "remove_bold_weight": false,
+            "highlight_color": "#ffd1dc",
+            "highlight_height": 40,
+            "highlight_position": 10,
+            "highlighter_underline_color": "#000000",
+            "highlighter_underline_thickness": 2,
+            "highlighter_underline_offset": 0,
+            "highlighter_strike_color": "#FF0000",
+            "highlighter_strike_thickness": 2,
+            "highlighter_strike_offset": 0,
+            "highlighter_animation_duration": 800,
+            "highlighter_animation_delay": 200,
+            "highlighter_animate_on_scroll": false,
+            "typing_speed": 50,
+            "typing_initial_delay": 0,
+            "typing_pause_duration": 2000,
+            "typing_deleting_speed": 30,
+            "typing_loop": true,
+            "typing_show_cursor": true,
+            "typing_cursor_character": "|",
+            "typing_cursor_blink_duration": 500,
+            "typing_hide_cursor_while_typing": false,
+            "typing_start_on_visible": false,
+            "typing_reverse_mode": false,
+            "margin_top": 15,
+            "margin_bottom": 15
+          },
+          "blocks": {}
+        },
+        "buttons_yNy6Be": {
+          "type": "buttons",
+          "disabled": true,
+          "settings": {
+            "visibility": "always-display",
+            "button_label_1": "Button label",
+            "button_link_1": "",
+            "button_style_secondary_1": false,
+            "button_label_2": "Button label",
+            "button_link_2": "",
+            "button_style_secondary_2": false,
+            "margin_top": 15
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "heading_kACL6M",
+        "text_E9RbPf",
+        "buttons_yNy6Be"
+      ],
+      "name": "Image banner",
+      "settings": {
+        "display_id": false,
+        "visibility": "always-display",
+        "image": "shopify://shop_images/hero_banner_1.png",
+        "image_1_visibility": "always-display",
+        "image_2_visibility": "always-display",
+        "image_overlay_opacity": 0,
+        "image_height": "medium",
+        "url": "",
+        "desktop_content_position": "middle-center",
+        "show_text_box": true,
+        "desktop_content_alignment": "center",
+        "color_scheme": "background-1",
+        "transparent_container_color": "white",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": true,
+        "show_text_below": true,
+        "transparent_header": false,
+        "transparent_header_text_color": "text",
+        "transparent_header_highlighted_link_color": "background-1",
+        "transparent_header_hover_link_color": "accent-1",
+        "transparent_header_logo": "main",
+        "hide_announcement_bars": false
+      }
+    },
     "owala_hero": {
       "type": "owala-hero-banner",
       "settings": {
@@ -15,7 +243,7 @@
         "btn_primary_text": "#ffffff",
         "btn_secondary_label": "Explore Bundles",
         "btn_secondary_url": "/collections/all",
-        "bg_gradient": "linear-gradient(135deg, #eef7fc 0%, #e3f2fd 100%)",
+        "bg_gradient": "linear-gradient(135deg, rgba(238, 247, 252, 1), rgba(227, 242, 253, 1) 100%)",
         "text_color": "#1e293b",
         "subtext_color": "#475569",
         "media_placeholder_bg": "#ffffff"
@@ -78,6 +306,7 @@
         "pill_5"
       ],
       "settings": {
+        "visibility": "always-display",
         "bg_color": "#ffffff",
         "pill_bg": "#f1f5f9",
         "pill_text": "#334155",
@@ -92,21 +321,24 @@
           "type": "feature",
           "settings": {
             "title": "2-in-1 FreeSip Spout",
-            "description": "Sip upright through the built-in straw or tilt back to swig from the wide-mouth opening."
+            "description": "Sip upright through the built-in straw or tilt back to swig from the wide-mouth opening.",
+            "icon_svg": ""
           }
         },
         "feature_2": {
           "type": "feature",
           "settings": {
             "title": "Triple-Layer Insulation",
-            "description": "Keeps your water ice-cold for up to 24 hours without sweating."
+            "description": "Keeps your water ice-cold for up to 24 hours without sweating.",
+            "icon_svg": ""
           }
         },
         "feature_3": {
           "type": "feature",
           "settings": {
             "title": "Leak-Proof Lock",
-            "description": "Push-button open lid with a carry loop that doubles as a security lock."
+            "description": "Push-button open lid with a carry loop that doubles as a security lock.",
+            "icon_svg": ""
           }
         }
       },
@@ -116,6 +348,7 @@
         "feature_3"
       ],
       "settings": {
+        "visibility": "always-display",
         "heading": "What makes it special?",
         "subheading": "Engineered for maximum hydration and effortless everyday style.",
         "bg_color": "#f8fafc",
@@ -157,6 +390,7 @@
         "press_3"
       ],
       "settings": {
+        "visibility": "always-display",
         "rating_heading": "OVER 100,000+ FIVE-STAR REVIEWS",
         "bg_color": "#ffffff",
         "card_bg": "#f8fafc",
@@ -167,6 +401,7 @@
     }
   },
   "order": [
+    "image_banner_n97QDn",
     "owala_hero",
     "owala_pills",
     "owala_features",
