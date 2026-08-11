@@ -179,7 +179,7 @@
 
   /* Heading */
   #sipwise-banner-{{ section_id }} .banner__heading {
-    margin: 0 0 1rem 0;
+    margin: 0 0 {{ section.settings.heading_spacing_bottom | default: 10 }}px 0;
     font-size: clamp(2rem, {{ section.settings.heading_size_mobile }}vw, {{ section.settings.heading_size_desktop }}px);
     font-weight: {{ section.settings.heading_weight }};
     line-height: 1.15;
@@ -190,10 +190,22 @@
 
   /* Description Text */
   #sipwise-banner-{{ section_id }} .banner__description {
-    margin: 0 0 1.75rem 0;
+    margin: 0 0 {{ section.settings.description_spacing_bottom | default: 20 }}px 0;
     font-size: clamp(0.95rem, 1.8vw, {{ section.settings.text_size_desktop }}px);
-    line-height: 1.55;
+    line-height: 1.45;
     color: {{ section.settings.text_color }};
+  }
+
+  #sipwise-banner-{{ section_id }} .banner__description p {
+    margin: 0;
+    padding: 0;
+    line-height: inherit;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  #sipwise-banner-{{ section_id }} .banner__description p + p {
+    margin-top: 0.5em;
   }
 
   /* Buttons Group */
@@ -670,6 +682,16 @@
       "default": "#ffffff"
     },
     {
+      "type": "range",
+      "id": "heading_spacing_bottom",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Spacing Below Heading",
+      "default": 10
+    },
+    {
       "type": "header",
       "content": "Description Text & Color"
     },
@@ -694,6 +716,16 @@
       "id": "text_color",
       "label": "Description Text Color",
       "default": "#f1f5f9"
+    },
+    {
+      "type": "range",
+      "id": "description_spacing_bottom",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Spacing Below Description",
+      "default": 20
     },
     {
       "type": "header",

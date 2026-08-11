@@ -138,44 +138,51 @@
 </style>
 
 <div class="content-for-grouping {{ section.settings.visibility }}">
-<section class="owala-hero">
-  <div class="owala-hero__container">
-    <div class="owala-hero__content">
-      {%- if section.settings.badge_text != blank -%}
-        <span class="owala-hero__badge">{{ section.settings.badge_text }}</span>
-      {%- endif -%}
-      <h1 class="owala-hero__heading">{{ section.settings.heading }}</h1>
-      <p class="owala-hero__subheading">{{ section.settings.subheading }}</p>
-      <div class="owala-hero__buttons">
-        {%- if section.settings.btn_primary_label != blank -%}
-          <a href="{{ section.settings.btn_primary_url }}" class="owala-hero__btn owala-hero__btn--primary">
-            {{ section.settings.btn_primary_label }}
-          </a>
+  <section class="owala-hero">
+    <div class="owala-hero__container">
+      <div class="owala-hero__content">
+        {%- if section.settings.badge_text != blank -%}
+          <span class="owala-hero__badge">{{ section.settings.badge_text }}</span>
         {%- endif -%}
-        {%- if section.settings.btn_secondary_label != blank -%}
-          <a href="{{ section.settings.btn_secondary_url }}" class="owala-hero__btn owala-hero__btn--secondary">
-            {{ section.settings.btn_secondary_label }}
-          </a>
+        <h1 class="owala-hero__heading">{{ section.settings.heading }}</h1>
+        <p class="owala-hero__subheading">{{ section.settings.subheading }}</p>
+        <div class="owala-hero__buttons">
+          {%- if section.settings.btn_primary_label != blank -%}
+            <a href="{{ section.settings.btn_primary_url }}" class="owala-hero__btn owala-hero__btn--primary">
+              {{ section.settings.btn_primary_label }}
+            </a>
+          {%- endif -%}
+          {%- if section.settings.btn_secondary_label != blank -%}
+            <a href="{{ section.settings.btn_secondary_url }}" class="owala-hero__btn owala-hero__btn--secondary">
+              {{ section.settings.btn_secondary_label }}
+            </a>
+          {%- endif -%}
+        </div>
+      </div>
+      <div class="owala-hero__media">
+        {%- if section.settings.hero_image != blank -%}
+          <img
+            src="{{ section.settings.hero_image | image_url: width: 800 }}"
+            alt="{{ section.settings.heading | escape }}"
+            loading="eager"
+            width="800"
+            height="800"
+            class="owala-card-rounded"
+          >
+        {%- else -%}
+          <div class="owala-hero__media-placeholder">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <rect x="3" y="3" width="18" height="18" rx="4" />
+              <circle cx="8.5" cy="8.5" r="1.5" />
+              <polyline points="21 15 16 10 5 21" />
+            </svg>
+            <span style="font-weight: 700; font-size: 0.95rem;">[ HERO BANNER IMAGE PLACEHOLDER ]</span>
+            <span style="font-size: 0.8rem; opacity: 0.7; margin-top: 0.25rem;">Upload your banner image here</span>
+          </div>
         {%- endif -%}
       </div>
     </div>
-    <div class="owala-hero__media">
-      {%- if section.settings.hero_image != blank -%}
-        <img src="{{ section.settings.hero_image | image_url: width: 800 }}" alt="{{ section.settings.heading | escape }}" loading="eager" width="800" height="800" class="owala-card-rounded">
-      {%- else -%}
-        <div class="owala-hero__media-placeholder">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <rect x="3" y="3" width="18" height="18" rx="4" />
-            <circle cx="8.5" cy="8.5" r="1.5" />
-            <polyline points="21 15 16 10 5 21" />
-          </svg>
-          <span style="font-weight: 700; font-size: 0.95rem;">[ HERO BANNER IMAGE PLACEHOLDER ]</span>
-          <span style="font-size: 0.8rem; opacity: 0.7; margin-top: 0.25rem;">Upload your banner image here</span>
-        </div>
-      {%- endif -%}
-    </div>
-  </div>
-</section>
+  </section>
 </div>
 
 {% schema %}
