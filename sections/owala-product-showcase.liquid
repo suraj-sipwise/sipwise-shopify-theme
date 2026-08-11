@@ -1,11 +1,15 @@
 {% comment %}
   Owala Style Product Showcase / Bestsellers Lineup
-  Displays 2 to 5 product image placeholders with custom typography, baseline alignment, and spacing sliders.
+  Displays 2 to 5+ product image placeholders with custom typography, baseline alignment, and a slider to control how many products are shown.
 {% endcomment %}
 
 {%- liquid
   assign section_id = section.id
+  assign products_to_show = section.settings.products_to_show | default: 2
   assign columns_desktop = section.settings.columns_desktop
+  if columns_desktop > products_to_show
+    assign columns_desktop = products_to_show
+  endif
   assign columns_mobile = section.settings.columns_mobile
 -%}
 
@@ -58,20 +62,14 @@
     line-height: 1.4;
   }
 
-  /* Grid Layout */
+  /* Flex / Grid Layout (Centered) */
   #owala-showcase-{{ section_id }} .showcase__grid {
-    display: grid;
-    grid-template-columns: repeat({{ columns_desktop }}, 1fr);
-    gap: {{ section.settings.grid_gap_desktop }}px;
-    align-items: end;
+    display: flex;
+    flex-wrap: wrap;
     justify-content: center;
-  }
-
-  @media screen and (max-width: 749px) {
-    #owala-showcase-{{ section_id }} .showcase__grid {
-      grid-template-columns: repeat({{ columns_mobile }}, 1fr);
-      gap: {{ section.settings.grid_gap_mobile }}px;
-    }
+    align-items: flex-end;
+    gap: {{ section.settings.grid_gap_desktop }}px;
+    margin: 0 auto;
   }
 
   /* Individual Product Item */
@@ -84,6 +82,22 @@
     color: inherit;
     transition: transform 0.25s ease;
     cursor: pointer;
+    box-sizing: border-box;
+    flex: 0 1 calc((100% - ({{ columns_desktop | minus: 1 }} * {{ section.settings.grid_gap_desktop }}px)) / {{ columns_desktop }});
+    max-width: {{ section.settings.item_max_width | default: 320 }}px;
+    min-width: 220px;
+  }
+
+  @media screen and (max-width: 749px) {
+    #owala-showcase-{{ section_id }} .showcase__grid {
+      gap: {{ section.settings.grid_gap_mobile }}px;
+    }
+
+    #owala-showcase-{{ section_id }} .showcase__item {
+      flex: 0 1 calc((100% - ({{ columns_mobile | minus: 1 }} * {{ section.settings.grid_gap_mobile }}px)) / {{ columns_mobile }});
+      min-width: 0;
+      max-width: 100%;
+    }
   }
 
   #owala-showcase-{{ section_id }} .showcase__item:hover {
@@ -179,7 +193,7 @@
       {%- endif -%}
 
       <div class="showcase__grid">
-        {%- for block in section.blocks -%}
+        {%- for block in section.blocks limit: products_to_show -%}
           <{% if block.settings.link != blank %}a href="{{ block.settings.link }}"{% else %}div{% endif %}
             class="showcase__item"
             {{ block.shopify_attributes }}
@@ -236,6 +250,50 @@
       ],
       "default": "always-display",
       "label": "Visibility"
+    },
+    {
+      "type": "header",
+      "content": "Products Count & Layout"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 1,
+      "max": 8,
+      "step": 1,
+      "label": "Number of Products to Show",
+      "default": 2,
+      "info": "Controls how many products to display on screen (e.g. 2 for now, or 3, 4, 5+ as your catalog grows)."
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "label": "Max Columns per Row on Desktop",
+      "default": 4
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Products per Row on Mobile",
+      "options": [
+        { "value": "1", "label": "1 Product per Row" },
+        { "value": "2", "label": "2 Products per Row" }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "range",
+      "id": "item_max_width",
+      "min": 200,
+      "max": 450,
+      "step": 10,
+      "unit": "px",
+      "label": "Max Width per Product Card",
+      "default": 320,
+      "info": "Prevents 2 products from stretching too wide on large screens."
     },
     {
       "type": "header",
@@ -386,26 +444,7 @@
     },
     {
       "type": "header",
-      "content": "Layout & Image Sizing"
-    },
-    {
-      "type": "range",
-      "id": "columns_desktop",
-      "min": 2,
-      "max": 5,
-      "step": 1,
-      "label": "Number of Products on Desktop",
-      "default": 4
-    },
-    {
-      "type": "select",
-      "id": "columns_mobile",
-      "label": "Number of Products on Mobile",
-      "options": [
-        { "value": "1", "label": "1 Product per Row" },
-        { "value": "2", "label": "2 Products per Row" }
-      ],
-      "default": "2"
+      "content": "Image Dimensions"
     },
     {
       "type": "range",
@@ -535,33 +574,36 @@
   "presets": [
     {
       "name": "Owala Product Showcase",
+      "settings": {
+        "products_to_show": 2
+      },
       "blocks": [
         {
           "type": "product_item",
           "settings": {
-            "name": "FreeSip®",
-            "tagline": "The original."
+            "name": "Sipwise Smart UV Bottle",
+            "tagline": "Pure water in 60s."
           }
         },
         {
           "type": "product_item",
           "settings": {
-            "name": "FreeSip® Sway",
-            "tagline": "Cupholder-friendly."
+            "name": "Sipwise Classic Insulated",
+            "tagline": "24hr cold. All day style."
           }
         },
         {
           "type": "product_item",
           "settings": {
-            "name": "SmoothSip® Slider",
-            "tagline": "For coffee lovers."
+            "name": "Sipwise Tumbler",
+            "tagline": "Cupholder friendly."
           }
         },
         {
           "type": "product_item",
           "settings": {
-            "name": "The Sun-Day Tote",
-            "tagline": "Packs flat. Hauls big."
+            "name": "Sipwise Carry Sleeve",
+            "tagline": "Protection on the go."
           }
         }
       ]
