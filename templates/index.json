@@ -68,92 +68,6 @@
         "btn_secondary_hover_text": "#0f172a"
       }
     },
-    "owala_hero": {
-      "type": "owala-hero-banner",
-      "settings": {
-        "visibility": "always-display",
-        "badge_text": "LIMITED EDITION DROP",
-        "badge_bg": "#ff5c8d",
-        "badge_color": "#ffffff",
-        "heading": "Do more than just sip.",
-        "subheading": "Meet the bottle designed to stay cold, stay clean, and turn heads wherever you go.",
-        "btn_primary_label": "Shop FreeSip",
-        "btn_primary_url": "/collections/all",
-        "btn_primary_bg": "#2d3640",
-        "btn_primary_text": "#ffffff",
-        "btn_secondary_label": "Explore Bundles",
-        "btn_secondary_url": "/collections/all",
-        "bg_gradient": "linear-gradient(135deg, rgba(238, 247, 252, 1), rgba(227, 242, 253, 1) 100%)",
-        "text_color": "#1e293b",
-        "subtext_color": "#475569",
-        "media_placeholder_bg": "#ffffff"
-      }
-    },
-    "owala_pills": {
-      "type": "owala-category-pills",
-      "blocks": {
-        "pill_1": {
-          "type": "pill",
-          "settings": {
-            "title": "FreeSip Family",
-            "url": "/collections/all",
-            "highlight": true,
-            "show_dot": true
-          }
-        },
-        "pill_2": {
-          "type": "pill",
-          "settings": {
-            "title": "Color Drop",
-            "url": "/collections/all",
-            "highlight": false,
-            "show_dot": false
-          }
-        },
-        "pill_3": {
-          "type": "pill",
-          "settings": {
-            "title": "Tumbler 40oz",
-            "url": "/collections/all",
-            "highlight": false,
-            "show_dot": false
-          }
-        },
-        "pill_4": {
-          "type": "pill",
-          "settings": {
-            "title": "Customize",
-            "url": "/collections/all",
-            "highlight": false,
-            "show_dot": false
-          }
-        },
-        "pill_5": {
-          "type": "pill",
-          "settings": {
-            "title": "New Arrivals",
-            "url": "/collections/all",
-            "highlight": false,
-            "show_dot": false
-          }
-        }
-      },
-      "block_order": [
-        "pill_1",
-        "pill_2",
-        "pill_3",
-        "pill_4",
-        "pill_5"
-      ],
-      "settings": {
-        "visibility": "always-display",
-        "bg_color": "#ffffff",
-        "pill_bg": "#f1f5f9",
-        "pill_text": "#334155",
-        "pill_active_bg": "#2d3640",
-        "pill_active_text": "#ffffff"
-      }
-    },
     "owala_features": {
       "type": "owala-feature-spotlight",
       "blocks": {
@@ -242,8 +156,6 @@
   },
   "order": [
     "custom_image_banner_LhtiVy",
-    "owala_hero",
-    "owala_pills",
     "owala_features",
     "owala_press"
   ]
