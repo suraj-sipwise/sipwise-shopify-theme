@@ -1,0 +1,803 @@
+{% comment %}
+  Custom Image & Text Banner Section
+  Fully customizable text position, colors, overlay, height, and responsive layout.
+{% endcomment %}
+
+{%- liquid
+  assign section_id = section.id
+  assign desktop_height = section.settings.desktop_height
+  assign mobile_height = section.settings.mobile_height
+  assign content_position_desktop = section.settings.content_position_desktop
+  assign text_alignment_desktop = section.settings.text_alignment_desktop
+  assign text_alignment_mobile = section.settings.text_alignment_mobile
+  assign show_content_box = section.settings.show_content_box
+-%}
+
+<style>
+  #sipwise-banner-{{ section_id }} {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    box-sizing: border-box;
+    font-family: 'Figtree', sans-serif;
+    margin-top: {{ section.settings.margin_top }}px;
+    margin-bottom: {{ section.settings.margin_bottom }}px;
+    border-radius: {{ section.settings.corner_radius }}px;
+  }
+
+  /* Heights */
+  #sipwise-banner-{{ section_id }} {
+    min-height: {{ mobile_height }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    #sipwise-banner-{{ section_id }} {
+      min-height: {{ desktop_height }}px;
+    }
+  }
+
+  /* Full screen option */
+  {% if desktop_height == '100vh' %}
+    @media screen and (min-width: 750px) {
+      #sipwise-banner-{{ section_id }} {
+        min-height: 100vh;
+      }
+    }
+  {% endif %}
+
+  /* Background Image / Color */
+  #sipwise-banner-{{ section_id }} .banner__bg-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background-color: {{ section.settings.bg_color }};
+  }
+
+  #sipwise-banner-{{ section_id }} .banner__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: {{ section.settings.image_focal_point }};
+    display: block;
+  }
+
+  #sipwise-banner-{{ section_id }} .banner__image--mobile {
+    display: none;
+  }
+
+  @media screen and (max-width: 749px) {
+    {% if section.settings.image_mobile != blank %}
+      #sipwise-banner-{{ section_id }} .banner__image--desktop {
+        display: none;
+      }
+      #sipwise-banner-{{ section_id }} .banner__image--mobile {
+        display: block;
+      }
+    {% endif %}
+  }
+
+  /* Color Overlay */
+  #sipwise-banner-{{ section_id }} .banner__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    background: {{ section.settings.overlay_color }};
+    opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+  }
+
+  /* Content Wrapper Layout */
+  #sipwise-banner-{{ section_id }} .banner__container {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    max-width: {{ section.settings.container_max_width }}px;
+    margin: 0 auto;
+    padding: {{ section.settings.padding_vertical_mobile }}px 20px;
+    display: flex;
+    box-sizing: border-box;
+
+    /* Mobile Positioning */
+    align-items: {{ section.settings.content_position_mobile_y }};
+    justify-content: {{ section.settings.content_position_mobile_x }};
+  }
+
+  @media screen and (min-width: 750px) {
+    #sipwise-banner-{{ section_id }} .banner__container {
+      padding: {{ section.settings.padding_vertical_desktop }}px 40px;
+      
+      /* Desktop Vertical Alignment */
+      {% case content_position_desktop %}
+        {% when 'top-left' or 'top-center' or 'top-right' %}
+          align-items: flex-start;
+        {% when 'middle-left' or 'middle-center' or 'middle-right' %}
+          align-items: center;
+        {% when 'bottom-left' or 'bottom-center' or 'bottom-right' %}
+          align-items: flex-end;
+      {% endcase %}
+
+      /* Desktop Horizontal Alignment */
+      {% case content_position_desktop %}
+        {% when 'top-left' or 'middle-left' or 'bottom-left' %}
+          justify-content: flex-start;
+        {% when 'top-center' or 'middle-center' or 'bottom-center' %}
+          justify-content: center;
+        {% when 'top-right' or 'middle-right' or 'bottom-right' %}
+          justify-content: flex-end;
+      {% endcase %}
+    }
+  }
+
+  /* Content Box */
+  #sipwise-banner-{{ section_id }} .banner__content-box {
+    max-width: {{ section.settings.content_box_max_width }}px;
+    width: 100%;
+    text-align: {{ text_alignment_mobile }};
+    
+    {% if show_content_box %}
+      background-color: {{ section.settings.box_bg_color }};
+      backdrop-filter: blur({{ section.settings.box_blur }}px);
+      -webkit-backdrop-filter: blur({{ section.settings.box_blur }}px);
+      padding: 24px;
+      border-radius: {{ section.settings.box_corner_radius }}px;
+      border: {{ section.settings.box_border_width }}px solid {{ section.settings.box_border_color }};
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    {% else %}
+      padding: 0;
+      background: transparent;
+    {% endif %}
+  }
+
+  @media screen and (min-width: 750px) {
+    #sipwise-banner-{{ section_id }} .banner__content-box {
+      text-align: {{ text_alignment_desktop }};
+      {% if show_content_box %}
+        padding: {{ section.settings.box_padding_desktop }}px;
+      {% endif %}
+    }
+  }
+
+  /* Badge / Subtitle */
+  #sipwise-banner-{{ section_id }} .banner__badge {
+    display: inline-block;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.35rem 1rem;
+    border-radius: 9999px;
+    margin-bottom: 1rem;
+    background-color: {{ section.settings.badge_bg_color }};
+    color: {{ section.settings.badge_text_color }};
+  }
+
+  /* Heading */
+  #sipwise-banner-{{ section_id }} .banner__heading {
+    margin: 0 0 1rem 0;
+    font-size: clamp(2rem, {{ section.settings.heading_size_mobile }}vw, {{ section.settings.heading_size_desktop }}px);
+    font-weight: {{ section.settings.heading_weight }};
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: {{ section.settings.heading_color }};
+    word-break: break-word;
+  }
+
+  /* Description Text */
+  #sipwise-banner-{{ section_id }} .banner__description {
+    margin: 0 0 1.75rem 0;
+    font-size: clamp(0.95rem, 1.8vw, {{ section.settings.text_size_desktop }}px);
+    line-height: 1.55;
+    color: {{ section.settings.text_color }};
+  }
+
+  /* Buttons Group */
+  #sipwise-banner-{{ section_id }} .banner__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    align-items: center;
+    justify-content: {% if text_alignment_mobile == 'center' %}center{% elsif text_alignment_mobile == 'right' %}flex-end{% else %}flex-start{% endif %};
+  }
+
+  @media screen and (min-width: 750px) {
+    #sipwise-banner-{{ section_id }} .banner__buttons {
+      justify-content: {% if text_alignment_desktop == 'center' %}center{% elsif text_alignment_desktop == 'right' %}flex-end{% else %}flex-start{% endif %};
+    }
+  }
+
+  /* Primary Button */
+  #sipwise-banner-{{ section_id }} .banner__btn--primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.85rem 2rem;
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: {{ section.settings.button_radius }}px;
+    background-color: {{ section.settings.btn_primary_bg }};
+    color: {{ section.settings.btn_primary_text }};
+    text-decoration: none;
+    border: 2px solid {{ section.settings.btn_primary_bg }};
+    transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  #sipwise-banner-{{ section_id }} .banner__btn--primary:hover {
+    background-color: {{ section.settings.btn_primary_hover_bg }};
+    border-color: {{ section.settings.btn_primary_hover_bg }};
+    color: {{ section.settings.btn_primary_hover_text }};
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Secondary Button */
+  #sipwise-banner-{{ section_id }} .banner__btn--secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.85rem 2rem;
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: {{ section.settings.button_radius }}px;
+    background-color: {{ section.settings.btn_secondary_bg }};
+    color: {{ section.settings.btn_secondary_text }};
+    border: 2px solid {{ section.settings.btn_secondary_border }};
+    text-decoration: none;
+    transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+  }
+
+  #sipwise-banner-{{ section_id }} .banner__btn--secondary:hover {
+    background-color: {{ section.settings.btn_secondary_hover_bg }};
+    color: {{ section.settings.btn_secondary_hover_text }};
+    border-color: {{ section.settings.btn_secondary_hover_bg }};
+    transform: translateY(-2px);
+  }
+</style>
+
+<section id="sipwise-banner-{{ section_id }}" class="sipwise-custom-banner">
+  <!-- Background Image & Fallback -->
+  <div class="banner__bg-wrapper">
+    {% if section.settings.image != blank %}
+      <img
+        src="{{ section.settings.image | image_url: width: 2400 }}"
+        alt="{{ section.settings.image.alt | default: section.settings.heading | escape }}"
+        class="banner__image banner__image--desktop"
+        loading="eager"
+        width="{{ section.settings.image.width }}"
+        height="{{ section.settings.image.height }}"
+      >
+      {% if section.settings.image_mobile != blank %}
+        <img
+          src="{{ section.settings.image_mobile | image_url: width: 1200 }}"
+          alt="{{ section.settings.image_mobile.alt | default: section.settings.heading | escape }}"
+          class="banner__image banner__image--mobile"
+          loading="eager"
+          width="{{ section.settings.image_mobile.width }}"
+          height="{{ section.settings.image_mobile.height }}"
+        >
+      {% endif %}
+    {% else %}
+      {{ 'lifestyle-1' | placeholder_svg_tag: 'banner__image placeholder-svg' }}
+    {% endif %}
+  </div>
+
+  <!-- Tint / Dark Overlay -->
+  <div class="banner__overlay"></div>
+
+  <!-- Content Layer -->
+  <div class="banner__container">
+    <div class="banner__content-box">
+      {% if section.settings.badge_text != blank %}
+        <span class="banner__badge">{{ section.settings.badge_text }}</span>
+      {% endif %}
+
+      {% if section.settings.heading != blank %}
+        <h2 class="banner__heading">{{ section.settings.heading }}</h2>
+      {% endif %}
+
+      {% if section.settings.description != blank %}
+        <div class="banner__description">{{ section.settings.description }}</div>
+      {% endif %}
+
+      {% if section.settings.btn_primary_label != blank or section.settings.btn_secondary_label != blank %}
+        <div class="banner__buttons">
+          {% if section.settings.btn_primary_label != blank %}
+            <a href="{{ section.settings.btn_primary_link | default: '#' }}" class="banner__btn--primary">
+              {{ section.settings.btn_primary_label }}
+            </a>
+          {% endif %}
+
+          {% if section.settings.btn_secondary_label != blank %}
+            <a href="{{ section.settings.btn_secondary_link | default: '#' }}" class="banner__btn--secondary">
+              {{ section.settings.btn_secondary_label }}
+            </a>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Image & Text Banner",
+  "tag": "section",
+  "class": "section-image-banner",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Images & Background"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Desktop Background Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Mobile Background Image (Optional)"
+    },
+    {
+      "type": "select",
+      "id": "image_focal_point",
+      "label": "Image Focal Point",
+      "options": [
+        { "value": "center center", "label": "Center" },
+        { "value": "top center", "label": "Top" },
+        { "value": "bottom center", "label": "Bottom" },
+        { "value": "center left", "label": "Left" },
+        { "value": "center right", "label": "Right" }
+      ],
+      "default": "center center"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color (Fallback)",
+      "default": "#0f172a"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay Tint Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Overlay Opacity",
+      "default": 35
+    },
+    {
+      "type": "header",
+      "content": "Section Dimensions & Spacing"
+    },
+    {
+      "type": "range",
+      "id": "desktop_height",
+      "min": 350,
+      "max": 850,
+      "step": 25,
+      "unit": "px",
+      "label": "Desktop Height",
+      "default": 550
+    },
+    {
+      "type": "range",
+      "id": "mobile_height",
+      "min": 250,
+      "max": 650,
+      "step": 25,
+      "unit": "px",
+      "label": "Mobile Height",
+      "default": 450
+    },
+    {
+      "type": "range",
+      "id": "container_max_width",
+      "min": 800,
+      "max": 1600,
+      "step": 50,
+      "unit": "px",
+      "label": "Container Max Width",
+      "default": 1300
+    },
+    {
+      "type": "range",
+      "id": "content_box_max_width",
+      "min": 300,
+      "max": 900,
+      "step": 25,
+      "unit": "px",
+      "label": "Text Box Max Width",
+      "default": 550
+    },
+    {
+      "type": "range",
+      "id": "corner_radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Banner Corner Radius",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_vertical_desktop",
+      "min": 20,
+      "max": 120,
+      "step": 10,
+      "unit": "px",
+      "label": "Desktop Vertical Padding",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_vertical_mobile",
+      "min": 10,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "label": "Mobile Vertical Padding",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Text Positioning & Alignment"
+    },
+    {
+      "type": "select",
+      "id": "content_position_desktop",
+      "label": "Desktop Content Position",
+      "options": [
+        { "value": "top-left", "label": "Top Left" },
+        { "value": "top-center", "label": "Top Center" },
+        { "value": "top-right", "label": "Top Right" },
+        { "value": "middle-left", "label": "Middle Left" },
+        { "value": "middle-center", "label": "Middle Center" },
+        { "value": "middle-right", "label": "Middle Right" },
+        { "value": "bottom-left", "label": "Bottom Left" },
+        { "value": "bottom-center", "label": "Bottom Center" },
+        { "value": "bottom-right", "label": "Bottom Right" }
+      ],
+      "default": "middle-left"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment_desktop",
+      "label": "Desktop Text Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "content_position_mobile_y",
+      "label": "Mobile Vertical Position",
+      "options": [
+        { "value": "flex-start", "label": "Top" },
+        { "value": "center", "label": "Middle" },
+        { "value": "flex-end", "label": "Bottom" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "content_position_mobile_x",
+      "label": "Mobile Horizontal Position",
+      "options": [
+        { "value": "flex-start", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "flex-end", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment_mobile",
+      "label": "Mobile Text Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Content Box / Card (Optional)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_content_box",
+      "label": "Show Glass/Solid Card Behind Text",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "box_bg_color",
+      "label": "Card Background Color",
+      "default": "rgba(255, 255, 255, 0.9)"
+    },
+    {
+      "type": "range",
+      "id": "box_blur",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Card Frosted Blur",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "box_corner_radius",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Card Corner Radius",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "box_padding_desktop",
+      "min": 16,
+      "max": 60,
+      "step": 4,
+      "unit": "px",
+      "label": "Card Desktop Padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "box_border_width",
+      "min": 0,
+      "max": 4,
+      "step": 1,
+      "unit": "px",
+      "label": "Card Border Width",
+      "default": 1
+    },
+    {
+      "type": "color",
+      "id": "box_border_color",
+      "label": "Card Border Color",
+      "default": "rgba(255, 255, 255, 0.2)"
+    },
+    {
+      "type": "header",
+      "content": "Badge / Subtitle Content & Colors"
+    },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge Text",
+      "default": "NEW ARRIVAL"
+    },
+    {
+      "type": "color",
+      "id": "badge_bg_color",
+      "label": "Badge Background Color",
+      "default": "#1a56db"
+    },
+    {
+      "type": "color",
+      "id": "badge_text_color",
+      "label": "Badge Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Heading Content & Styling"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Smart Hydration, Reimagined."
+    },
+    {
+      "type": "range",
+      "id": "heading_size_desktop",
+      "min": 24,
+      "max": 72,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Desktop Font Size",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "min": 4,
+      "max": 10,
+      "step": 1,
+      "unit": "vw",
+      "label": "Heading Mobile Size Scale",
+      "default": 7
+    },
+    {
+      "type": "select",
+      "id": "heading_weight",
+      "label": "Heading Weight",
+      "options": [
+        { "value": "600", "label": "Semi Bold (600)" },
+        { "value": "700", "label": "Bold (700)" },
+        { "value": "800", "label": "Extra Bold (800)" },
+        { "value": "900", "label": "Black (900)" }
+      ],
+      "default": "800"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Description Text & Color"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Discover the next level of pure water with self-cleaning UV technology built right into your bottle.</p>"
+    },
+    {
+      "type": "range",
+      "id": "text_size_desktop",
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Description Font Size",
+      "default": 18
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Description Text Color",
+      "default": "#f1f5f9"
+    },
+    {
+      "type": "header",
+      "content": "Buttons & Links"
+    },
+    {
+      "type": "range",
+      "id": "button_radius",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Button Corner Radius",
+      "default": 50
+    },
+    {
+      "type": "text",
+      "id": "btn_primary_label",
+      "label": "Primary Button Text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "btn_primary_link",
+      "label": "Primary Button Link"
+    },
+    {
+      "type": "color",
+      "id": "btn_primary_bg",
+      "label": "Primary Button Background",
+      "default": "#1a56db"
+    },
+    {
+      "type": "color",
+      "id": "btn_primary_text",
+      "label": "Primary Button Text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "btn_primary_hover_bg",
+      "label": "Primary Button Hover Background",
+      "default": "#1e40af"
+    },
+    {
+      "type": "color",
+      "id": "btn_primary_hover_text",
+      "label": "Primary Button Hover Text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "text",
+      "id": "btn_secondary_label",
+      "label": "Secondary Button Text",
+      "default": "Learn More"
+    },
+    {
+      "type": "url",
+      "id": "btn_secondary_link",
+      "label": "Secondary Button Link"
+    },
+    {
+      "type": "color",
+      "id": "btn_secondary_bg",
+      "label": "Secondary Button Background",
+      "default": "transparent"
+    },
+    {
+      "type": "color",
+      "id": "btn_secondary_text",
+      "label": "Secondary Button Text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "btn_secondary_border",
+      "label": "Secondary Button Border Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "btn_secondary_hover_bg",
+      "label": "Secondary Button Hover Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "btn_secondary_hover_text",
+      "label": "Secondary Button Hover Text",
+      "default": "#0f172a"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Image & Text Banner",
+      "settings": {
+        "heading": "Smart Hydration, Reimagined.",
+        "badge_text": "INNOVATION",
+        "btn_primary_label": "Explore Bottles",
+        "btn_secondary_label": "How It Works",
+        "content_position_desktop": "middle-left",
+        "text_alignment_desktop": "left"
+      }
+    }
+  ]
+}
+{% endschema %}
