@@ -6,8 +6,21 @@
   --font-heading-style: normal;
 }
 
-body, button, input, select, textarea, .h0, .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6, .button, .drawer, .cart-drawer {
+*, *::before, *::after {
+  font-family: 'Figtree', sans-serif;
+}
+
+body, button, input, select, textarea, a, p, span, div, li, h1, h2, h3, h4, h5, h6,
+.h0, .h1, .h2, .h3, .h4, .h5, .h6, .button, .drawer, .cart-drawer, .announcement-bar,
+.card, .price, .badge, .field__input, .field__label, .header, .footer, .shopify-section {
   font-family: 'Figtree', sans-serif !important;
+}
+
+.material-symbols-outlined,
+.material-icons,
+[class*="material-symbol"],
+[class*="material-icon"] {
+  font-family: 'Material Symbols Outlined' !important;
 }
 
 /* ============================================================
