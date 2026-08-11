@@ -1,0 +1,121 @@
+{% comment %}
+  Renders a set of links for paginated results. Must be used within paginate tags.
+
+  Usage:
+  {% paginate results by 2 %}
+    {% render 'pagination', paginate: paginate, anchor: '#yourID' %}
+  {% endpaginate %}
+
+  Accepts:
+  - paginate: {Object}
+  - anchor: {String} (optional) This can be added so that on page reload it takes you to wherever you've placed your anchor tag.
+  - style: {String} 'transparent' (default) | 'solid'
+  - radius: {Number} corner radius in px, only applies to 'solid' style
+  - prev_next: {String} 'icon' (default) | 'text' — how to render the Prev/Next buttons
+  - prev_label: {String} text label for Previous, when prev_next == 'text'
+  - next_label: {String} text label for Next, when prev_next == 'text'
+{% endcomment %}
+
+{%- liquid
+  assign style = style | default: 'transparent'
+  assign prev_next = prev_next | default: 'icon'
+  assign prev_label = prev_label | default: 'Previous'
+  assign next_label = next_label | default: 'Next'
+  assign wrapper_classes = 'pagination pagination--' | append: style
+  assign inline_style = ''
+  if style == 'solid' and radius
+    assign inline_style = 'style="--pagination-radius: ' | append: radius | append: 'px;"'
+  endif
+-%}
+
+{%- if paginate.parts.size > 0 -%}
+  <div class="pagination-wrapper">
+    <nav class="{{ wrapper_classes }}" role="navigation" aria-label="{{ 'general.pagination.label' | t }}" {{ inline_style }}>
+      <ul class="pagination__list list-unstyled" role="list">
+        {%- if paginate.previous -%}
+          <li>
+            <a
+              href="{{ paginate.previous.url }}{{ anchor }}"
+              class="pagination__item pagination__item--prev pagination__item-arrow link motion-reduce{% if prev_next == 'text' %} pagination__item--text{% endif %}"
+              aria-label="{{ 'general.pagination.previous' | t }}"
+            >
+              {%- if prev_next == 'text' -%}
+                {{ prev_label }}
+              {%- else -%}
+                {% render 'icon-caret' %}
+              {%- endif -%}
+            </a>
+          </li>
+        {%- elsif style == 'solid' -%}
+          <li>
+            <span
+              class="pagination__item pagination__item--prev pagination__item-arrow pagination__item--disabled{% if prev_next == 'text' %} pagination__item--text{% endif %}"
+              aria-hidden="true"
+            >
+              {%- if prev_next == 'text' -%}
+                {{ prev_label }}
+              {%- else -%}
+                {% render 'icon-caret' %}
+              {%- endif -%}
+            </span>
+          </li>
+        {%- endif -%}
+
+        {%- for part in paginate.parts -%}
+          <li>
+            {%- if part.is_link -%}
+              <a
+                href="{{ part.url }}{{ anchor }}"
+                class="pagination__item link"
+                aria-label="{{ 'general.pagination.page' | t: number: part.title }}"
+              >
+                {{- part.title -}}
+              </a>
+            {%- else -%}
+              {%- if part.title == paginate.current_page -%}
+                <span
+                  class="pagination__item pagination__item--current{% if style == 'transparent' %} light{% endif %}"
+                  aria-current="page"
+                  aria-label="{{ 'general.pagination.page' | t: number: part.title }}"
+                >
+                  {{- part.title -}}
+                </span>
+              {%- else -%}
+                <span class="pagination__item pagination__item--gap">{{ part.title }}</span>
+              {%- endif -%}
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+
+        {%- if paginate.next -%}
+          <li>
+            <a
+              href="{{ paginate.next.url }}{{ anchor }}"
+              class="pagination__item pagination__item--next pagination__item-arrow link motion-reduce{% if prev_next == 'text' %} pagination__item--text{% endif %}"
+              aria-label="{{ 'general.pagination.next' | t }}"
+            >
+              {%- if prev_next == 'text' -%}
+                {{ next_label }}
+              {%- else -%}
+                {%- render 'icon-caret' -%}
+              {%- endif -%}
+            </a>
+          </li>
+        {%- elsif style == 'solid' -%}
+          <li>
+            <span
+              class="pagination__item pagination__item--next pagination__item-arrow pagination__item--disabled{% if prev_next == 'text' %} pagination__item--text{% endif %}"
+              aria-hidden="true"
+            >
+              {%- if prev_next == 'text' -%}
+                {{ next_label }}
+              {%- else -%}
+                {%- render 'icon-caret' -%}
+              {%- endif -%}
+            </span>
+          </li>
+        {%- endif -%}
+      </ul>
+    </nav>
+  </div>
+{%- endif -%}

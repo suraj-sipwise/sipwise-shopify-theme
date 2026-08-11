@@ -1,0 +1,175 @@
+{
+  "sections": {
+    "owala_hero": {
+      "type": "owala-hero-banner",
+      "settings": {
+        "visibility": "always-display",
+        "badge_text": "LIMITED EDITION DROP",
+        "badge_bg": "#ff5c8d",
+        "badge_color": "#ffffff",
+        "heading": "Do more than just sip.",
+        "subheading": "Meet the bottle designed to stay cold, stay clean, and turn heads wherever you go.",
+        "btn_primary_label": "Shop FreeSip",
+        "btn_primary_url": "/collections/all",
+        "btn_primary_bg": "#2d3640",
+        "btn_primary_text": "#ffffff",
+        "btn_secondary_label": "Explore Bundles",
+        "btn_secondary_url": "/collections/all",
+        "bg_gradient": "linear-gradient(135deg, #eef7fc 0%, #e3f2fd 100%)",
+        "text_color": "#1e293b",
+        "subtext_color": "#475569",
+        "media_placeholder_bg": "#ffffff"
+      }
+    },
+    "owala_pills": {
+      "type": "owala-category-pills",
+      "blocks": {
+        "pill_1": {
+          "type": "pill",
+          "settings": {
+            "title": "FreeSip Family",
+            "url": "/collections/all",
+            "highlight": true,
+            "show_dot": true
+          }
+        },
+        "pill_2": {
+          "type": "pill",
+          "settings": {
+            "title": "Color Drop",
+            "url": "/collections/all",
+            "highlight": false,
+            "show_dot": false
+          }
+        },
+        "pill_3": {
+          "type": "pill",
+          "settings": {
+            "title": "Tumbler 40oz",
+            "url": "/collections/all",
+            "highlight": false,
+            "show_dot": false
+          }
+        },
+        "pill_4": {
+          "type": "pill",
+          "settings": {
+            "title": "Customize",
+            "url": "/collections/all",
+            "highlight": false,
+            "show_dot": false
+          }
+        },
+        "pill_5": {
+          "type": "pill",
+          "settings": {
+            "title": "New Arrivals",
+            "url": "/collections/all",
+            "highlight": false,
+            "show_dot": false
+          }
+        }
+      },
+      "block_order": [
+        "pill_1",
+        "pill_2",
+        "pill_3",
+        "pill_4",
+        "pill_5"
+      ],
+      "settings": {
+        "bg_color": "#ffffff",
+        "pill_bg": "#f1f5f9",
+        "pill_text": "#334155",
+        "pill_active_bg": "#2d3640",
+        "pill_active_text": "#ffffff"
+      }
+    },
+    "owala_features": {
+      "type": "owala-feature-spotlight",
+      "blocks": {
+        "feature_1": {
+          "type": "feature",
+          "settings": {
+            "title": "2-in-1 FreeSip Spout",
+            "description": "Sip upright through the built-in straw or tilt back to swig from the wide-mouth opening."
+          }
+        },
+        "feature_2": {
+          "type": "feature",
+          "settings": {
+            "title": "Triple-Layer Insulation",
+            "description": "Keeps your water ice-cold for up to 24 hours without sweating."
+          }
+        },
+        "feature_3": {
+          "type": "feature",
+          "settings": {
+            "title": "Leak-Proof Lock",
+            "description": "Push-button open lid with a carry loop that doubles as a security lock."
+          }
+        }
+      },
+      "block_order": [
+        "feature_1",
+        "feature_2",
+        "feature_3"
+      ],
+      "settings": {
+        "heading": "What makes it special?",
+        "subheading": "Engineered for maximum hydration and effortless everyday style.",
+        "bg_color": "#f8fafc",
+        "card_bg": "#ffffff",
+        "title_color": "#0f172a",
+        "subtitle_color": "#475569",
+        "icon_bg": "#e0f2fe",
+        "icon_color": "#0284c7"
+      }
+    },
+    "owala_press": {
+      "type": "owala-press-reviews",
+      "blocks": {
+        "press_1": {
+          "type": "press",
+          "settings": {
+            "quote": "Named one of the Best Inventions of the year.",
+            "publication": "TIME"
+          }
+        },
+        "press_2": {
+          "type": "press",
+          "settings": {
+            "quote": "The viral water bottle that actually lives up to the hype.",
+            "publication": "VOGUE"
+          }
+        },
+        "press_3": {
+          "type": "press",
+          "settings": {
+            "quote": "Our top pick for hydration on the go.",
+            "publication": "WIRECUTTER"
+          }
+        }
+      },
+      "block_order": [
+        "press_1",
+        "press_2",
+        "press_3"
+      ],
+      "settings": {
+        "rating_heading": "OVER 100,000+ FIVE-STAR REVIEWS",
+        "bg_color": "#ffffff",
+        "card_bg": "#f8fafc",
+        "star_color": "#ffb800",
+        "text_color": "#1e293b",
+        "source_color": "#64748b"
+      }
+    }
+  },
+  "order": [
+    "owala_hero",
+    "owala_pills",
+    "owala_features",
+    "owala_press"
+  ]
+}

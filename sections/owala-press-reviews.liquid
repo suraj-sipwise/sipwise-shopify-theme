@@ -1,0 +1,199 @@
+<style>
+  .owala-press {
+    padding: 3rem 1.5rem;
+    background-color: {{ section.settings.bg_color }};
+    text-align: center;
+    border-top: 1px solid rgba(0,0,0,0.05);
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+  }
+
+  .owala-press__stars {
+    display: flex;
+    justify-content: center;
+    gap: 0.25rem;
+    color: {{ section.settings.star_color }};
+    margin-bottom: 0.5rem;
+  }
+
+  .owala-press__stars svg {
+    width: 22px;
+    height: 22px;
+    fill: currentColor;
+  }
+
+  .owala-press__rating-text {
+    font-size: 0.95rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    color: {{ section.settings.text_color }};
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+  }
+
+  .owala-press__quotes {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  @media screen and (max-width: 768px) {
+    .owala-press__quotes {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+  }
+
+  .owala-press-card {
+    background: {{ section.settings.card_bg }};
+    padding: 1.75rem 1.25rem;
+    border-radius: 20px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .owala-press-card__quote {
+    font-size: 1.05rem;
+    font-weight: 600;
+    line-height: 1.5;
+    color: {{ section.settings.text_color }};
+    margin: 0 0 1rem 0;
+    font-style: italic;
+  }
+
+  .owala-press-card__source {
+    font-size: 0.9rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: {{ section.settings.source_color }};
+  }
+</style>
+
+<div class="content-for-grouping {{ section.settings.visibility }}">
+<section class="owala-press">
+  <div class="owala-press__stars">
+    {%- for i in (1..5) -%}
+      <svg viewBox="0 0 24 24">
+        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+      </svg>
+    {%- endfor -%}
+  </div>
+  <div class="owala-press__rating-text">{{ section.settings.rating_heading }}</div>
+
+  <div class="owala-press__quotes">
+    {%- for block in section.blocks -%}
+      <div class="owala-press-card" {{ block.shopify_attributes }}>
+        <p class="owala-press-card__quote">“{{ block.settings.quote }}”</p>
+        <div class="owala-press-card__source">— {{ block.settings.publication }}</div>
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+</div>
+
+{% schema %}
+{
+  "name": "Owala Press & Reviews",
+  "settings": [
+    {
+      "type": "select",
+      "id": "visibility",
+      "options": [
+        { "value": "always-display", "label": "Always" },
+        { "value": "hide-desktop", "label": "Hide on Desktop" },
+        { "value": "hide-mobile", "label": "Hide on Mobile" }
+      ],
+      "default": "always-display",
+      "label": "Visibility"
+    },
+    {
+      "type": "text",
+      "id": "rating_heading",
+      "label": "Rating Heading",
+      "default": "OVER 100,000+ FIVE-STAR REVIEWS"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Card Background",
+      "default": "#f8fafc"
+    },
+    {
+      "type": "color",
+      "id": "star_color",
+      "label": "Star Color",
+      "default": "#ffb800"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#1e293b"
+    },
+    {
+      "type": "color",
+      "id": "source_color",
+      "label": "Publication Color",
+      "default": "#64748b"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "press",
+      "name": "Press Quote",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Quote",
+          "default": "The holy grail of water bottles."
+        },
+        {
+          "type": "text",
+          "id": "publication",
+          "label": "Publication",
+          "default": "TIME MAGAZINE"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Owala Press & Reviews",
+      "blocks": [
+        {
+          "type": "press",
+          "settings": {
+            "quote": "Named one of the Best Inventions of the year.",
+            "publication": "TIME"
+          }
+        },
+        {
+          "type": "press",
+          "settings": {
+            "quote": "The viral water bottle that actually lives up to the hype.",
+            "publication": "VOGUE"
+          }
+        },
+        {
+          "type": "press",
+          "settings": {
+            "quote": "Our top pick for hydration on the go.",
+            "publication": "WIRECUTTER"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
