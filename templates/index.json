@@ -113,6 +113,8 @@
       "name": "Owala Product Showcase",
       "settings": {
         "visibility": "always-display",
+        "columns_desktop": 2,
+        "columns_mobile": "2",
         "heading": "Shop bestsellers",
         "subheading": "",
         "heading_size_desktop": 38,
@@ -127,8 +129,6 @@
         "spacing_name_to_subtitle": 6,
         "grid_gap_desktop": 32,
         "grid_gap_mobile": 16,
-        "columns_desktop": 4,
-        "columns_mobile": "2",
         "image_height_desktop": 280,
         "image_height_mobile": 190,
         "container_width": 1250,
