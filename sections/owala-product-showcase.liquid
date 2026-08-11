@@ -1,0 +1,571 @@
+{% comment %}
+  Owala Style Product Showcase / Bestsellers Lineup
+  Displays 2 to 5 product image placeholders with custom typography, baseline alignment, and spacing sliders.
+{% endcomment %}
+
+{%- liquid
+  assign section_id = section.id
+  assign columns_desktop = section.settings.columns_desktop
+  assign columns_mobile = section.settings.columns_mobile
+-%}
+
+<style>
+  #owala-showcase-{{ section_id }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    background-color: {{ section.settings.bg_color }};
+    font-family: 'Figtree', sans-serif !important;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  #owala-showcase-{{ section_id }} * {
+    font-family: 'Figtree', sans-serif !important;
+  }
+
+  #owala-showcase-{{ section_id }} .showcase__container {
+    max-width: {{ section.settings.container_width }}px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    box-sizing: border-box;
+  }
+
+  /* Header */
+  #owala-showcase-{{ section_id }} .showcase__header {
+    text-align: center;
+    margin-bottom: {{ section.settings.spacing_below_heading }}px;
+  }
+
+  #owala-showcase-{{ section_id }} .showcase__heading {
+    font-size: {{ section.settings.heading_size_mobile }}px;
+    font-weight: {{ section.settings.heading_weight }};
+    color: {{ section.settings.heading_color }};
+    margin: 0;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+
+  @media screen and (min-width: 750px) {
+    #owala-showcase-{{ section_id }} .showcase__heading {
+      font-size: {{ section.settings.heading_size_desktop }}px;
+    }
+  }
+
+  #owala-showcase-{{ section_id }} .showcase__subheading {
+    font-size: {{ section.settings.subheading_size }}px;
+    color: {{ section.settings.subheading_color }};
+    margin: 0.5rem 0 0 0;
+    line-height: 1.4;
+  }
+
+  /* Grid Layout */
+  #owala-showcase-{{ section_id }} .showcase__grid {
+    display: grid;
+    grid-template-columns: repeat({{ columns_desktop }}, 1fr);
+    gap: {{ section.settings.grid_gap_desktop }}px;
+    align-items: end;
+    justify-content: center;
+  }
+
+  @media screen and (max-width: 749px) {
+    #owala-showcase-{{ section_id }} .showcase__grid {
+      grid-template-columns: repeat({{ columns_mobile }}, 1fr);
+      gap: {{ section.settings.grid_gap_mobile }}px;
+    }
+  }
+
+  /* Individual Product Item */
+  #owala-showcase-{{ section_id }} .showcase__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.25s ease;
+    cursor: pointer;
+  }
+
+  #owala-showcase-{{ section_id }} .showcase__item:hover {
+    transform: translateY(-4px);
+  }
+
+  /* Image Box with Baseline Alignment */
+  #owala-showcase-{{ section_id }} .showcase__image-wrapper {
+    width: 100%;
+    height: {{ section.settings.image_height_desktop }}px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    margin-bottom: {{ section.settings.spacing_image_to_name }}px;
+  }
+
+  @media screen and (max-width: 749px) {
+    #owala-showcase-{{ section_id }} .showcase__image-wrapper {
+      height: {{ section.settings.image_height_mobile }}px;
+    }
+  }
+
+  #owala-showcase-{{ section_id }} .showcase__image {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    object-position: bottom center;
+    display: block;
+    filter: drop-shadow(0 10px 14px rgba(0, 0, 0, 0.08));
+    transition: transform 0.25s ease;
+  }
+
+  #owala-showcase-{{ section_id }} .showcase__item:hover .showcase__image {
+    transform: scale(1.03);
+  }
+
+  /* Image Placeholder Box */
+  #owala-showcase-{{ section_id }} .showcase__placeholder-box {
+    width: 80%;
+    height: 90%;
+    background: {{ section.settings.placeholder_bg }};
+    border-radius: 20px;
+    border: 2px dashed rgba(0, 0, 0, 0.12);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #64748b;
+    padding: 1rem;
+    box-sizing: border-box;
+  }
+
+  #owala-showcase-{{ section_id }} .showcase__placeholder-icon {
+    width: 36px;
+    height: 36px;
+    margin-bottom: 0.5rem;
+    opacity: 0.6;
+  }
+
+  /* Typography: Name & Subtitle */
+  #owala-showcase-{{ section_id }} .showcase__name {
+    font-size: {{ section.settings.name_size }}px;
+    font-weight: {{ section.settings.name_weight }};
+    color: {{ section.settings.name_color }};
+    margin: 0 0 {{ section.settings.spacing_name_to_subtitle }}px 0;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+  }
+
+  #owala-showcase-{{ section_id }} .showcase__tagline {
+    font-size: {{ section.settings.tagline_size }}px;
+    font-weight: 500;
+    color: {{ section.settings.tagline_color }};
+    margin: 0;
+    line-height: 1.4;
+  }
+</style>
+
+<div class="content-for-grouping {{ section.settings.visibility }}">
+  <section id="owala-showcase-{{ section_id }}" class="owala-product-showcase">
+    <div class="showcase__container">
+      {%- if section.settings.heading != blank or section.settings.subheading != blank -%}
+        <div class="showcase__header">
+          {%- if section.settings.heading != blank -%}
+            <h2 class="showcase__heading">{{ section.settings.heading }}</h2>
+          {%- endif -%}
+          {%- if section.settings.subheading != blank -%}
+            <p class="showcase__subheading">{{ section.settings.subheading }}</p>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      <div class="showcase__grid">
+        {%- for block in section.blocks -%}
+          <{% if block.settings.link != blank %}a href="{{ block.settings.link }}"{% else %}div{% endif %}
+            class="showcase__item"
+            {{ block.shopify_attributes }}
+          >
+            <div class="showcase__image-wrapper">
+              {%- if block.settings.image != blank -%}
+                <img
+                  src="{{ block.settings.image | image_url: width: 800 }}"
+                  alt="{{ block.settings.image.alt | default: block.settings.name | escape }}"
+                  class="showcase__image"
+                  loading="lazy"
+                  width="{{ block.settings.image.width }}"
+                  height="{{ block.settings.image.height }}"
+                >
+              {%- else -%}
+                <div class="showcase__placeholder-box">
+                  <svg class="showcase__placeholder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <path d="M16 10a4 4 0 0 1-8 0"></path>
+                  </svg>
+                  <span style="font-size: 0.75rem; font-weight: 700; opacity: 0.8;">[ Product Photo ]</span>
+                </div>
+              {%- endif -%}
+            </div>
+
+            {%- if block.settings.name != blank -%}
+              <h3 class="showcase__name">{{ block.settings.name }}</h3>
+            {%- endif -%}
+
+            {%- if block.settings.tagline != blank -%}
+              <p class="showcase__tagline">{{ block.settings.tagline }}</p>
+            {%- endif -%}
+          </{% if block.settings.link != blank %}a{% else %}div{% endif %}>
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "Owala Product Showcase",
+  "tag": "section",
+  "class": "section-owala-showcase",
+  "settings": [
+    {
+      "type": "select",
+      "id": "visibility",
+      "options": [
+        { "value": "always-display", "label": "Always" },
+        { "value": "hide-desktop", "label": "Hide on Desktop" },
+        { "value": "hide-mobile", "label": "Hide on Mobile" }
+      ],
+      "default": "always-display",
+      "label": "Visibility"
+    },
+    {
+      "type": "header",
+      "content": "Heading & Text"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "Shop bestsellers"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Section Subheading (Optional)"
+    },
+    {
+      "type": "header",
+      "content": "Typography & Font Sizes"
+    },
+    {
+      "type": "range",
+      "id": "heading_size_desktop",
+      "min": 22,
+      "max": 64,
+      "step": 2,
+      "unit": "px",
+      "label": "Section Heading Size (Desktop)",
+      "default": 38
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "min": 18,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Section Heading Size (Mobile)",
+      "default": 28
+    },
+    {
+      "type": "select",
+      "id": "heading_weight",
+      "label": "Heading Font Weight",
+      "options": [
+        { "value": "600", "label": "Semi Bold (600)" },
+        { "value": "700", "label": "Bold (700)" },
+        { "value": "800", "label": "Extra Bold (800)" },
+        { "value": "900", "label": "Black (900)" }
+      ],
+      "default": "900"
+    },
+    {
+      "type": "range",
+      "id": "subheading_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Subheading Size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "name_size",
+      "min": 14,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "label": "Product Name Font Size",
+      "default": 20
+    },
+    {
+      "type": "select",
+      "id": "name_weight",
+      "label": "Product Name Weight",
+      "options": [
+        { "value": "600", "label": "Semi Bold (600)" },
+        { "value": "700", "label": "Bold (700)" },
+        { "value": "800", "label": "Extra Bold (800)" },
+        { "value": "900", "label": "Black (900)" }
+      ],
+      "default": "800"
+    },
+    {
+      "type": "range",
+      "id": "tagline_size",
+      "min": 12,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "label": "Subtitle / Tagline Font Size",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "Custom Spacing Sliders"
+    },
+    {
+      "type": "range",
+      "id": "spacing_below_heading",
+      "min": 10,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Spacing Below Main Heading",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "spacing_image_to_name",
+      "min": 4,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Spacing: Image to Product Name",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "spacing_name_to_subtitle",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Spacing: Product Name to Subtitle",
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "grid_gap_desktop",
+      "min": 10,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Horizontal Gap Between Products (Desktop)",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "grid_gap_mobile",
+      "min": 8,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Horizontal Gap Between Products (Mobile)",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Layout & Image Sizing"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "label": "Number of Products on Desktop",
+      "default": 4
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Number of Products on Mobile",
+      "options": [
+        { "value": "1", "label": "1 Product per Row" },
+        { "value": "2", "label": "2 Products per Row" }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "range",
+      "id": "image_height_desktop",
+      "min": 150,
+      "max": 450,
+      "step": 10,
+      "unit": "px",
+      "label": "Product Image Height (Desktop)",
+      "default": 280
+    },
+    {
+      "type": "range",
+      "id": "image_height_mobile",
+      "min": 120,
+      "max": 300,
+      "step": 10,
+      "unit": "px",
+      "label": "Product Image Height (Mobile)",
+      "default": 190
+    },
+    {
+      "type": "range",
+      "id": "container_width",
+      "min": 900,
+      "max": 1500,
+      "step": 50,
+      "unit": "px",
+      "label": "Container Max Width",
+      "default": 1250
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Section Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Section Heading Color",
+      "default": "#232e3d"
+    },
+    {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Section Subheading Color",
+      "default": "#64748b"
+    },
+    {
+      "type": "color",
+      "id": "name_color",
+      "label": "Product Name Color",
+      "default": "#232e3d"
+    },
+    {
+      "type": "color",
+      "id": "tagline_color",
+      "label": "Subtitle / Tagline Color",
+      "default": "#475569"
+    },
+    {
+      "type": "color",
+      "id": "placeholder_bg",
+      "label": "Image Placeholder BG Color",
+      "default": "#f8fafc"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 20,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 20,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 64
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product_item",
+      "name": "Product Showcase Item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Product Image"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Product Name",
+          "default": "FreeSip®"
+        },
+        {
+          "type": "text",
+          "id": "tagline",
+          "label": "Tagline / Subtitle",
+          "default": "The original."
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Product / Collection Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Owala Product Showcase",
+      "blocks": [
+        {
+          "type": "product_item",
+          "settings": {
+            "name": "FreeSip®",
+            "tagline": "The original."
+          }
+        },
+        {
+          "type": "product_item",
+          "settings": {
+            "name": "FreeSip® Sway",
+            "tagline": "Cupholder-friendly."
+          }
+        },
+        {
+          "type": "product_item",
+          "settings": {
+            "name": "SmoothSip® Slider",
+            "tagline": "For coffee lovers."
+          }
+        },
+        {
+          "type": "product_item",
+          "settings": {
+            "name": "The Sun-Day Tote",
+            "tagline": "Packs flat. Hauls big."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
