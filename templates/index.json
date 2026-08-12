@@ -116,8 +116,10 @@
       "name": "Owala Product Showcase",
       "settings": {
         "visibility": "always-display",
+        "products_to_show": 2,
         "columns_desktop": 2,
         "columns_mobile": "2",
+        "item_max_width": 320,
         "heading": "Newly launch!",
         "subheading": "",
         "heading_size_desktop": 38,
@@ -143,6 +145,83 @@
         "placeholder_bg": "#f8fafc",
         "padding_top": 64,
         "padding_bottom": 64
+      }
+    },
+    "stats_impact_KmQPXH": {
+      "type": "stats-impact",
+      "blocks": {
+        "stat_cYUtFq": {
+          "type": "stat",
+          "settings": {
+            "stat_number": "75%",
+            "stat_label": "Indians don't drink enough water daily"
+          }
+        },
+        "stat_g4wrGf": {
+          "type": "stat",
+          "settings": {
+            "stat_number": "25%",
+            "stat_label": "Drop in cognitive performance"
+          }
+        },
+        "stat_zmhyxU": {
+          "type": "stat",
+          "settings": {
+            "stat_number": "8x",
+            "stat_label": "More likely to hydrate with reminders"
+          }
+        },
+        "stat_TAUzkY": {
+          "type": "stat",
+          "settings": {
+            "stat_number": "21",
+            "stat_label": "Days to build a lasting habit"
+          }
+        }
+      },
+      "block_order": [
+        "stat_cYUtFq",
+        "stat_g4wrGf",
+        "stat_zmhyxU",
+        "stat_TAUzkY"
+      ],
+      "name": "Stats Impact Section",
+      "settings": {
+        "visibility": "always-display",
+        "eyebrow": "THE HYDRATION CRISIS",
+        "headline": "<p>75% of Indians are chronically <em>dehydrated.</em></p>",
+        "body_text": "Dehydration silently degrades your focus, energy, and immunity every single day. Most people don't even realize it.",
+        "eyebrow_size": 12,
+        "headline_size_desktop": 54,
+        "headline_size_mobile": 36,
+        "headline_max_width": 640,
+        "body_size": 16,
+        "body_max_width": 460,
+        "stat_number_size_desktop": 52,
+        "stat_number_size_mobile": 34,
+        "stat_number_margin_bottom": 10,
+        "stat_label_size": 14,
+        "spacing_eyebrow_bottom": 20,
+        "spacing_headline_bottom": 20,
+        "spacing_body_bottom": 0,
+        "spacing_grid_top": 44,
+        "padding_top": 80,
+        "padding_bottom": 80,
+        "stats_columns_desktop": 4,
+        "stats_columns_mobile": "2",
+        "container_width": 1100,
+        "card_padding_v": 36,
+        "card_padding_h": 24,
+        "card_border_radius": 10,
+        "bg_color": "#FFFFFF",
+        "accent_color": "#ff4d4d",
+        "headline_color": "#232E3D",
+        "body_color": "#9ca3af",
+        "card_bg": "#E2E2E2",
+        "card_bg_hover": "#1e1e1e",
+        "card_border_color": "#2a2a2a",
+        "stat_number_color": "#2dd4bf",
+        "stat_label_color": "#9ca3af"
       }
     },
     "trustpilot_reviews_H8ga9i": {
@@ -195,11 +274,11 @@
         "display_id": false,
         "visibility": "always-display",
         "color_scheme": "background-1",
-        "custom_colors_background": "#FFFFFF",
+        "custom_colors_background": "#ffffff",
         "custom_gradient_background": "",
-        "custom_colors_text": "#2E2A39",
+        "custom_colors_text": "#2e2a39",
         "pattern_bg": "none",
-        "pattern_color": "#6D388B",
+        "pattern_color": "#6d388b",
         "pattern_size": 20,
         "pattern_thickness": 2,
         "pattern_angle": 45,
@@ -211,36 +290,36 @@
         "title": "Trustpilot reviews",
         "title_highlight_1": "solid-color",
         "title_highlight_1_gradient": "linear-gradient(57deg, rgba(249, 119, 255, 1) 8%, rgba(54, 212, 255, 1) 47%, rgba(43, 252, 135, 1) 83%)",
-        "title_highlight_1_bg-color": "#F9EFFF",
-        "title_highlight_1_color": "#6D388B",
+        "title_highlight_1_bg-color": "#f9efff",
+        "title_highlight_1_color": "#6d388b",
         "highlighted-1_border_radius": 8,
         "highlighted-1_border_width": 0,
         "highlighted-1_border": "solid",
-        "highlighted-1_border_color": "#6D388B",
+        "highlighted-1_border_color": "#6d388b",
         "highlighted-1_padding-block": 0.3,
         "highlighted-1_padding-inline": 0.3,
         "title_highlight_1_underline-thickness": 2,
-        "title_highlight_1_underline-color": "#6D388B",
+        "title_highlight_1_underline-color": "#6d388b",
         "title_highlight_1_underline-color--gradient": "linear-gradient(57deg, rgba(249, 119, 255, 1) 8%, rgba(54, 212, 255, 1) 47%, rgba(43, 252, 135, 1) 83%)",
         "title_highlight_1_underline-color-position": 25,
-        "title_highlight_1_handwritten-color": "#6D388B",
+        "title_highlight_1_handwritten-color": "#6d388b",
         "title_highlight_1_handwritten-stroke-width": 3,
         "title_highlight_1_handwritten-position": 60,
         "title_highlight_2": "none",
         "title_highlight_2_gradient": "linear-gradient(57deg, rgba(249, 119, 255, 1) 8%, rgba(54, 212, 255, 1) 47%, rgba(43, 252, 135, 1) 83%)",
-        "title_highlight_2_bg-color": "#F9EFFF",
-        "title_highlight_2_color": "#6D388B",
+        "title_highlight_2_bg-color": "#f9efff",
+        "title_highlight_2_color": "#6d388b",
         "highlighted-2_border_radius": 8,
         "highlighted-2_border_width": 0,
         "highlighted-2_border": "solid",
-        "highlighted-2_border_color": "#6D388B",
+        "highlighted-2_border_color": "#6d388b",
         "highlighted-2_padding-block": 0.3,
         "highlighted-2_padding-inline": 0.3,
         "title_highlight_2_underline-thickness": 2,
-        "title_highlight_2_underline-color": "#6D388B",
+        "title_highlight_2_underline-color": "#6d388b",
         "title_highlight_2_underline-color--gradient": "linear-gradient(57deg, rgba(249, 119, 255, 1) 8%, rgba(54, 212, 255, 1) 47%, rgba(43, 252, 135, 1) 83%)",
         "title_highlight_2_underline-color-position": 25,
-        "title_highlight_2_handwritten-color": "#6D388B",
+        "title_highlight_2_handwritten-color": "#6d388b",
         "title_highlight_2_handwritten-stroke-width": 3,
         "title_highlight_2_handwritten-position": 60,
         "heading_size": "h1",
@@ -260,9 +339,9 @@
         "card_alignment": "center",
         "show_stars": true,
         "cards_color_scheme": "background-2",
-        "custom_cards_colors_background": "#F3F3F3",
+        "custom_cards_colors_background": "#f3f3f3",
         "custom_cards_gradient_background": "",
-        "custom_cards_colors_text": "#2E2A39",
+        "custom_cards_colors_text": "#2e2a39",
         "type": "slide",
         "autoplay": false,
         "autoplay_speed": 5,
@@ -292,6 +371,7 @@
   "order": [
     "custom_image_banner_LhtiVy",
     "owala_product_showcase_g8qEye",
+    "stats_impact_KmQPXH",
     "trustpilot_reviews_H8ga9i"
   ]
 }
