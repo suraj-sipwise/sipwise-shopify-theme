@@ -49,7 +49,7 @@
   /* Desktop: grid of columns */
   #sw-footer-{{ section.id }} .swf-nav-grid {
     display: none;
-    grid-template-columns: repeat({{ section.blocks.size }}, 1fr);
+    grid-template-columns: repeat({{ section.blocks.size }}, 1fr){% if section.settings.app_store_url != blank or section.settings.play_store_url != blank %} minmax(180px, 1.2fr){% endif %};
     gap: {{ section.settings.column_gap }}px;
     align-items: start;
   }
@@ -288,6 +288,79 @@
     border-radius: 4px;
   }
 
+  /* ---- Payment Bar (centered row) ---- */
+  #sw-footer-{{ section.id }} .swf-payment-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    padding: {{ section.settings.payment_bar_padding }}px 0;
+    border-bottom: 1px solid {{ section.settings.divider_color }};
+  }
+
+  #sw-footer-{{ section.id }} .swf-payment-bar .icon--full-color {
+    height: {{ section.settings.payment_icon_height }}px;
+    width: auto;
+    border-radius: 4px;
+  }
+
+  /* ---- App Download Column ---- */
+  #sw-footer-{{ section.id }} .swf-app-col {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  #sw-footer-{{ section.id }} .swf-app-heading {
+    font-size: {{ section.settings.heading_size }}px;
+    font-weight: {{ section.settings.heading_weight }};
+    color: {{ section.settings.heading_color }};
+    margin: 0 0 {{ section.settings.heading_gap }}px 0;
+    line-height: 1.2;
+  }
+
+  #sw-footer-{{ section.id }} .swf-app-logo {
+    max-width: {{ section.settings.app_logo_width }}px;
+    height: auto;
+    display: block;
+    margin-bottom: 14px;
+  }
+
+  #sw-footer-{{ section.id }} .swf-app-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  #sw-footer-{{ section.id }} .swf-app-btn {
+    display: inline-block;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  #sw-footer-{{ section.id }} .swf-app-btn:hover {
+    opacity: 0.85;
+    transform: translateY(-2px);
+  }
+
+  #sw-footer-{{ section.id }} .swf-app-btn img {
+    height: {{ section.settings.app_btn_height }}px;
+    width: auto;
+    display: block;
+    border-radius: 6px;
+  }
+
+  /* Mobile: app section inside accordion */
+  #sw-footer-{{ section.id }} .swf-app-mobile {
+    padding: {{ section.settings.accordion_padding }}px 0;
+    border-bottom: 1px solid {{ section.settings.divider_color }};
+  }
+
+  @media screen and (min-width: 750px) {
+    #sw-footer-{{ section.id }} .swf-app-mobile {
+      display: none;
+    }
+  }
+
   /* Mobile: copyright below brand */
   @media screen and (max-width: 749px) {
     #sw-footer-{{ section.id }} .swf-bottom-row {
@@ -306,6 +379,10 @@
 
     #sw-footer-{{ section.id }} .swf-payment {
       justify-content: flex-start;
+    }
+
+    #sw-footer-{{ section.id }} .swf-app-col {
+      display: none;
     }
   }
 </style>
@@ -352,6 +429,39 @@
           {%- endfor -%}
         </div>
 
+          {%- comment -%} App Download Column (Desktop only — sits inside the grid) {%- endcomment -%}
+          {%- if section.settings.app_store_url != blank or section.settings.play_store_url != blank -%}
+            <div class="swf-app-col">
+              {%- if section.settings.app_heading != blank -%}
+                <h3 class="swf-app-heading">{{ section.settings.app_heading }}</h3>
+              {%- endif -%}
+              {%- if section.settings.app_logo != blank -%}
+                <img class="swf-app-logo" src="{{ section.settings.app_logo | image_url: width: 400 }}" alt="App" loading="lazy">
+              {%- endif -%}
+              <div class="swf-app-buttons">
+                {%- if section.settings.app_store_url != blank -%}
+                  <a href="{{ section.settings.app_store_url }}" class="swf-app-btn" target="_blank" rel="noopener" aria-label="Download on App Store">
+                    {%- if section.settings.app_store_image != blank -%}
+                      <img src="{{ section.settings.app_store_image | image_url: height: 100 }}" alt="App Store">
+                    {%- else -%}
+                      <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="App Store">
+                    {%- endif -%}
+                  </a>
+                {%- endif -%}
+                {%- if section.settings.play_store_url != blank -%}
+                  <a href="{{ section.settings.play_store_url }}" class="swf-app-btn" target="_blank" rel="noopener" aria-label="Get it on Google Play">
+                    {%- if section.settings.play_store_image != blank -%}
+                      <img src="{{ section.settings.play_store_image | image_url: height: 100 }}" alt="Google Play">
+                    {%- else -%}
+                      <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Google Play">
+                    {%- endif -%}
+                  </a>
+                {%- endif -%}
+              </div>
+            </div>
+          {%- endif -%}
+        </div>
+
         <!-- ===== MOBILE ACCORDION ===== -->
         <nav class="swf-nav-accordion" aria-label="Footer navigation">
           {%- for block in nav_blocks -%}
@@ -379,9 +489,54 @@
             </div>
           {%- endfor -%}
         </nav>
+
+        {%- comment -%} App section for mobile {%- endcomment -%}
+        {%- if section.settings.app_store_url != blank or section.settings.play_store_url != blank -%}
+          <div class="swf-app-mobile">
+            {%- if section.settings.app_heading != blank -%}
+              <h3 class="swf-app-heading">{{ section.settings.app_heading }}</h3>
+            {%- endif -%}
+            {%- if section.settings.app_logo != blank -%}
+              <img class="swf-app-logo" src="{{ section.settings.app_logo | image_url: width: 400 }}" alt="App" loading="lazy">
+            {%- endif -%}
+            <div class="swf-app-buttons">
+              {%- if section.settings.app_store_url != blank -%}
+                <a href="{{ section.settings.app_store_url }}" class="swf-app-btn" target="_blank" rel="noopener">
+                  {%- if section.settings.app_store_image != blank -%}
+                    <img src="{{ section.settings.app_store_image | image_url: height: 100 }}" alt="App Store">
+                  {%- else -%}
+                    <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="App Store">
+                  {%- endif -%}
+                </a>
+              {%- endif -%}
+              {%- if section.settings.play_store_url != blank -%}
+                <a href="{{ section.settings.play_store_url }}" class="swf-app-btn" target="_blank" rel="noopener">
+                  {%- if section.settings.play_store_image != blank -%}
+                    <img src="{{ section.settings.play_store_image | image_url: height: 100 }}" alt="Google Play">
+                  {%- else -%}
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Google Play">
+                  {%- endif -%}
+                </a>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endif -%}
       {%- endif -%}
 
     </div>{%- comment -%} end .swf-nav-area {%- endcomment -%}
+
+    <!-- ===== PAYMENT BAR (centered) ===== -->
+    {%- if section.settings.payment_enable -%}
+      <div class="swf-payment-bar">
+        {%- assign enabled_payment_types = shop.enabled_payment_types -%}
+        {%- if section.settings.enabled_payment_types != blank -%}
+          {%- assign enabled_payment_types = section.settings.enabled_payment_types | remove: ' ' | split: ',' -%}
+        {%- endif -%}
+        {%- for type in enabled_payment_types -%}
+          {{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
 
     <!-- ===== BOTTOM ROW: Logo left, Copyright right ===== -->
     <div class="swf-bottom-row">
@@ -475,13 +630,7 @@
             {%- endfor -%}
           </ul>
         {%- endif -%}
-        {%- if section.settings.payment_enable -%}
-          <div class="swf-payment">
-            {%- for type in shop.enabled_payment_types -%}
-              {{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}
-            {%- endfor -%}
-          </div>
-        {%- endif -%}
+
       </div>
 
     </div>{%- comment -%} end .swf-bottom-row {%- endcomment -%}
@@ -646,6 +795,61 @@
       "unit": "px",
       "label": "Social Icon Size",
       "default": 34
+    },
+    {
+      "type": "header",
+      "content": "App Download Section"
+    },
+    {
+      "type": "text",
+      "id": "app_heading",
+      "label": "App Section Heading",
+      "default": "Get the App"
+    },
+    {
+      "type": "image_picker",
+      "id": "app_logo",
+      "label": "App Logo / Icon"
+    },
+    {
+      "type": "range",
+      "id": "app_logo_width",
+      "min": 30,
+      "max": 180,
+      "step": 5,
+      "unit": "px",
+      "label": "App Logo Width",
+      "default": 70
+    },
+    {
+      "type": "url",
+      "id": "app_store_url",
+      "label": "Apple App Store URL"
+    },
+    {
+      "type": "image_picker",
+      "id": "app_store_image",
+      "label": "Custom App Store Badge (Optional)"
+    },
+    {
+      "type": "url",
+      "id": "play_store_url",
+      "label": "Google Play Store URL"
+    },
+    {
+      "type": "image_picker",
+      "id": "play_store_image",
+      "label": "Custom Google Play Badge (Optional)"
+    },
+    {
+      "type": "range",
+      "id": "app_btn_height",
+      "min": 28,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Store Badge Height",
+      "default": 38
     },
     {
       "type": "header",
@@ -818,6 +1022,43 @@
     },
     {
       "type": "header",
+      "content": "Payment Icons"
+    },
+    {
+      "type": "checkbox",
+      "id": "payment_enable",
+      "label": "Show Payment Icons",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "enabled_payment_types",
+      "label": "Custom payment icons to show",
+      "default": "visa, master, american_express, paypal, google_pay, paytm, phonepe",
+      "info": "Comma-separated list (e.g. \"visa, master, american_express, paypal, google_pay, paytm, phonepe\"). Leave blank to use store defaults."
+    },
+    {
+      "type": "range",
+      "id": "payment_bar_padding",
+      "min": 8,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Payment Bar Padding",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "payment_icon_height",
+      "min": 16,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Payment Icon Height",
+      "default": 24
+    },
+    {
+      "type": "header",
       "content": "Copyright Bar"
     },
     {
@@ -831,12 +1072,6 @@
       "id": "copyright_extra",
       "label": "Extra Copyright Text",
       "info": "e.g. 'All Rights Reserved.'"
-    },
-    {
-      "type": "checkbox",
-      "id": "payment_enable",
-      "label": "Show Payment Icons",
-      "default": false
     },
     {
       "type": "range",
