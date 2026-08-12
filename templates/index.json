@@ -749,35 +749,6 @@
         "display_id": false,
         "include_margins": true
       }
-    },
-    "178653169764d45318": {
-      "type": "apps",
-      "blocks": {
-        "reelfy_videos_reelfy_section_n4t4iJ": {
-          "type": "shopify://apps/reelfy-videos/blocks/reelfy-section/4022ffb0-05c3-4ef3-a409-6df51f4b1b3f",
-          "settings": {
-            "title": "",
-            "subtitle": "",
-            "heading_size": "1",
-            "heading_align": "left",
-            "heading_color": "",
-            "desc_style": "subtitle",
-            "desc_color": "",
-            "custom_class": "",
-            "background_color": "",
-            "padding_top": 36,
-            "padding_bottom": 36,
-            "padding_left_right": 0
-          }
-        }
-      },
-      "block_order": [
-        "reelfy_videos_reelfy_section_n4t4iJ"
-      ],
-      "settings": {
-        "display_id": false,
-        "include_margins": true
-      }
     }
   },
   "order": [
@@ -786,7 +757,6 @@
     "stats_impact_KmQPXH",
     "image_banner_Pg3jAa",
     "rich_text_wytiqK",
-    "17865164914fb85b1c",
-    "178653169764d45318"
+    "17865164914fb85b1c"
   ]
 }
