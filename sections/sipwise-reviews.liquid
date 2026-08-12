@@ -1,0 +1,925 @@
+{% comment %} sections/sipwise-reviews.liquid {% endcomment %}
+{% comment %}
+  Sipwise Reviews — Auto-scrolling review cards with bottom stats.
+  Figtree font enforced. All colors, text, icons, and layout fully customizable.
+{% endcomment %}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700;1,900&display=swap" rel="stylesheet">
+
+<style>
+  #sipwise-rev-{{ section.id }} {
+    padding: {{ section.settings.padding_top }}px {{ section.settings.section_h_padding }}px {{ section.settings.padding_bottom }}px {{ section.settings.section_h_padding }}px;
+    background-color: {{ section.settings.bg_color }};
+    {%- if section.settings.bg_image != blank -%}
+    background-image: url('{{ section.settings.bg_image | image_url: width: 2400 }}');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    {%- endif -%}
+    font-family: 'Figtree', sans-serif;
+    overflow: hidden;
+    position: relative;
+    box-sizing: border-box;
+  }
+
+  #sipwise-rev-{{ section.id }} * {
+    font-family: 'Figtree', sans-serif !important;
+    box-sizing: border-box;
+  }
+
+  /* ---- Inner container ---- */
+  #sipwise-rev-{{ section.id }} .sr-inner {
+    max-width: {{ section.settings.container_width }}px;
+    margin: 0 auto;
+  }
+
+  /* ---- Header ---- */
+  #sipwise-rev-{{ section.id }} .sr-header {
+    text-align: center;
+    margin-bottom: {{ section.settings.spacing_header_bottom }}px;
+  }
+
+  #sipwise-rev-{{ section.id }} .sr-label {
+    font-size: {{ section.settings.label_size }}px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: {{ section.settings.label_color }};
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: {{ section.settings.spacing_label_bottom }}px;
+    justify-content: center;
+  }
+
+  #sipwise-rev-{{ section.id }} .sr-label::before {
+    content: '';
+    width: 20px;
+    height: 1.5px;
+    border-radius: 2px;
+    background: {{ section.settings.label_color }};
+  }
+
+  #sipwise-rev-{{ section.id }} .sr-heading {
+    font-size: {{ section.settings.heading_size_mobile }}px;
+    font-weight: {{ section.settings.heading_weight }};
+    letter-spacing: -0.04em;
+    color: {{ section.settings.heading_color }};
+    margin: 0 0 {{ section.settings.spacing_heading_bottom }}px 0;
+    line-height: 1.1;
+  }
+
+  @media screen and (min-width: 750px) {
+    #sipwise-rev-{{ section.id }} .sr-heading {
+      font-size: {{ section.settings.heading_size_desktop }}px;
+    }
+  }
+
+  #sipwise-rev-{{ section.id }} .sr-heading em {
+    font-style: italic;
+    font-weight: {{ section.settings.heading_weight }};
+  }
+
+  #sipwise-rev-{{ section.id }} .sr-stars-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: {{ section.settings.rating_text_size }}px;
+    color: {{ section.settings.rating_text_color }};
+  }
+
+  #sipwise-rev-{{ section.id }} .sr-stars {
+    color: {{ section.settings.star_color }};
+    letter-spacing: 2px;
+    font-size: {{ section.settings.star_size }}px;
+    line-height: 1;
+  }
+
+  /* ---- Scroll Track ---- */
+  #sipwise-rev-{{ section.id }} .sr-track-wrap {
+    overflow: hidden;
+    margin: 0 -{{ section.settings.section_h_padding }}px;
+    padding: 8px 0;
+  }
+
+  #sipwise-rev-{{ section.id }} .sr-track {
+    display: flex;
+    gap: {{ section.settings.card_gap }}px;
+    animation: sr-scroll-{{ section.id }} {{ section.settings.scroll_speed }}s linear infinite;
+    width: max-content;
+  }
+
+  #sipwise-rev-{{ section.id }} .sr-track:hover {
+    animation-play-state: paused;
+  }
+
+  @keyframes sr-scroll-{{ section.id }} {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* ---- Review Card ---- */
+  #sipwise-rev-{{ section.id }} .sr-card {
+    flex-shrink: 0;
+    width: {{ section.settings.card_width }}px;
+    padding: {{ section.settings.card_padding_v }}px {{ section.settings.card_padding_h }}px;
+    background: {{ section.settings.card_bg }};
+    border: 1px solid {{ section.settings.card_border_color }};
+    border-radius: {{ section.settings.card_border_radius }}px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: {{ section.settings.card_shadow }};
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  #sipwise-rev-{{ section.id }} .sr-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+  }
+
+  #sipwise-rev-{{ section.id }} .sr-card-stars {
+    color: {{ section.settings.star_color }};
+    font-size: {{ section.settings.card_star_size }}px;
+    margin-bottom: {{ section.settings.spacing_card_stars_bottom }}px;
+    letter-spacing: 1px;
+  }
+
+  #sipwise-rev-{{ section.id }} .sr-card-text {
+    font-size: {{ section.settings.card_text_size }}px;
+    color: {{ section.settings.card_text_color }};
+    line-height: 1.7;
+    font-weight: 400;
+    margin-bottom: {{ section.settings.spacing_card_text_bottom }}px;
+    flex: 1;
+  }
+
+  #sipwise-rev-{{ section.id }} .sr-card-author {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  #sipwise-rev-{{ section.id }} .sr-card-avatar {
+    width: {{ section.settings.avatar_size }}px;
+    height: {{ section.settings.avatar_size }}px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, {{ section.settings.avatar_gradient_from }}, {{ section.settings.avatar_gradient_to }});
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: {{ section.settings.avatar_font_size }}px;
+    font-weight: 700;
+    color: {{ section.settings.avatar_text_color }};
+    flex-shrink: 0;
+    text-transform: uppercase;
+  }
+
+  #sipwise-rev-{{ section.id }} .sr-card-name {
+    font-size: {{ section.settings.author_name_size }}px;
+    font-weight: 600;
+    color: {{ section.settings.author_name_color }};
+    line-height: 1.2;
+  }
+
+  #sipwise-rev-{{ section.id }} .sr-card-meta {
+    font-size: {{ section.settings.author_meta_size }}px;
+    color: {{ section.settings.author_meta_color }};
+    margin-top: 2px;
+  }
+
+  /* ---- Bottom Stats ---- */
+  #sipwise-rev-{{ section.id }} .sr-bottom {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: {{ section.settings.stat_gap }}px;
+    margin-top: {{ section.settings.spacing_stats_top }}px;
+    flex-wrap: wrap;
+  }
+
+  #sipwise-rev-{{ section.id }} .sr-stat {
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  #sipwise-rev-{{ section.id }} .sr-stat-num {
+    font-size: {{ section.settings.stat_number_size_mobile }}px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    background: linear-gradient(135deg, {{ section.settings.stat_gradient_from }}, {{ section.settings.stat_gradient_to }});
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.1;
+  }
+
+  @media screen and (min-width: 750px) {
+    #sipwise-rev-{{ section.id }} .sr-stat-num {
+      font-size: {{ section.settings.stat_number_size_desktop }}px;
+    }
+  }
+
+  #sipwise-rev-{{ section.id }} .sr-stat-label {
+    font-size: {{ section.settings.stat_label_size }}px;
+    color: {{ section.settings.stat_label_color }};
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-top: 4px;
+    font-weight: 500;
+  }
+
+  #sipwise-rev-{{ section.id }} .sr-divider {
+    width: 1px;
+    height: 40px;
+    background: {{ section.settings.divider_color }};
+    flex-shrink: 0;
+  }
+
+  @media screen and (max-width: 768px) {
+    #sipwise-rev-{{ section.id }} .sr-divider {
+      display: none;
+    }
+
+    #sipwise-rev-{{ section.id }} .sr-bottom {
+      gap: {{ section.settings.stat_gap | divided_by: 2 }}px;
+      row-gap: 24px;
+    }
+  }
+</style>
+
+<div class="content-for-grouping {{ section.settings.visibility }}">
+<section id="sipwise-rev-{{ section.id }}" class="sipwise-reviews">
+
+  <!-- Header -->
+  <div class="sr-inner">
+    <div class="sr-header">
+      {%- if section.settings.label != blank -%}
+        <div class="sr-label">{{ section.settings.label }}</div>
+      {%- endif -%}
+
+      {%- if section.settings.heading != blank -%}
+        <h2 class="sr-heading">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+
+      {%- if section.settings.rating_text != blank -%}
+        <div class="sr-stars-row">
+          <span class="sr-stars">{{ section.settings.star_icon }}{{ section.settings.star_icon }}{{ section.settings.star_icon }}{{ section.settings.star_icon }}{{ section.settings.star_icon }}</span>
+          <span>{{ section.settings.rating_text }}</span>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <!-- Scrolling Review Cards -->
+  {%- assign review_blocks = section.blocks | where: "type", "review" -%}
+  {%- if review_blocks.size > 0 -%}
+    <div class="sr-track-wrap">
+      <div class="sr-track">
+        {%- for block in review_blocks -%}
+          <div class="sr-card" {{ block.shopify_attributes }}>
+            <div class="sr-card-stars">{{ section.settings.star_icon }}{{ section.settings.star_icon }}{{ section.settings.star_icon }}{{ section.settings.star_icon }}{{ section.settings.star_icon }}</div>
+            <p class="sr-card-text">"{{ block.settings.review_text }}"</p>
+            <div class="sr-card-author">
+              <div class="sr-card-avatar">{{ block.settings.name | slice: 0 }}</div>
+              <div>
+                <div class="sr-card-name">{{ block.settings.name }}</div>
+                <div class="sr-card-meta">{{ block.settings.meta }}</div>
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+        {%- comment -%} Duplicate set for seamless infinite loop {%- endcomment -%}
+        {%- for block in review_blocks -%}
+          <div class="sr-card" aria-hidden="true">
+            <div class="sr-card-stars">{{ section.settings.star_icon }}{{ section.settings.star_icon }}{{ section.settings.star_icon }}{{ section.settings.star_icon }}{{ section.settings.star_icon }}</div>
+            <p class="sr-card-text">"{{ block.settings.review_text }}"</p>
+            <div class="sr-card-author">
+              <div class="sr-card-avatar">{{ block.settings.name | slice: 0 }}</div>
+              <div>
+                <div class="sr-card-name">{{ block.settings.name }}</div>
+                <div class="sr-card-meta">{{ block.settings.meta }}</div>
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  <!-- Bottom Stats -->
+  {%- assign stat_blocks = section.blocks | where: "type", "stat" -%}
+  {%- if stat_blocks.size > 0 -%}
+    <div class="sr-inner">
+      <div class="sr-bottom">
+        {%- for block in stat_blocks -%}
+          {%- unless forloop.first -%}<div class="sr-divider" aria-hidden="true"></div>{%- endunless -%}
+          <div class="sr-stat" {{ block.shopify_attributes }}>
+            <div class="sr-stat-num">{{ block.settings.number }}</div>
+            <div class="sr-stat-label">{{ block.settings.label }}</div>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+</section>
+</div>
+
+{% schema %}
+{
+  "name": "Sipwise Reviews",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "select",
+      "id": "visibility",
+      "label": "Visibility",
+      "options": [
+        { "value": "always-display", "label": "Always" },
+        { "value": "hide-desktop", "label": "Hide on Desktop" },
+        { "value": "hide-mobile", "label": "Hide on Mobile" }
+      ],
+      "default": "always-display"
+    },
+    {
+      "type": "header",
+      "content": "Section Text"
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Eyebrow Label",
+      "default": "Real reviews"
+    },
+    {
+      "type": "richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "<p>12,400+ people are <em>sipping smarter.</em></p>",
+      "info": "Use italic in the editor for the italic emphasis style."
+    },
+    {
+      "type": "text",
+      "id": "rating_text",
+      "label": "Rating Text",
+      "default": "4.7 · 200+ verified reviews"
+    },
+    {
+      "type": "text",
+      "id": "star_icon",
+      "label": "Star Icon Character",
+      "default": "★",
+      "info": "Paste any emoji or character to use as a star, e.g. ★ ✦ ⭐"
+    },
+    {
+      "type": "header",
+      "content": "Typography — Heading"
+    },
+    {
+      "type": "range",
+      "id": "heading_size_desktop",
+      "min": 24,
+      "max": 72,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Size (Desktop)",
+      "default": 44
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "min": 20,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Size (Mobile)",
+      "default": 30
+    },
+    {
+      "type": "select",
+      "id": "heading_weight",
+      "label": "Heading Font Weight",
+      "options": [
+        { "value": "600", "label": "Semi Bold (600)" },
+        { "value": "700", "label": "Bold (700)" },
+        { "value": "800", "label": "Extra Bold (800)" },
+        { "value": "900", "label": "Black (900)" }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "range",
+      "id": "label_size",
+      "min": 9,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Eyebrow Label Size",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "star_size",
+      "min": 12,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "label": "Header Star Size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "rating_text_size",
+      "min": 11,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Rating Text Size",
+      "default": 13
+    },
+    {
+      "type": "header",
+      "content": "Typography — Review Cards"
+    },
+    {
+      "type": "range",
+      "id": "card_star_size",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Card Star Size",
+      "default": 13
+    },
+    {
+      "type": "range",
+      "id": "card_text_size",
+      "min": 11,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Review Text Size",
+      "default": 13
+    },
+    {
+      "type": "range",
+      "id": "author_name_size",
+      "min": 10,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Author Name Size",
+      "default": 13
+    },
+    {
+      "type": "range",
+      "id": "author_meta_size",
+      "min": 9,
+      "max": 14,
+      "step": 1,
+      "unit": "px",
+      "label": "Author Meta Size",
+      "default": 11
+    },
+    {
+      "type": "header",
+      "content": "Typography — Bottom Stats"
+    },
+    {
+      "type": "range",
+      "id": "stat_number_size_desktop",
+      "min": 20,
+      "max": 52,
+      "step": 2,
+      "unit": "px",
+      "label": "Stat Number Size (Desktop)",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "stat_number_size_mobile",
+      "min": 18,
+      "max": 36,
+      "step": 2,
+      "unit": "px",
+      "label": "Stat Number Size (Mobile)",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "stat_label_size",
+      "min": 9,
+      "max": 14,
+      "step": 1,
+      "unit": "px",
+      "label": "Stat Label Size",
+      "default": 11
+    },
+    {
+      "type": "header",
+      "content": "Card Layout"
+    },
+    {
+      "type": "range",
+      "id": "card_width",
+      "min": 240,
+      "max": 420,
+      "step": 10,
+      "unit": "px",
+      "label": "Card Width",
+      "default": 300
+    },
+    {
+      "type": "range",
+      "id": "card_gap",
+      "min": 8,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Gap Between Cards",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "card_padding_v",
+      "min": 12,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "label": "Card Vertical Padding",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "card_padding_h",
+      "min": 12,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Card Horizontal Padding",
+      "default": 22
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Card Border Radius",
+      "default": 20
+    },
+    {
+      "type": "select",
+      "id": "card_shadow",
+      "label": "Card Shadow",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "0 2px 8px rgba(0,0,0,0.06)", "label": "Subtle" },
+        { "value": "0 4px 16px rgba(0,0,0,0.10)", "label": "Medium" },
+        { "value": "0 8px 32px rgba(0,0,0,0.16)", "label": "Strong" }
+      ],
+      "default": "0 4px 16px rgba(0,0,0,0.10)"
+    },
+    {
+      "type": "header",
+      "content": "Avatar"
+    },
+    {
+      "type": "range",
+      "id": "avatar_size",
+      "min": 24,
+      "max": 52,
+      "step": 2,
+      "unit": "px",
+      "label": "Avatar Circle Size",
+      "default": 34
+    },
+    {
+      "type": "range",
+      "id": "avatar_font_size",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Avatar Letter Size",
+      "default": 13
+    },
+    {
+      "type": "color",
+      "id": "avatar_gradient_from",
+      "label": "Avatar Gradient — Start",
+      "default": "#00d4ff"
+    },
+    {
+      "type": "color",
+      "id": "avatar_gradient_to",
+      "label": "Avatar Gradient — End",
+      "default": "#30d158"
+    },
+    {
+      "type": "color",
+      "id": "avatar_text_color",
+      "label": "Avatar Letter Color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 20,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Section Padding Top",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 20,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Section Padding Bottom",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "section_h_padding",
+      "min": 16,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Section Horizontal Padding",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "spacing_label_bottom",
+      "min": 4,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Spacing: Label to Heading",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "spacing_heading_bottom",
+      "min": 4,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Spacing: Heading to Rating",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "spacing_header_bottom",
+      "min": 20,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Spacing: Header to Review Cards",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "spacing_card_stars_bottom",
+      "min": 4,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Card: Stars to Review Text",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "spacing_card_text_bottom",
+      "min": 8,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Card: Review Text to Author",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "spacing_stats_top",
+      "min": 20,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Spacing Above Bottom Stats",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "stat_gap",
+      "min": 20,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Gap Between Stats (Desktop)",
+      "default": 32
+    },
+    {
+      "type": "header",
+      "content": "Scroll Animation"
+    },
+    {
+      "type": "range",
+      "id": "scroll_speed",
+      "min": 15,
+      "max": 80,
+      "step": 5,
+      "unit": "s",
+      "label": "Scroll Speed (higher = slower)",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "container_width",
+      "min": 800,
+      "max": 1500,
+      "step": 50,
+      "unit": "px",
+      "label": "Container Max Width",
+      "default": 1100
+    },
+    {
+      "type": "header",
+      "content": "Colors — Section"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Section Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Background Image (Optional)"
+    },
+    {
+      "type": "header",
+      "content": "Colors — Text & Icons"
+    },
+    {
+      "type": "color",
+      "id": "label_color",
+      "label": "Eyebrow Label & Line Color",
+      "default": "#ffd60a"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#0f172a"
+    },
+    {
+      "type": "color",
+      "id": "star_color",
+      "label": "Star Icon Color",
+      "default": "#ffd60a"
+    },
+    {
+      "type": "color",
+      "id": "rating_text_color",
+      "label": "Rating Text Color",
+      "default": "#64748b"
+    },
+    {
+      "type": "header",
+      "content": "Colors — Review Cards"
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Card Background",
+      "default": "#f8fafc"
+    },
+    {
+      "type": "color",
+      "id": "card_border_color",
+      "label": "Card Border Color",
+      "default": "#e2e8f0"
+    },
+    {
+      "type": "color",
+      "id": "card_text_color",
+      "label": "Review Text Color",
+      "default": "#475569"
+    },
+    {
+      "type": "color",
+      "id": "author_name_color",
+      "label": "Author Name Color",
+      "default": "#0f172a"
+    },
+    {
+      "type": "color",
+      "id": "author_meta_color",
+      "label": "Author Meta Color",
+      "default": "#94a3b8"
+    },
+    {
+      "type": "header",
+      "content": "Colors — Bottom Stats"
+    },
+    {
+      "type": "color",
+      "id": "stat_gradient_from",
+      "label": "Stat Number Gradient — Start",
+      "default": "#f59e0b"
+    },
+    {
+      "type": "color",
+      "id": "stat_gradient_to",
+      "label": "Stat Number Gradient — End",
+      "default": "#ef4444"
+    },
+    {
+      "type": "color",
+      "id": "stat_label_color",
+      "label": "Stat Label Color",
+      "default": "#94a3b8"
+    },
+    {
+      "type": "color",
+      "id": "divider_color",
+      "label": "Divider Color",
+      "default": "#e2e8f0"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review Card",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "review_text",
+          "label": "Review Text",
+          "default": "I bought this for my mom because she forgets to drink water. She loves it! The light reminder is gentle and not annoying at all."
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Reviewer Name",
+          "default": "Neha S."
+        },
+        {
+          "type": "text",
+          "id": "meta",
+          "label": "Meta (e.g. Verified Buyer · Sipwise Lite)",
+          "default": "Verified Buyer · Sipwise Lite"
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "name": "Bottom Stat",
+      "settings": [
+        {
+          "type": "text",
+          "id": "number",
+          "label": "Stat Number / Value",
+          "default": "4.7★"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Stat Label",
+          "default": "Average rating"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sipwise Reviews",
+      "blocks": [
+        { "type": "review", "settings": { "review_text": "I bought this for my mom because she forgets to drink water. She loves it! The light reminder is gentle and not annoying at all.", "name": "Neha S.", "meta": "Verified Buyer · Sipwise Lite" } },
+        { "type": "review", "settings": { "review_text": "Super clean design and feels premium in hand. The glow alerts are surprisingly helpful. My colleagues keep asking which bottle is this.", "name": "Pratik M.", "meta": "Verified Buyer · Sipwise Classic" } },
+        { "type": "review", "settings": { "review_text": "Honestly didn't think I needed a smart bottle but this one proved me wrong. The glow reminder is subtle but effective.", "name": "Rohan K.", "meta": "Verified Buyer · Sipwise Clear" } },
+        { "type": "review", "settings": { "review_text": "Been using Sipwise Lite for two weeks and my headache frequency has reduced. I never realised how little water I drank during work.", "name": "Ayesha P.", "meta": "Verified Buyer · Sipwise Lite" } },
+        { "type": "review", "settings": { "review_text": "The glow reminder is just wow. I've never been consistent with water before. This bottle made it so effortless.", "name": "Kritika J.", "meta": "Verified Buyer · Sipwise Classic" } },
+        { "type": "review", "settings": { "review_text": "Got the personalized one as a gift for my husband. The engraving looks incredibly premium. He uses it every single day.", "name": "Priya R.", "meta": "Verified Buyer · Personalize Lite" } },
+        { "type": "stat", "settings": { "number": "4.7★", "label": "Average rating" } },
+        { "type": "stat", "settings": { "number": "200+", "label": "Verified reviews" } },
+        { "type": "stat", "settings": { "number": "12,400+", "label": "Bottles sold" } },
+        { "type": "stat", "settings": { "number": "3.2M+", "label": "Sips tracked" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
