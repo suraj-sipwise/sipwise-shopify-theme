@@ -1,0 +1,596 @@
+{% comment %}
+  Stats Impact Section
+  Dark cinematic layout with eyebrow label, large bold headline, body text, and stat cards.
+  All text elements use Figtree font. Fully customizable via theme editor.
+{% endcomment %}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+<style>
+  #stats-impact-{{ section.id }} {
+    background-color: {{ section.settings.bg_color }};
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    font-family: 'Figtree', sans-serif;
+    color: {{ section.settings.body_color }};
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  #stats-impact-{{ section.id }} * {
+    font-family: 'Figtree', sans-serif !important;
+    box-sizing: border-box;
+  }
+
+  #stats-impact-{{ section.id }} .stats-impact__inner {
+    max-width: {{ section.settings.container_width }}px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  /* Eyebrow label */
+  #stats-impact-{{ section.id }} .stats-impact__eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: {{ section.settings.spacing_eyebrow_bottom }}px;
+  }
+
+  #stats-impact-{{ section.id }} .stats-impact__eyebrow-line {
+    display: inline-block;
+    width: 28px;
+    height: 2px;
+    background-color: {{ section.settings.accent_color }};
+    flex-shrink: 0;
+  }
+
+  #stats-impact-{{ section.id }} .stats-impact__eyebrow-text {
+    font-size: {{ section.settings.eyebrow_size }}px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: {{ section.settings.accent_color }};
+    line-height: 1;
+  }
+
+  /* Headline */
+  #stats-impact-{{ section.id }} .stats-impact__headline {
+    font-size: {{ section.settings.headline_size_mobile }}px;
+    font-weight: 900;
+    color: {{ section.settings.headline_color }};
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin: 0 0 {{ section.settings.spacing_headline_bottom }}px 0;
+    max-width: {{ section.settings.headline_max_width }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    #stats-impact-{{ section.id }} .stats-impact__headline {
+      font-size: {{ section.settings.headline_size_desktop }}px;
+    }
+  }
+
+  /* Italic emphasis within headline */
+  #stats-impact-{{ section.id }} .stats-impact__headline em {
+    font-style: italic;
+    font-weight: 900;
+  }
+
+  /* Body text */
+  #stats-impact-{{ section.id }} .stats-impact__body {
+    font-size: {{ section.settings.body_size }}px;
+    font-weight: 400;
+    color: {{ section.settings.body_color }};
+    line-height: 1.65;
+    max-width: {{ section.settings.body_max_width }}px;
+    margin: 0 0 {{ section.settings.spacing_body_bottom }}px 0;
+  }
+
+  /* Stats Grid */
+  #stats-impact-{{ section.id }} .stats-impact__grid {
+    display: grid;
+    grid-template-columns: repeat({{ section.settings.stats_columns_desktop }}, 1fr);
+    gap: 0;
+    margin-top: {{ section.settings.spacing_grid_top }}px;
+    border: 1px solid {{ section.settings.card_border_color }};
+    border-radius: {{ section.settings.card_border_radius }}px;
+    overflow: hidden;
+  }
+
+  @media screen and (max-width: 749px) {
+    #stats-impact-{{ section.id }} .stats-impact__grid {
+      grid-template-columns: repeat({{ section.settings.stats_columns_mobile }}, 1fr);
+    }
+  }
+
+  /* Stat Card */
+  #stats-impact-{{ section.id }} .stat-card {
+    padding: {{ section.settings.card_padding_v }}px {{ section.settings.card_padding_h }}px;
+    border-right: 1px solid {{ section.settings.card_border_color }};
+    background-color: {{ section.settings.card_bg }};
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: background-color 0.2s ease;
+  }
+
+  #stats-impact-{{ section.id }} .stat-card:last-child {
+    border-right: none;
+  }
+
+  @media screen and (max-width: 749px) {
+    #stats-impact-{{ section.id }} .stat-card:nth-child(even) {
+      border-right: none;
+    }
+
+    #stats-impact-{{ section.id }} .stat-card:nth-child(n+3) {
+      border-top: 1px solid {{ section.settings.card_border_color }};
+    }
+  }
+
+  #stats-impact-{{ section.id }} .stat-card:hover {
+    background-color: {{ section.settings.card_bg_hover }};
+  }
+
+  #stats-impact-{{ section.id }} .stat-card__number {
+    font-size: {{ section.settings.stat_number_size_mobile }}px;
+    font-weight: 800;
+    color: {{ section.settings.stat_number_color }};
+    line-height: 1;
+    margin-bottom: {{ section.settings.stat_number_margin_bottom }}px;
+    letter-spacing: -0.02em;
+  }
+
+  @media screen and (min-width: 750px) {
+    #stats-impact-{{ section.id }} .stat-card__number {
+      font-size: {{ section.settings.stat_number_size_desktop }}px;
+    }
+  }
+
+  #stats-impact-{{ section.id }} .stat-card__label {
+    font-size: {{ section.settings.stat_label_size }}px;
+    font-weight: 500;
+    color: {{ section.settings.stat_label_color }};
+    line-height: 1.4;
+    max-width: 160px;
+  }
+</style>
+
+<div class="content-for-grouping {{ section.settings.visibility }}">
+  <section id="stats-impact-{{ section.id }}" class="stats-impact-section">
+    <div class="stats-impact__inner">
+
+      {%- if section.settings.eyebrow != blank -%}
+        <div class="stats-impact__eyebrow">
+          <span class="stats-impact__eyebrow-line"></span>
+          <span class="stats-impact__eyebrow-text">{{ section.settings.eyebrow }}</span>
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.headline != blank -%}
+        <h2 class="stats-impact__headline">{{ section.settings.headline }}</h2>
+      {%- endif -%}
+
+      {%- if section.settings.body_text != blank -%}
+        <p class="stats-impact__body">{{ section.settings.body_text }}</p>
+      {%- endif -%}
+
+      {%- if section.blocks.size > 0 -%}
+        <div class="stats-impact__grid">
+          {%- for block in section.blocks -%}
+            <div class="stat-card" {{ block.shopify_attributes }}>
+              {%- if block.settings.stat_number != blank -%}
+                <div class="stat-card__number">{{ block.settings.stat_number }}</div>
+              {%- endif -%}
+              {%- if block.settings.stat_label != blank -%}
+                <div class="stat-card__label">{{ block.settings.stat_label }}</div>
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "Stats Impact Section",
+  "tag": "section",
+  "class": "section-stats-impact",
+  "settings": [
+    {
+      "type": "select",
+      "id": "visibility",
+      "label": "Visibility",
+      "options": [
+        { "value": "always-display", "label": "Always" },
+        { "value": "hide-desktop", "label": "Hide on Desktop" },
+        { "value": "hide-mobile", "label": "Hide on Mobile" }
+      ],
+      "default": "always-display"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Label",
+      "default": "THE HYDRATION CRISIS",
+      "info": "Small uppercase label above the headline. Leave blank to hide."
+    },
+    {
+      "type": "richtext",
+      "id": "headline",
+      "label": "Headline",
+      "default": "<p>75% of Indians are chronically <em>dehydrated.</em></p>",
+      "info": "Use <em>italic text</em> inside your rich text editor for the italic bold emphasis effect."
+    },
+    {
+      "type": "textarea",
+      "id": "body_text",
+      "label": "Body Text",
+      "default": "Dehydration silently degrades your focus, energy, and immunity every single day. Most people don't even realize it."
+    },
+    {
+      "type": "header",
+      "content": "Typography — Eyebrow & Headline"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_size",
+      "min": 10,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Eyebrow Font Size",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "headline_size_desktop",
+      "min": 28,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Headline Font Size (Desktop)",
+      "default": 54
+    },
+    {
+      "type": "range",
+      "id": "headline_size_mobile",
+      "min": 24,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "label": "Headline Font Size (Mobile)",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "headline_max_width",
+      "min": 400,
+      "max": 900,
+      "step": 20,
+      "unit": "px",
+      "label": "Headline Max Width",
+      "default": 640
+    },
+    {
+      "type": "header",
+      "content": "Typography — Body Text"
+    },
+    {
+      "type": "range",
+      "id": "body_size",
+      "min": 13,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "label": "Body Text Font Size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "body_max_width",
+      "min": 300,
+      "max": 700,
+      "step": 20,
+      "unit": "px",
+      "label": "Body Text Max Width",
+      "default": 460
+    },
+    {
+      "type": "header",
+      "content": "Typography — Stat Cards"
+    },
+    {
+      "type": "range",
+      "id": "stat_number_size_desktop",
+      "min": 28,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Stat Number Size (Desktop)",
+      "default": 52
+    },
+    {
+      "type": "range",
+      "id": "stat_number_size_mobile",
+      "min": 24,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "label": "Stat Number Size (Mobile)",
+      "default": 34
+    },
+    {
+      "type": "range",
+      "id": "stat_number_margin_bottom",
+      "min": 4,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Spacing: Stat Number to Label",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "stat_label_size",
+      "min": 11,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Stat Label Font Size",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "spacing_eyebrow_bottom",
+      "min": 8,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "label": "Spacing: Eyebrow to Headline",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "spacing_headline_bottom",
+      "min": 8,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Spacing: Headline to Body Text",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "spacing_body_bottom",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Spacing: Body Text to Stats Grid",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "spacing_grid_top",
+      "min": 20,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Spacing Above Stats Grid",
+      "default": 44
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 20,
+      "max": 140,
+      "step": 4,
+      "unit": "px",
+      "label": "Section Padding Top",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 20,
+      "max": 140,
+      "step": 4,
+      "unit": "px",
+      "label": "Section Padding Bottom",
+      "default": 80
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "stats_columns_desktop",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "label": "Stat Columns (Desktop)",
+      "default": 4
+    },
+    {
+      "type": "select",
+      "id": "stats_columns_mobile",
+      "label": "Stat Columns (Mobile)",
+      "options": [
+        { "value": "1", "label": "1 column" },
+        { "value": "2", "label": "2 columns" }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "range",
+      "id": "container_width",
+      "min": 800,
+      "max": 1500,
+      "step": 50,
+      "unit": "px",
+      "label": "Container Max Width",
+      "default": 1100
+    },
+    {
+      "type": "range",
+      "id": "card_padding_v",
+      "min": 16,
+      "max": 60,
+      "step": 4,
+      "unit": "px",
+      "label": "Stat Card Vertical Padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "card_padding_h",
+      "min": 10,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Stat Card Horizontal Padding",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Stat Card Border Radius",
+      "default": 10
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Section Background",
+      "default": "#0d0d0d"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent Color (Eyebrow Line & Text)",
+      "default": "#ff4d4d"
+    },
+    {
+      "type": "color",
+      "id": "headline_color",
+      "label": "Headline Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "body_color",
+      "label": "Body Text Color",
+      "default": "#9ca3af"
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Stat Card Background",
+      "default": "#161616"
+    },
+    {
+      "type": "color",
+      "id": "card_bg_hover",
+      "label": "Stat Card Hover Background",
+      "default": "#1e1e1e"
+    },
+    {
+      "type": "color",
+      "id": "card_border_color",
+      "label": "Stat Card Border Color",
+      "default": "#2a2a2a"
+    },
+    {
+      "type": "color",
+      "id": "stat_number_color",
+      "label": "Stat Number Color",
+      "default": "#2dd4bf"
+    },
+    {
+      "type": "color",
+      "id": "stat_label_color",
+      "label": "Stat Label Color",
+      "default": "#9ca3af"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Stat Card",
+      "settings": [
+        {
+          "type": "text",
+          "id": "stat_number",
+          "label": "Stat Number / Value",
+          "default": "75%",
+          "info": "e.g. 75%, 8x, 21, 2.5M"
+        },
+        {
+          "type": "textarea",
+          "id": "stat_label",
+          "label": "Stat Description",
+          "default": "Indians don't drink enough water daily"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Stats Impact Section",
+      "blocks": [
+        {
+          "type": "stat",
+          "settings": {
+            "stat_number": "75%",
+            "stat_label": "Indians don't drink enough water daily"
+          }
+        },
+        {
+          "type": "stat",
+          "settings": {
+            "stat_number": "25%",
+            "stat_label": "Drop in cognitive performance"
+          }
+        },
+        {
+          "type": "stat",
+          "settings": {
+            "stat_number": "8x",
+            "stat_label": "More likely to hydrate with reminders"
+          }
+        },
+        {
+          "type": "stat",
+          "settings": {
+            "stat_number": "21",
+            "stat_label": "Days to build a lasting habit"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
