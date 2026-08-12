@@ -840,7 +840,14 @@
         }
       }
     },
-    "content_for_index": []
+    "content_for_index": [],
+    "blocks": {
+      "15521780835499905587": {
+        "type": "shopify://apps/square-instagram-feed/blocks/app-embed/8c9f3786-8bb5-488d-a397-b1285ed978df",
+        "disabled": false,
+        "settings": {}
+      }
+    }
   },
   "presets": {
     "Default": {
