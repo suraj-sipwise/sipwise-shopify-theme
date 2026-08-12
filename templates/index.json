@@ -213,15 +213,14 @@
         "card_padding_v": 36,
         "card_padding_h": 24,
         "card_border_radius": 10,
-        "bg_color": "#FFFFFF",
         "accent_color": "#ff4d4d",
         "headline_color": "#232E3D",
         "body_color": "#9ca3af",
         "card_bg": "#FFFFFF",
-        "card_bg_hover": "#1e1e1e",
+        "card_bg_hover": "#E2E2E2",
         "card_border_color": "#2a2a2a",
-        "stat_number_color": "#2dd4bf",
-        "stat_label_color": "#9ca3af"
+        "stat_number_color": "#0E41E1",
+        "stat_label_color": "#9CA3AF"
       }
     },
     "trustpilot_reviews_H8ga9i": {
