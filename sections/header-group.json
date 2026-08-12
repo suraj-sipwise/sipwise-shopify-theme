@@ -359,11 +359,73 @@
         "padding_top": 12,
         "padding_bottom": 12
       }
+    },
+    "horizontal_ticker_Y7nnqD": {
+      "type": "horizontal-ticker",
+      "blocks": {
+        "text_LKiMq3": {
+          "type": "text",
+          "settings": {
+            "title": "Use code TAKEASIP for 10% OFF"
+          }
+        },
+        "text_GnCDLq": {
+          "type": "text",
+          "settings": {
+            "title": "Trusted by 12,400+ people across India"
+          }
+        }
+      },
+      "block_order": [
+        "text_LKiMq3",
+        "text_GnCDLq"
+      ],
+      "name": "Horizontal Ticker",
+      "settings": {
+        "display_id": false,
+        "visibility": "always-display",
+        "speed": 2,
+        "direction": "normal",
+        "stop_on_hover": false,
+        "mobile_spacing": 60,
+        "desktop_spacing": 100,
+        "color_scheme": "accent-1",
+        "custom_colors_background": "#FFFFFF",
+        "custom_gradient_background": "",
+        "custom_colors_text": "#2E2A39",
+        "pattern_bg": "none",
+        "pattern_color": "#6D388B",
+        "pattern_size": 20,
+        "pattern_thickness": 2,
+        "pattern_angle": 45,
+        "pattern_opacity_mode": "low",
+        "pattern_opacity_low": 7,
+        "pattern_opacity_normal": 80,
+        "mobile_text_size": 12,
+        "desktop_text_size": 15,
+        "italic_text": true,
+        "uppercase_text": false,
+        "bold_text": false,
+        "mobile_image_height": 26,
+        "desktop_image_height": 40,
+        "mobile_video_height": 150,
+        "desktop_video_height": 250,
+        "mobile_reviews_width": 300,
+        "desktop_reviews_width": 400,
+        "hidden_products": "",
+        "enable_specific_display": false,
+        "displayed_products": "",
+        "mobile_padding_top": 12,
+        "mobile_padding_bottom": 12,
+        "desktop_padding_top": 16,
+        "desktop_padding_bottom": 16
+      }
     }
   },
   "order": [
     "2c2ec774-3430-481f-b927-e9c035b9d24e",
     "fe1c8c67-b84c-4466-a515-70df3134c1c0",
-    "header"
+    "header",
+    "horizontal_ticker_Y7nnqD"
   ]
 }
