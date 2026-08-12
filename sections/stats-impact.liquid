@@ -10,13 +10,32 @@
 
 <style>
   #stats-impact-{{ section.id }} {
-    background-color: {{ section.settings.bg_color }};
+    background: linear-gradient(
+      {{ section.settings.gradient_angle }}deg,
+      {{ section.settings.gradient_from }},
+      {{ section.settings.gradient_to }}
+    );
     padding-top: {{ section.settings.padding_top }}px;
     padding-bottom: {{ section.settings.padding_bottom }}px;
     font-family: 'Figtree', sans-serif;
     color: {{ section.settings.body_color }};
     width: 100%;
     box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Noise texture overlay */
+  #stats-impact-{{ section.id }}::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: {{ section.settings.noise_opacity | divided_by: 100.0 }};
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 200px 200px;
   }
 
   #stats-impact-{{ section.id }} * {
@@ -28,6 +47,8 @@
     max-width: {{ section.settings.container_width }}px;
     margin: 0 auto;
     padding: 0 2rem;
+    position: relative;
+    z-index: 1;
   }
 
   /* Eyebrow label */
@@ -479,13 +500,43 @@
     },
     {
       "type": "header",
-      "content": "Colors"
+      "content": "Background Gradient & Noise"
     },
     {
       "type": "color",
-      "id": "bg_color",
-      "label": "Section Background",
+      "id": "gradient_from",
+      "label": "Gradient — Start Color",
       "default": "#0d0d0d"
+    },
+    {
+      "type": "color",
+      "id": "gradient_to",
+      "label": "Gradient — End Color",
+      "default": "#1a1a2e"
+    },
+    {
+      "type": "range",
+      "id": "gradient_angle",
+      "min": 0,
+      "max": 360,
+      "step": 5,
+      "unit": "°",
+      "label": "Gradient Angle",
+      "default": 145
+    },
+    {
+      "type": "range",
+      "id": "noise_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "label": "Noise / Grain Intensity",
+      "default": 25,
+      "info": "0 = no grain, 100 = full grain overlay"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
     },
     {
       "type": "color",
