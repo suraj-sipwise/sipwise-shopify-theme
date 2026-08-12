@@ -388,7 +388,7 @@
         "direction": "normal",
         "stop_on_hover": false,
         "mobile_spacing": 60,
-        "desktop_spacing": 100,
+        "desktop_spacing": 50,
         "color_scheme": "custom",
         "custom_colors_background": "#232E3D",
         "custom_gradient_background": "",
