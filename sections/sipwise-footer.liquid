@@ -1,0 +1,1004 @@
+{% comment %} sections/sipwise-footer.liquid {% endcomment %}
+{% comment %}
+  Sipwise Concise Footer
+  Mobile: collapsible accordion nav sections with + toggle.
+  Desktop: horizontal columns.
+  Logo + tagline centered. Copyright bar at bottom.
+  Figtree font enforced. All colors, text, layout fully customizable.
+{% endcomment %}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700;1,900&display=swap" rel="stylesheet">
+
+<style>
+  #sw-footer-{{ section.id }} {
+    background-color: {{ section.settings.bg_color }};
+    {%- if section.settings.bg_image != blank -%}
+    background-image: url('{{ section.settings.bg_image | image_url: width: 2400 }}');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    {%- endif -%}
+    font-family: 'Figtree', sans-serif;
+    color: {{ section.settings.text_color }};
+    box-sizing: border-box;
+    padding-top: {{ section.settings.padding_top }}px;
+  }
+
+  #sw-footer-{{ section.id }} * {
+    font-family: 'Figtree', sans-serif !important;
+    box-sizing: border-box;
+  }
+
+  /* ---- Container ---- */
+  #sw-footer-{{ section.id }} .swf-wrap {
+    max-width: {{ section.settings.container_width }}px;
+    margin: 0 auto;
+    padding: 0 {{ section.settings.h_padding }}px;
+  }
+
+  /* =============================
+     ACCORDION NAV (Mobile default)
+     ============================= */
+  #sw-footer-{{ section.id }} .swf-nav {
+    border-top: 1px solid {{ section.settings.divider_color }};
+  }
+
+  #sw-footer-{{ section.id }} .swf-nav-item {
+    border-bottom: 1px solid {{ section.settings.divider_color }};
+  }
+
+  #sw-footer-{{ section.id }} .swf-nav-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: {{ section.settings.accordion_v_padding }}px 0;
+    color: {{ section.settings.nav_heading_color }};
+    text-align: left;
+  }
+
+  #sw-footer-{{ section.id }} .swf-nav-heading {
+    font-size: {{ section.settings.nav_heading_size_mobile }}px;
+    font-weight: {{ section.settings.nav_heading_weight }};
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+
+  #sw-footer-{{ section.id }} .swf-nav-icon {
+    font-size: {{ section.settings.accordion_icon_size }}px;
+    font-weight: 300;
+    color: {{ section.settings.accordion_icon_color }};
+    flex-shrink: 0;
+    line-height: 1;
+    transition: transform 0.25s ease;
+    display: block;
+    width: 20px;
+    text-align: center;
+    user-select: none;
+  }
+
+  #sw-footer-{{ section.id }} .swf-nav-item.is-open .swf-nav-icon {
+    transform: rotate(45deg);
+  }
+
+  #sw-footer-{{ section.id }} .swf-nav-links {
+    display: none;
+    padding-bottom: {{ section.settings.accordion_v_padding }}px;
+  }
+
+  #sw-footer-{{ section.id }} .swf-nav-item.is-open .swf-nav-links {
+    display: block;
+  }
+
+  #sw-footer-{{ section.id }} .swf-nav-links ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  #sw-footer-{{ section.id }} .swf-nav-links li {
+    margin-bottom: {{ section.settings.link_gap }}px;
+  }
+
+  #sw-footer-{{ section.id }} .swf-nav-links a {
+    font-size: {{ section.settings.link_size }}px;
+    font-weight: {{ section.settings.link_weight }};
+    color: {{ section.settings.link_color }};
+    text-decoration: none;
+    line-height: 1.4;
+    transition: color 0.2s ease;
+    display: block;
+  }
+
+  #sw-footer-{{ section.id }} .swf-nav-links a:hover {
+    color: {{ section.settings.link_hover_color }};
+  }
+
+  /* =============================
+     DESKTOP: show as columns
+     ============================= */
+  @media screen and (min-width: {{ section.settings.desktop_breakpoint }}px) {
+    #sw-footer-{{ section.id }} .swf-nav {
+      border-top: none;
+      display: flex;
+      gap: {{ section.settings.column_gap }}px;
+      flex-wrap: wrap;
+      padding-bottom: {{ section.settings.section_below_nav }}px;
+    }
+
+    #sw-footer-{{ section.id }} .swf-nav-item {
+      border-bottom: none;
+      flex: 1 1 0;
+      min-width: 140px;
+    }
+
+    #sw-footer-{{ section.id }} .swf-nav-toggle {
+      cursor: default;
+      padding: 0 0 {{ section.settings.desktop_heading_gap }}px 0;
+      pointer-events: none;
+    }
+
+    #sw-footer-{{ section.id }} .swf-nav-icon {
+      display: none;
+    }
+
+    #sw-footer-{{ section.id }} .swf-nav-heading {
+      font-size: {{ section.settings.nav_heading_size_desktop }}px;
+    }
+
+    #sw-footer-{{ section.id }} .swf-nav-links {
+      display: block !important;
+      padding-bottom: 0;
+    }
+  }
+
+  /* =============================
+     LOGO + TAGLINE
+     ============================= */
+  #sw-footer-{{ section.id }} .swf-brand {
+    text-align: {{ section.settings.brand_align }};
+    padding: {{ section.settings.brand_padding_top }}px 0 {{ section.settings.brand_padding_bottom }}px 0;
+    border-top: 1px solid {{ section.settings.divider_color }};
+  }
+
+  @media screen and (min-width: {{ section.settings.desktop_breakpoint }}px) {
+    #sw-footer-{{ section.id }} .swf-brand {
+      border-top: 1px solid {{ section.settings.divider_color }};
+    }
+  }
+
+  #sw-footer-{{ section.id }} .swf-brand-logo {
+    display: inline-block;
+    margin-bottom: {{ section.settings.tagline_gap }}px;
+  }
+
+  #sw-footer-{{ section.id }} .swf-brand-logo img {
+    height: {{ section.settings.logo_height }}px;
+    width: auto;
+    display: block;
+    {%- if section.settings.brand_align == 'center' -%}
+    margin: 0 auto;
+    {%- elsif section.settings.brand_align == 'right' -%}
+    margin-left: auto;
+    {%- endif -%}
+  }
+
+  #sw-footer-{{ section.id }} .swf-brand-logo-text {
+    font-size: {{ section.settings.logo_text_size }}px;
+    font-weight: 900;
+    color: {{ section.settings.logo_text_color }};
+    letter-spacing: -0.03em;
+    display: block;
+    margin-bottom: {{ section.settings.tagline_gap }}px;
+  }
+
+  #sw-footer-{{ section.id }} .swf-brand-tagline {
+    font-size: {{ section.settings.tagline_size }}px;
+    font-weight: {{ section.settings.tagline_weight }};
+    color: {{ section.settings.tagline_color }};
+    display: block;
+    line-height: 1.3;
+  }
+
+  /* Social icons */
+  #sw-footer-{{ section.id }} .swf-social {
+    display: flex;
+    gap: {{ section.settings.social_gap }}px;
+    margin-top: {{ section.settings.social_top }}px;
+    {%- if section.settings.brand_align == 'center' -%}
+    justify-content: center;
+    {%- elsif section.settings.brand_align == 'right' -%}
+    justify-content: flex-end;
+    {%- else -%}
+    justify-content: flex-start;
+    {%- endif -%}
+  }
+
+  #sw-footer-{{ section.id }} .swf-social a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: {{ section.settings.social_icon_size }}px;
+    height: {{ section.settings.social_icon_size }}px;
+    border-radius: 50%;
+    background: {{ section.settings.social_bg }};
+    color: {{ section.settings.social_icon_color }};
+    text-decoration: none;
+    font-size: calc({{ section.settings.social_icon_size }}px * 0.45);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  #sw-footer-{{ section.id }} .swf-social a:hover {
+    opacity: 0.75;
+    transform: translateY(-2px);
+  }
+
+  #sw-footer-{{ section.id }} .swf-social svg {
+    width: calc({{ section.settings.social_icon_size }}px * 0.5);
+    height: calc({{ section.settings.social_icon_size }}px * 0.5);
+    fill: {{ section.settings.social_icon_color }};
+  }
+
+  /* =============================
+     COPYRIGHT BAR
+     ============================= */
+  #sw-footer-{{ section.id }} .swf-bottom {
+    background-color: {{ section.settings.bottom_bg }};
+    padding: {{ section.settings.bottom_padding }}px {{ section.settings.h_padding }}px;
+    font-size: {{ section.settings.bottom_text_size }}px;
+    color: {{ section.settings.bottom_text_color }};
+    line-height: 1.7;
+  }
+
+  #sw-footer-{{ section.id }} .swf-bottom-inner {
+    max-width: {{ section.settings.container_width }}px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  #sw-footer-{{ section.id }} .swf-copyright {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 16px;
+    align-items: center;
+  }
+
+  #sw-footer-{{ section.id }} .swf-copyright a,
+  #sw-footer-{{ section.id }} .swf-copyright span {
+    color: {{ section.settings.bottom_text_color }};
+    text-decoration: none;
+    font-size: {{ section.settings.bottom_text_size }}px;
+    transition: opacity 0.2s;
+  }
+
+  #sw-footer-{{ section.id }} .swf-copyright a:hover {
+    opacity: 0.7;
+  }
+
+  #sw-footer-{{ section.id }} .swf-copyright-sep {
+    opacity: 0.3;
+  }
+
+  #sw-footer-{{ section.id }} .swf-payment-icons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+  }
+
+  #sw-footer-{{ section.id }} .swf-payment-icons .icon--full-color {
+    height: 22px;
+    width: auto;
+    border-radius: 4px;
+    background: rgba(255,255,255,0.1);
+  }
+</style>
+
+<div class="content-for-grouping">
+<footer id="sw-footer-{{ section.id }}" class="sipwise-footer" role="contentinfo">
+
+  <!-- Nav Accordion / Desktop Columns -->
+  {%- assign nav_blocks = section.blocks | where: "type", "nav_group" -%}
+  {%- if nav_blocks.size > 0 -%}
+    <div class="swf-wrap">
+      <nav class="swf-nav" aria-label="Footer navigation">
+        {%- for block in nav_blocks -%}
+          <div class="swf-nav-item" {{ block.shopify_attributes }} data-swf-accordion>
+            <button class="swf-nav-toggle" type="button" aria-expanded="false">
+              <span class="swf-nav-heading">{{ block.settings.heading }}</span>
+              <span class="swf-nav-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="swf-nav-links" aria-hidden="true">
+              {%- if block.settings.menu != blank -%}
+                <ul>
+                  {%- for link in block.settings.menu.links -%}
+                    <li>
+                      <a href="{{ link.url }}" {% if link.current %}aria-current="page"{% endif %}>
+                        {{ link.title }}
+                      </a>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endfor -%}
+      </nav>
+    </div>
+  {%- endif -%}
+
+  <!-- Brand / Logo / Tagline -->
+  <div class="swf-wrap">
+    <div class="swf-brand">
+
+      {%- if section.settings.logo_image != blank -%}
+        <a href="{{ routes.root_url }}" class="swf-brand-logo">
+          <img
+            src="{{ section.settings.logo_image | image_url: height: 120 }}"
+            alt="{{ shop.name | escape }}"
+            width="{{ section.settings.logo_image.width }}"
+            height="{{ section.settings.logo_image.height }}"
+            loading="lazy"
+          >
+        </a>
+      {%- elsif section.settings.logo_text != blank -%}
+        <a href="{{ routes.root_url }}" class="swf-brand-logo-text">{{ section.settings.logo_text }}</a>
+      {%- else -%}
+        <a href="{{ routes.root_url }}" class="swf-brand-logo-text">{{ shop.name }}</a>
+      {%- endif -%}
+
+      {%- if section.settings.tagline != blank -%}
+        <span class="swf-brand-tagline">{{ section.settings.tagline }}</span>
+      {%- endif -%}
+
+      <!-- Social Icons -->
+      {%- assign has_social = false -%}
+      {%- if section.settings.social_facebook != blank or section.settings.social_instagram != blank or section.settings.social_twitter != blank or section.settings.social_youtube != blank or section.settings.social_tiktok != blank or section.settings.social_linkedin != blank -%}
+        {%- assign has_social = true -%}
+      {%- endif -%}
+      {%- if has_social -%}
+        <div class="swf-social">
+          {%- if section.settings.social_instagram != blank -%}
+            <a href="{{ section.settings.social_instagram }}" target="_blank" rel="noopener" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+            </a>
+          {%- endif -%}
+          {%- if section.settings.social_facebook != blank -%}
+            <a href="{{ section.settings.social_facebook }}" target="_blank" rel="noopener" aria-label="Facebook">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </a>
+          {%- endif -%}
+          {%- if section.settings.social_twitter != blank -%}
+            <a href="{{ section.settings.social_twitter }}" target="_blank" rel="noopener" aria-label="X / Twitter">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+          {%- endif -%}
+          {%- if section.settings.social_youtube != blank -%}
+            <a href="{{ section.settings.social_youtube }}" target="_blank" rel="noopener" aria-label="YouTube">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            </a>
+          {%- endif -%}
+          {%- if section.settings.social_tiktok != blank -%}
+            <a href="{{ section.settings.social_tiktok }}" target="_blank" rel="noopener" aria-label="TikTok">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+            </a>
+          {%- endif -%}
+          {%- if section.settings.social_linkedin != blank -%}
+            <a href="{{ section.settings.social_linkedin }}" target="_blank" rel="noopener" aria-label="LinkedIn">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            </a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <!-- Copyright Bar -->
+  <div class="swf-bottom" role="contentinfo">
+    <div class="swf-bottom-inner">
+      <div class="swf-copyright">
+        <span>&copy; {{ 'now' | date: '%Y' }}, <a href="{{ routes.root_url }}">{{ shop.name }}</a></span>
+        {%- if section.settings.copyright_extra != blank -%}
+          <span class="swf-copyright-sep">·</span>
+          <span>{{ section.settings.copyright_extra }}</span>
+        {%- endif -%}
+        {%- for policy in shop.policies -%}
+          {%- if policy != blank and section.settings.show_policies -%}
+            <span class="swf-copyright-sep">·</span>
+            <a href="{{ policy.url }}">{{ policy.title }}</a>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+      {%- if section.settings.payment_enable -%}
+        <div class="swf-payment-icons">
+          {%- for type in shop.enabled_payment_types -%}
+            {{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+
+</footer>
+</div>
+
+<!-- Accordion JS -->
+<script>
+  (function() {
+    var footer = document.getElementById('sw-footer-{{ section.id }}');
+    if (!footer) return;
+
+    var breakpoint = {{ section.settings.desktop_breakpoint }};
+
+    function isMobile() {
+      return window.innerWidth < breakpoint;
+    }
+
+    var items = footer.querySelectorAll('[data-swf-accordion]');
+    items.forEach(function(item) {
+      var btn = item.querySelector('.swf-nav-toggle');
+      var links = item.querySelector('.swf-nav-links');
+      if (!btn || !links) return;
+
+      btn.addEventListener('click', function() {
+        if (!isMobile()) return;
+        var isOpen = item.classList.contains('is-open');
+        // Close all
+        items.forEach(function(i) {
+          i.classList.remove('is-open');
+          var b = i.querySelector('.swf-nav-toggle');
+          var l = i.querySelector('.swf-nav-links');
+          if (b) b.setAttribute('aria-expanded', 'false');
+          if (l) l.setAttribute('aria-hidden', 'true');
+        });
+        // Toggle clicked
+        if (!isOpen) {
+          item.classList.add('is-open');
+          btn.setAttribute('aria-expanded', 'true');
+          links.setAttribute('aria-hidden', 'false');
+        }
+      });
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Sipwise Footer",
+  "tag": "div",
+  "class": "sipwise-footer-wrapper",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Logo & Tagline"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo_image",
+      "label": "Logo Image",
+      "info": "Upload your logo here. Leave blank to use the shop name as text."
+    },
+    {
+      "type": "range",
+      "id": "logo_height",
+      "min": 20,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Logo Height",
+      "default": 40
+    },
+    {
+      "type": "text",
+      "id": "logo_text",
+      "label": "Logo Text (if no image)",
+      "info": "Used if no logo image is set. Defaults to shop name."
+    },
+    {
+      "type": "range",
+      "id": "logo_text_size",
+      "min": 18,
+      "max": 52,
+      "step": 2,
+      "unit": "px",
+      "label": "Logo Text Size",
+      "default": 32
+    },
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Tagline",
+      "default": "Do more of what you love."
+    },
+    {
+      "type": "range",
+      "id": "tagline_size",
+      "min": 12,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "label": "Tagline Font Size",
+      "default": 15
+    },
+    {
+      "type": "select",
+      "id": "tagline_weight",
+      "label": "Tagline Font Weight",
+      "options": [
+        { "value": "300", "label": "Light (300)" },
+        { "value": "400", "label": "Regular (400)" },
+        { "value": "500", "label": "Medium (500)" },
+        { "value": "600", "label": "Semi Bold (600)" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "range",
+      "id": "tagline_gap",
+      "min": 4,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Gap: Logo to Tagline",
+      "default": 8
+    },
+    {
+      "type": "select",
+      "id": "brand_align",
+      "label": "Brand Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "brand_padding_top",
+      "min": 20,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Brand Padding Top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "brand_padding_bottom",
+      "min": 20,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Brand Padding Bottom",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Social Icons"
+    },
+    {
+      "type": "url",
+      "id": "social_instagram",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "url",
+      "id": "social_facebook",
+      "label": "Facebook URL"
+    },
+    {
+      "type": "url",
+      "id": "social_twitter",
+      "label": "X / Twitter URL"
+    },
+    {
+      "type": "url",
+      "id": "social_youtube",
+      "label": "YouTube URL"
+    },
+    {
+      "type": "url",
+      "id": "social_tiktok",
+      "label": "TikTok URL"
+    },
+    {
+      "type": "url",
+      "id": "social_linkedin",
+      "label": "LinkedIn URL"
+    },
+    {
+      "type": "range",
+      "id": "social_icon_size",
+      "min": 28,
+      "max": 52,
+      "step": 2,
+      "unit": "px",
+      "label": "Social Icon Size",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "social_gap",
+      "min": 6,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Gap Between Icons",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "social_top",
+      "min": 8,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Spacing Above Icons",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Accordion Nav"
+    },
+    {
+      "type": "range",
+      "id": "nav_heading_size_mobile",
+      "min": 14,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "label": "Nav Heading Size (Mobile)",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "nav_heading_size_desktop",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Nav Heading Size (Desktop)",
+      "default": 13
+    },
+    {
+      "type": "select",
+      "id": "nav_heading_weight",
+      "label": "Nav Heading Font Weight",
+      "options": [
+        { "value": "400", "label": "Regular (400)" },
+        { "value": "500", "label": "Medium (500)" },
+        { "value": "600", "label": "Semi Bold (600)" },
+        { "value": "700", "label": "Bold (700)" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "range",
+      "id": "accordion_v_padding",
+      "min": 10,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Accordion Row Vertical Padding",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "accordion_icon_size",
+      "min": 16,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "label": "Accordion + Icon Size",
+      "default": 22
+    },
+    {
+      "type": "range",
+      "id": "link_size",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Link Font Size",
+      "default": 14
+    },
+    {
+      "type": "select",
+      "id": "link_weight",
+      "label": "Link Font Weight",
+      "options": [
+        { "value": "300", "label": "Light (300)" },
+        { "value": "400", "label": "Regular (400)" },
+        { "value": "500", "label": "Medium (500)" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "range",
+      "id": "link_gap",
+      "min": 4,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Gap Between Links",
+      "default": 10
+    },
+    {
+      "type": "header",
+      "content": "Desktop Layout"
+    },
+    {
+      "type": "range",
+      "id": "desktop_breakpoint",
+      "min": 600,
+      "max": 1024,
+      "step": 50,
+      "unit": "px",
+      "label": "Desktop Breakpoint (accordion hides above this)",
+      "default": 750
+    },
+    {
+      "type": "range",
+      "id": "column_gap",
+      "min": 16,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Column Gap (Desktop)",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "desktop_heading_gap",
+      "min": 8,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Desktop: Gap Below Heading",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "section_below_nav",
+      "min": 20,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Desktop: Spacing Below Nav",
+      "default": 48
+    },
+    {
+      "type": "header",
+      "content": "Copyright Bar"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_policies",
+      "label": "Show Shop Policies",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "copyright_extra",
+      "label": "Extra Copyright Text",
+      "info": "e.g. 'All Rights Reserved.'"
+    },
+    {
+      "type": "checkbox",
+      "id": "payment_enable",
+      "label": "Show Payment Icons",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "bottom_padding",
+      "min": 10,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Copyright Bar Padding",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "bottom_text_size",
+      "min": 10,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Copyright Text Size",
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Layout & Spacing"
+    },
+    {
+      "type": "range",
+      "id": "container_width",
+      "min": 800,
+      "max": 1500,
+      "step": 50,
+      "unit": "px",
+      "label": "Container Max Width",
+      "default": 1100
+    },
+    {
+      "type": "range",
+      "id": "h_padding",
+      "min": 16,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Horizontal Padding",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Section Padding Top",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Colors — Section"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Section Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Background Image (Optional)"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Default Text Color",
+      "default": "#0f172a"
+    },
+    {
+      "type": "color",
+      "id": "divider_color",
+      "label": "Divider Line Color",
+      "default": "#e2e8f0"
+    },
+    {
+      "type": "header",
+      "content": "Colors — Nav"
+    },
+    {
+      "type": "color",
+      "id": "nav_heading_color",
+      "label": "Nav Heading Color",
+      "default": "#0f172a"
+    },
+    {
+      "type": "color",
+      "id": "accordion_icon_color",
+      "label": "Accordion + Icon Color",
+      "default": "#64748b"
+    },
+    {
+      "type": "color",
+      "id": "link_color",
+      "label": "Link Color",
+      "default": "#475569"
+    },
+    {
+      "type": "color",
+      "id": "link_hover_color",
+      "label": "Link Hover Color",
+      "default": "#0f172a"
+    },
+    {
+      "type": "header",
+      "content": "Colors — Brand"
+    },
+    {
+      "type": "color",
+      "id": "logo_text_color",
+      "label": "Logo Text Color",
+      "default": "#0f172a"
+    },
+    {
+      "type": "color",
+      "id": "tagline_color",
+      "label": "Tagline Color",
+      "default": "#64748b"
+    },
+    {
+      "type": "header",
+      "content": "Colors — Social Icons"
+    },
+    {
+      "type": "color",
+      "id": "social_bg",
+      "label": "Icon Background",
+      "default": "#f1f5f9"
+    },
+    {
+      "type": "color",
+      "id": "social_icon_color",
+      "label": "Icon Fill Color",
+      "default": "#0f172a"
+    },
+    {
+      "type": "header",
+      "content": "Colors — Copyright Bar"
+    },
+    {
+      "type": "color",
+      "id": "bottom_bg",
+      "label": "Copyright Bar Background",
+      "default": "#f8fafc"
+    },
+    {
+      "type": "color",
+      "id": "bottom_text_color",
+      "label": "Copyright Text Color",
+      "default": "#64748b"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "nav_group",
+      "name": "Nav Column",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Support"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Navigation Menu",
+          "info": "Select a menu from your Shopify Navigation settings."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sipwise Footer",
+      "blocks": [
+        {
+          "type": "nav_group",
+          "settings": { "heading": "Support" }
+        },
+        {
+          "type": "nav_group",
+          "settings": { "heading": "Top Pages" }
+        },
+        {
+          "type": "nav_group",
+          "settings": { "heading": "Connect" }
+        },
+        {
+          "type": "nav_group",
+          "settings": { "heading": "Company" }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
