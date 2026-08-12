@@ -38,7 +38,7 @@
         "shape_color": "accent-1",
         "custom_shape_color": "#dd1d1d",
         "background_color": "background-1",
-        "custom_background_color": "#FFFFFF",
+        "custom_background_color": "#ffffff",
         "padding_top": 0,
         "padding_bottom": 0
       }
@@ -116,10 +116,10 @@
       ],
       "settings": {
         "color_scheme": "custom",
-        "custom_colors_background": "#FFFFFF",
+        "custom_colors_background": "#ffffff",
         "custom_gradient_background": "",
-        "custom_colors_text": "#232E3D",
-        "custom_colors_solid_button_background": "#232E3D",
+        "custom_colors_text": "#232e3d",
+        "custom_colors_solid_button_background": "#232e3d",
         "custom_colors_solid_button_text": "#121212",
         "custom_colors_outline_button": "#ffffff",
         "pattern_bg": "dotted",
@@ -137,12 +137,12 @@
         "payment_enable": true,
         "enabled_payment_types": "visa,master,american_express,paypal, google_pay, visa, paytm, phonepe",
         "show_policy": true,
-        "branding_text": "Powered by <a href=\"https://shrinesolutions.com/\" target=\"_blank\" title=\"https://shrinesolutions.com/\">Shrine</a>",
+        "branding_text": "",
         "top_page_width": "normal",
         "bottom_page_width": "normal",
         "margin_top": 0,
         "padding_top": 32,
-        "padding_bottom": 20
+        "padding_bottom": 0
       }
     }
   },
