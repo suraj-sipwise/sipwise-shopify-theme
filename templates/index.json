@@ -727,6 +727,157 @@
         "padding_bottom": 52
       }
     },
+    "sipwise_reviews_FUUaBG": {
+      "type": "sipwise-reviews",
+      "blocks": {
+        "review_gahdWt": {
+          "type": "review",
+          "settings": {
+            "review_text": "I bought this for my mom because she forgets to drink water. She loves it! The light reminder is gentle and not annoying at all.",
+            "name": "Neha S.",
+            "meta": "Verified Buyer · Sipwise Lite"
+          }
+        },
+        "review_VYiDUx": {
+          "type": "review",
+          "settings": {
+            "review_text": "Super clean design and feels premium in hand. The glow alerts are surprisingly helpful. My colleagues keep asking which bottle is this.",
+            "name": "Pratik M.",
+            "meta": "Verified Buyer · Sipwise Classic"
+          }
+        },
+        "review_qDMcJj": {
+          "type": "review",
+          "settings": {
+            "review_text": "Honestly didn't think I needed a smart bottle but this one proved me wrong. The glow reminder is subtle but effective.",
+            "name": "Rohan K.",
+            "meta": "Verified Buyer · Sipwise Clear"
+          }
+        },
+        "review_JMnQ9r": {
+          "type": "review",
+          "settings": {
+            "review_text": "Been using Sipwise Lite for two weeks and my headache frequency has reduced. I never realised how little water I drank during work.",
+            "name": "Ayesha P.",
+            "meta": "Verified Buyer · Sipwise Lite"
+          }
+        },
+        "review_aEaPFT": {
+          "type": "review",
+          "settings": {
+            "review_text": "The glow reminder is just wow. I've never been consistent with water before. This bottle made it so effortless.",
+            "name": "Kritika J.",
+            "meta": "Verified Buyer · Sipwise Classic"
+          }
+        },
+        "review_fdz7zx": {
+          "type": "review",
+          "settings": {
+            "review_text": "Got the personalized one as a gift for my husband. The engraving looks incredibly premium. He uses it every single day.",
+            "name": "Priya R.",
+            "meta": "Verified Buyer · Personalize Lite"
+          }
+        },
+        "stat_XqMMPK": {
+          "type": "stat",
+          "settings": {
+            "number": "4.7★",
+            "label": "Average rating"
+          }
+        },
+        "stat_RUaHfh": {
+          "type": "stat",
+          "settings": {
+            "number": "200+",
+            "label": "Verified reviews"
+          }
+        },
+        "stat_iHKUKh": {
+          "type": "stat",
+          "settings": {
+            "number": "12,400+",
+            "label": "Bottles sold"
+          }
+        },
+        "stat_yT7amH": {
+          "type": "stat",
+          "settings": {
+            "number": "3.2M+",
+            "label": "Sips tracked"
+          }
+        }
+      },
+      "block_order": [
+        "review_gahdWt",
+        "review_VYiDUx",
+        "review_qDMcJj",
+        "review_JMnQ9r",
+        "review_aEaPFT",
+        "review_fdz7zx",
+        "stat_XqMMPK",
+        "stat_RUaHfh",
+        "stat_iHKUKh",
+        "stat_yT7amH"
+      ],
+      "name": "Sipwise Reviews",
+      "settings": {
+        "visibility": "always-display",
+        "label": "Real reviews",
+        "heading": "<p>12,400+ people are <em>sipping smarter.</em></p>",
+        "rating_text": "4.7 · 200+ verified reviews",
+        "star_icon": "★",
+        "heading_size_desktop": 44,
+        "heading_size_mobile": 30,
+        "heading_weight": "700",
+        "label_size": 12,
+        "star_size": 16,
+        "rating_text_size": 13,
+        "card_star_size": 13,
+        "card_text_size": 13,
+        "author_name_size": 13,
+        "author_meta_size": 11,
+        "stat_number_size_desktop": 30,
+        "stat_number_size_mobile": 24,
+        "stat_label_size": 11,
+        "card_width": 300,
+        "card_gap": 16,
+        "card_padding_v": 24,
+        "card_padding_h": 22,
+        "card_border_radius": 20,
+        "card_shadow": "0 4px 16px rgba(0,0,0,0.10)",
+        "avatar_size": 34,
+        "avatar_font_size": 13,
+        "avatar_gradient_from": "#00d4ff",
+        "avatar_gradient_to": "#30d158",
+        "avatar_text_color": "#000000",
+        "padding_top": 80,
+        "padding_bottom": 80,
+        "section_h_padding": 48,
+        "spacing_label_bottom": 16,
+        "spacing_heading_bottom": 8,
+        "spacing_header_bottom": 48,
+        "spacing_card_stars_bottom": 12,
+        "spacing_card_text_bottom": 16,
+        "spacing_stats_top": 48,
+        "stat_gap": 32,
+        "scroll_speed": 40,
+        "container_width": 1100,
+        "bg_color": "#ffffff",
+        "label_color": "#ffd60a",
+        "heading_color": "#0f172a",
+        "star_color": "#ffd60a",
+        "rating_text_color": "#64748b",
+        "card_bg": "#f8fafc",
+        "card_border_color": "#e2e8f0",
+        "card_text_color": "#475569",
+        "author_name_color": "#0f172a",
+        "author_meta_color": "#94a3b8",
+        "stat_gradient_from": "#f59e0b",
+        "stat_gradient_to": "#ef4444",
+        "stat_label_color": "#94a3b8",
+        "divider_color": "#e2e8f0"
+      }
+    },
     "17865164914fb85b1c": {
       "type": "apps",
       "blocks": {
@@ -757,6 +908,7 @@
     "stats_impact_KmQPXH",
     "image_banner_Pg3jAa",
     "rich_text_wytiqK",
-    "17865164914fb85b1c"
+    "17865164914fb85b1c",
+    "sipwise_reviews_FUUaBG"
   ]
 }

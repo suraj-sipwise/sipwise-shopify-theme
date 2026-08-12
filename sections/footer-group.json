@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "name": "t:sections.footer.name",
   "type": "footer",
@@ -13,7 +22,7 @@
         "shape_color": "accent-1",
         "custom_shape_color": "#dd1d1d",
         "background_color": "background-1",
-        "custom_background_color": "#FFFFFF",
+        "custom_background_color": "#ffffff",
         "padding_top": 0,
         "padding_bottom": 0
       }
@@ -24,57 +33,97 @@
         "fc645871-d789-4cfa-8584-4f8a29b6ce92": {
           "type": "image",
           "settings": {
-            "image_width": 100,
-            "alignment": "center",
+            "image": "shopify://shop_images/full-color-logomark.svg",
+            "image_width": 260,
+            "alignment": "",
             "url": "",
             "width_desktop": 4,
             "width_mobile": "2"
           }
         },
-        "text_KU3Twd": {
-          "type": "text",
+        "link_list_Pw8TrB": {
+          "type": "link_list",
           "settings": {
-            "heading": "Heading",
-            "block_headings_font_size": 1,
-            "subtext": "<p>Share contact information, store details, and brand content with your customers.</p>",
-            "width_desktop": 3,
+            "heading": "Company",
+            "block_headings_font_size": 0.8,
+            "menu": "footer-menu-3",
+            "font_size": 16,
+            "menu_items_font": "body",
+            "width_desktop": 2,
             "width_mobile": "2"
           }
         },
-        "1c647602-cc00-4009-a058-976435c8ee9e": {
+        "link_list_R3WTbY": {
+          "type": "link_list",
+          "settings": {
+            "heading": "Get Sipwise",
+            "block_headings_font_size": 0.8,
+            "menu": "footer",
+            "font_size": 16,
+            "menu_items_font": "body",
+            "width_desktop": 2,
+            "width_mobile": "2"
+          }
+        },
+        "link_list_h37ikN": {
           "type": "link_list",
           "settings": {
             "heading": "Quick links",
-            "block_headings_font_size": 1,
-            "menu": "footer",
-            "font_size": 14,
+            "block_headings_font_size": 0.8,
+            "menu": "footer-menu-2",
+            "font_size": 16,
             "menu_items_font": "body",
-            "width_desktop": 4,
-            "width_mobile": "1"
+            "width_desktop": 2,
+            "width_mobile": "2"
+          }
+        },
+        "email_signup_bJdgMd": {
+          "type": "email_signup",
+          "settings": {
+            "heading": "Stay in touch",
+            "block_headings_font_size": 0.8,
+            "subtext": "<p>Get special offers, free giveaways, and once-in-a-lifetime deals!</p>",
+            "button_type": "arrow",
+            "button_label": "Sign up",
+            "button_style_secondary": false,
+            "width_desktop": 3,
+            "width_mobile": "2"
           }
         }
       },
       "block_order": [
         "fc645871-d789-4cfa-8584-4f8a29b6ce92",
-        "text_KU3Twd",
-        "1c647602-cc00-4009-a058-976435c8ee9e"
+        "link_list_Pw8TrB",
+        "link_list_R3WTbY",
+        "link_list_h37ikN",
+        "email_signup_bJdgMd"
       ],
       "settings": {
-        "color_scheme": "accent-1",
-        "custom_colors_background": "#121212",
+        "color_scheme": "custom",
+        "custom_colors_background": "#FFFFFF",
         "custom_gradient_background": "",
-        "custom_colors_text": "#ffffff",
-        "custom_colors_solid_button_background": "#ffffff",
+        "custom_colors_text": "#232E3D",
+        "custom_colors_solid_button_background": "#232E3D",
         "custom_colors_solid_button_text": "#121212",
         "custom_colors_outline_button": "#ffffff",
-        "enable_follow_on_shop": false,
-        "show_social": false,
+        "pattern_bg": "dotted",
+        "pattern_color": "#6d388b",
+        "pattern_size": 20,
+        "pattern_thickness": 2,
+        "pattern_angle": 45,
+        "pattern_opacity_mode": "low",
+        "pattern_opacity_low": 7,
+        "pattern_opacity_normal": 80,
+        "enable_follow_on_shop": true,
+        "show_social": true,
         "enable_country_selector": false,
-        "enable_language_selector": true,
+        "enable_language_selector": false,
         "payment_enable": true,
-        "enabled_payment_types": "",
-        "show_policy": false,
+        "enabled_payment_types": "visa,master,american_express,paypal, google_pay, visa, paytm, phonepe",
+        "show_policy": true,
         "branding_text": "Powered by <a href=\"https://shrinesolutions.com/\" target=\"_blank\" title=\"https://shrinesolutions.com/\">Shrine</a>",
+        "top_page_width": "normal",
+        "bottom_page_width": "normal",
         "margin_top": 0,
         "padding_top": 32,
         "padding_bottom": 20
