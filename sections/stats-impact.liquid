@@ -10,11 +10,13 @@
 
 <style>
   #stats-impact-{{ section.id }} {
-    background: linear-gradient(
-      {{ section.settings.gradient_angle }}deg,
-      {{ section.settings.gradient_from }},
-      {{ section.settings.gradient_to }}
-    );
+    background-color: {{ section.settings.bg_color }};
+    {%- if section.settings.bg_image != blank -%}
+    background-image: url('{{ section.settings.bg_image | image_url: width: 2400 }}');
+    background-size: cover;
+    background-position: {{ section.settings.bg_position }};
+    background-repeat: no-repeat;
+    {%- endif -%}
     padding-top: {{ section.settings.padding_top }}px;
     padding-bottom: {{ section.settings.padding_bottom }}px;
     font-family: 'Figtree', sans-serif;
@@ -500,29 +502,33 @@
     },
     {
       "type": "header",
-      "content": "Background Gradient & Noise"
+      "content": "Background Image & Noise"
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Background Image",
+      "info": "Upload your own gradient PNG/JPG here. It will fill the full section. Leave blank to use the solid color below."
+    },
+    {
+      "type": "select",
+      "id": "bg_position",
+      "label": "Image Position",
+      "options": [
+        { "value": "center center", "label": "Center" },
+        { "value": "top center", "label": "Top Center" },
+        { "value": "bottom center", "label": "Bottom Center" },
+        { "value": "left center", "label": "Left" },
+        { "value": "right center", "label": "Right" }
+      ],
+      "default": "center center"
     },
     {
       "type": "color",
-      "id": "gradient_from",
-      "label": "Gradient — Start Color",
-      "default": "#0d0d0d"
-    },
-    {
-      "type": "color",
-      "id": "gradient_to",
-      "label": "Gradient — End Color",
-      "default": "#1a1a2e"
-    },
-    {
-      "type": "range",
-      "id": "gradient_angle",
-      "min": 0,
-      "max": 360,
-      "step": 5,
-      "unit": "°",
-      "label": "Gradient Angle",
-      "default": 145
+      "id": "bg_color",
+      "label": "Fallback Background Color",
+      "default": "#0d0d0d",
+      "info": "Used when no background image is set."
     },
     {
       "type": "range",
@@ -532,7 +538,7 @@
       "step": 5,
       "label": "Noise / Grain Intensity",
       "default": 25,
-      "info": "0 = no grain, 100 = full grain overlay"
+      "info": "0 = no grain, 100 = full grain overlay. Works on top of both image and solid color."
     },
     {
       "type": "header",
