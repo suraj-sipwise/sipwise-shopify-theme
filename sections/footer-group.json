@@ -11,6 +11,10 @@
   "name": "t:sections.footer.name",
   "type": "footer",
   "sections": {
+    "sipwise_footer_main": {
+      "type": "sipwise-footer",
+      "settings": {}
+    },
     "section_divider_eVcPCA": {
       "type": "section-divider",
       "name": "Section divider",
@@ -147,6 +151,7 @@
     }
   },
   "order": [
+    "sipwise_footer_main",
     "section_divider_eVcPCA",
     "section_divider_haGKRR",
     "footer"
