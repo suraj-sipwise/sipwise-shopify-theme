@@ -31,6 +31,7 @@
         "social_linkedin": "",
         "social_size": 34,
         "app_heading": "Get the App",
+        "app_logo": "shopify://shop_images/White_logo.png",
         "app_logo_width": 70,
         "app_store_url": "",
         "play_store_url": "",
@@ -120,9 +121,14 @@
           "type": "link_list",
           "settings": {
             "heading": "Company",
+            "heading_font_size": 16,
+            "heading_font_size_desktop": 18,
+            "heading_font_weight": "700",
+            "heading_line_height": "1.2",
             "block_headings_font_size": 0.8,
             "menu": "footer-menu-3",
             "font_size": 16,
+            "menu_items_weight": "400",
             "menu_items_font": "body",
             "width_desktop": 2,
             "width_mobile": "2"
@@ -132,9 +138,14 @@
           "type": "link_list",
           "settings": {
             "heading": "Get Sipwise",
+            "heading_font_size": 16,
+            "heading_font_size_desktop": 18,
+            "heading_font_weight": "700",
+            "heading_line_height": "1.2",
             "block_headings_font_size": 0.8,
             "menu": "footer",
             "font_size": 16,
+            "menu_items_weight": "400",
             "menu_items_font": "body",
             "width_desktop": 2,
             "width_mobile": "2"
@@ -144,9 +155,14 @@
           "type": "link_list",
           "settings": {
             "heading": "Quick links",
+            "heading_font_size": 16,
+            "heading_font_size_desktop": 18,
+            "heading_font_weight": "700",
+            "heading_line_height": "1.2",
             "block_headings_font_size": 0.8,
             "menu": "footer-menu-2",
             "font_size": 16,
+            "menu_items_weight": "400",
             "menu_items_font": "body",
             "width_desktop": 2,
             "width_mobile": "2"
@@ -156,6 +172,10 @@
           "type": "email_signup",
           "settings": {
             "heading": "Stay in touch",
+            "heading_font_size": 16,
+            "heading_font_size_desktop": 18,
+            "heading_font_weight": "700",
+            "heading_line_height": "1.2",
             "block_headings_font_size": 0.8,
             "subtext": "<p>Get special offers, free giveaways, and once-in-a-lifetime deals!</p>",
             "button_type": "arrow",
