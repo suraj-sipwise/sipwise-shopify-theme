@@ -399,9 +399,27 @@
       {%- if nav_blocks.size > 0 -%}
         <div class="swf-nav-grid">
           {%- for block in nav_blocks -%}
-            <div class="swf-nav-col" {{ block.shopify_attributes }}>
+            <div class="swf-nav-col swf-nav-col-{{ block.id }}" {{ block.shopify_attributes }}>
+              <style>
+                .swf-col-heading-{{ block.id }} {
+                  {% if block.settings.heading_size != blank %}font-size: {{ block.settings.heading_size }}px !important;{% endif %}
+                  {% if block.settings.heading_weight != blank %}font-weight: {{ block.settings.heading_weight }} !important;{% endif %}
+                  {% if block.settings.heading_color != blank %}color: {{ block.settings.heading_color }} !important;{% endif %}
+                }
+                .swf-nav-col-{{ block.id }} .swf-link-list a,
+                .swf-acc-item-{{ block.id }} .swf-link-list a {
+                  {% if block.settings.link_size != blank %}font-size: {{ block.settings.link_size }}px !important;{% endif %}
+                  {% if block.settings.link_weight != blank %}font-weight: {{ block.settings.link_weight }} !important;{% endif %}
+                  {% if block.settings.link_color != blank %}color: {{ block.settings.link_color }} !important;{% endif %}
+                }
+                .swf-acc-heading-{{ block.id }} {
+                  {% if block.settings.heading_size != blank %}font-size: {{ block.settings.heading_size }}px !important;{% endif %}
+                  {% if block.settings.heading_weight != blank %}font-weight: {{ block.settings.heading_weight }} !important;{% endif %}
+                  {% if block.settings.heading_color != blank %}color: {{ block.settings.heading_color }} !important;{% endif %}
+                }
+              </style>
               {%- if block.settings.heading != blank -%}
-                <h3 class="swf-col-heading">{{ block.settings.heading }}</h3>
+                <h3 class="swf-col-heading swf-col-heading-{{ block.id }}">{{ block.settings.heading }}</h3>
               {%- endif -%}
 
               <ul class="swf-link-list">
@@ -465,9 +483,9 @@
         <!-- ===== MOBILE ACCORDION ===== -->
         <nav class="swf-nav-accordion" aria-label="Footer navigation">
           {%- for block in nav_blocks -%}
-            <div class="swf-acc-item" data-swf-accordion {{ block.shopify_attributes }}>
+            <div class="swf-acc-item swf-acc-item-{{ block.id }}" data-swf-accordion {{ block.shopify_attributes }}>
               <button class="swf-acc-toggle" type="button" aria-expanded="false">
-                <span class="swf-acc-heading">{{ block.settings.heading }}</span>
+                <span class="swf-acc-heading swf-acc-heading-{{ block.id }}">{{ block.settings.heading }}</span>
                 <span class="swf-acc-icon" aria-hidden="true">+</span>
               </button>
               <div class="swf-acc-links" aria-hidden="true">
@@ -1173,6 +1191,72 @@
           "id": "heading",
           "label": "Column Heading",
           "default": "Support"
+        },
+        {
+          "type": "header",
+          "content": "Heading Font & Weight"
+        },
+        {
+          "type": "range",
+          "id": "heading_size",
+          "min": 10,
+          "max": 36,
+          "step": 1,
+          "unit": "px",
+          "label": "Heading Font Size",
+          "default": 14
+        },
+        {
+          "type": "select",
+          "id": "heading_weight",
+          "label": "Heading Font Weight (Line Weight)",
+          "options": [
+            { "value": "300", "label": "Light (300)" },
+            { "value": "400", "label": "Regular (400)" },
+            { "value": "500", "label": "Medium (500)" },
+            { "value": "600", "label": "Semi Bold (600)" },
+            { "value": "700", "label": "Bold (700)" },
+            { "value": "800", "label": "Extra Bold (800)" },
+            { "value": "900", "label": "Black (900)" }
+          ],
+          "default": "600"
+        },
+        {
+          "type": "color",
+          "id": "heading_color",
+          "label": "Heading Color (Optional override)"
+        },
+        {
+          "type": "header",
+          "content": "Links Font & Weight"
+        },
+        {
+          "type": "range",
+          "id": "link_size",
+          "min": 10,
+          "max": 24,
+          "step": 1,
+          "unit": "px",
+          "label": "Links Font Size",
+          "default": 13
+        },
+        {
+          "type": "select",
+          "id": "link_weight",
+          "label": "Links Font Weight",
+          "options": [
+            { "value": "300", "label": "Light (300)" },
+            { "value": "400", "label": "Regular (400)" },
+            { "value": "500", "label": "Medium (500)" },
+            { "value": "600", "label": "Semi Bold (600)" },
+            { "value": "700", "label": "Bold (700)" }
+          ],
+          "default": "400"
+        },
+        {
+          "type": "color",
+          "id": "link_color",
+          "label": "Links Color (Optional override)"
         },
         {
           "type": "header",
