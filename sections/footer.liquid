@@ -93,11 +93,27 @@
                 {%- if block.settings.heading != blank -%}
                   <style>
                     .footer-block__heading-{{ block.id }} {
-                      font-size: calc(var(--font-heading-scale) * {{ block.settings.block_headings_font_size }} * 1.6rem);
+                      {%- if block.settings.heading_font_size != blank -%}
+                        font-size: {{ block.settings.heading_font_size }}px;
+                      {%- else -%}
+                        font-size: calc(var(--font-heading-scale) * {{ block.settings.block_headings_font_size | default: 1 }} * 1.6rem);
+                      {%- endif -%}
+                      {%- if block.settings.heading_font_weight != blank -%}
+                        font-weight: {{ block.settings.heading_font_weight }} !important;
+                      {%- endif -%}
+                      {%- if block.settings.heading_line_height != blank -%}
+                        line-height: {{ block.settings.heading_line_height }};
+                      {%- endif -%}
                     }
                     @media screen and (min-width: 990px) {
                       .footer-block__heading-{{ block.id }} {
-                        font-size: calc(var(--font-heading-scale) * {{ block.settings.block_headings_font_size }} * 1.8rem);
+                        {%- if block.settings.heading_font_size_desktop != blank -%}
+                          font-size: {{ block.settings.heading_font_size_desktop }}px;
+                        {%- elsif block.settings.heading_font_size != blank -%}
+                          font-size: {{ block.settings.heading_font_size }}px;
+                        {%- else -%}
+                          font-size: calc(var(--font-heading-scale) * {{ block.settings.block_headings_font_size | default: 1 }} * 1.8rem);
+                        {%- endif -%}
                       }
                     }
                   </style>
@@ -118,7 +134,9 @@
                       <style>
                         .footer-block__details-content-{{ block.id }} .link {
                           font-size: {{ block.settings.font_size | divided_by: 10.0 }}rem;
-                          {% if block.settings.menu_items_font == 'body_bold' %}
+                          {% if block.settings.menu_items_weight != blank %}
+                            font-weight: {{ block.settings.menu_items_weight }} !important;
+                          {% elsif block.settings.menu_items_font == 'body_bold' %}
                             font-weight: var(--font-body-weight-bold);
                           {% elsif block.settings.menu_items_font == 'headings' %}
                             font-family: var(--font-heading-family);
@@ -527,12 +545,59 @@
         },
         {
           "type": "range",
+          "id": "heading_font_size",
+          "min": 10,
+          "max": 36,
+          "step": 1,
+          "unit": "px",
+          "label": "Heading font size (Mobile)",
+          "default": 16
+        },
+        {
+          "type": "range",
+          "id": "heading_font_size_desktop",
+          "min": 10,
+          "max": 40,
+          "step": 1,
+          "unit": "px",
+          "label": "Heading font size (Desktop)",
+          "default": 18
+        },
+        {
+          "type": "select",
+          "id": "heading_font_weight",
+          "label": "Heading font weight (Line weight)",
+          "options": [
+            { "value": "300", "label": "Light (300)" },
+            { "value": "400", "label": "Regular (400)" },
+            { "value": "500", "label": "Medium (500)" },
+            { "value": "600", "label": "Semi Bold (600)" },
+            { "value": "700", "label": "Bold (700)" },
+            { "value": "800", "label": "Extra Bold (800)" },
+            { "value": "900", "label": "Black (900)" }
+          ],
+          "default": "700"
+        },
+        {
+          "type": "select",
+          "id": "heading_line_height",
+          "label": "Heading line height",
+          "options": [
+            { "value": "1", "label": "Tight (1.0)" },
+            { "value": "1.2", "label": "Normal (1.2)" },
+            { "value": "1.4", "label": "Comfortable (1.4)" },
+            { "value": "1.6", "label": "Loose (1.6)" }
+          ],
+          "default": "1.2"
+        },
+        {
+          "type": "range",
           "id": "block_headings_font_size",
           "min": 0.5,
           "max": 1.5,
           "step": 0.1,
           "unit": "%",
-          "label": "Heading font size scale",
+          "label": "Heading font size scale (Legacy)",
           "default": 1
         },
         {
@@ -551,6 +616,19 @@
           "unit": "px",
           "label": "Menu items size",
           "default": 14
+        },
+        {
+          "type": "select",
+          "id": "menu_items_weight",
+          "label": "Menu items font weight",
+          "options": [
+            { "value": "300", "label": "Light (300)" },
+            { "value": "400", "label": "Regular (400)" },
+            { "value": "500", "label": "Medium (500)" },
+            { "value": "600", "label": "Semi Bold (600)" },
+            { "value": "700", "label": "Bold (700)" }
+          ],
+          "default": "400"
         },
         {
           "type": "select",
@@ -656,12 +734,59 @@
         },
         {
           "type": "range",
+          "id": "heading_font_size",
+          "min": 10,
+          "max": 36,
+          "step": 1,
+          "unit": "px",
+          "label": "Heading font size (Mobile)",
+          "default": 16
+        },
+        {
+          "type": "range",
+          "id": "heading_font_size_desktop",
+          "min": 10,
+          "max": 40,
+          "step": 1,
+          "unit": "px",
+          "label": "Heading font size (Desktop)",
+          "default": 18
+        },
+        {
+          "type": "select",
+          "id": "heading_font_weight",
+          "label": "Heading font weight (Line weight)",
+          "options": [
+            { "value": "300", "label": "Light (300)" },
+            { "value": "400", "label": "Regular (400)" },
+            { "value": "500", "label": "Medium (500)" },
+            { "value": "600", "label": "Semi Bold (600)" },
+            { "value": "700", "label": "Bold (700)" },
+            { "value": "800", "label": "Extra Bold (800)" },
+            { "value": "900", "label": "Black (900)" }
+          ],
+          "default": "700"
+        },
+        {
+          "type": "select",
+          "id": "heading_line_height",
+          "label": "Heading line height",
+          "options": [
+            { "value": "1", "label": "Tight (1.0)" },
+            { "value": "1.2", "label": "Normal (1.2)" },
+            { "value": "1.4", "label": "Comfortable (1.4)" },
+            { "value": "1.6", "label": "Loose (1.6)" }
+          ],
+          "default": "1.2"
+        },
+        {
+          "type": "range",
           "id": "block_headings_font_size",
           "min": 0.5,
           "max": 1.5,
           "step": 0.1,
           "unit": "%",
-          "label": "Heading font size scale",
+          "label": "Heading font size scale (Legacy)",
           "default": 1
         },
         {
@@ -792,12 +917,59 @@
         },
         {
           "type": "range",
+          "id": "heading_font_size",
+          "min": 10,
+          "max": 36,
+          "step": 1,
+          "unit": "px",
+          "label": "Heading font size (Mobile)",
+          "default": 16
+        },
+        {
+          "type": "range",
+          "id": "heading_font_size_desktop",
+          "min": 10,
+          "max": 40,
+          "step": 1,
+          "unit": "px",
+          "label": "Heading font size (Desktop)",
+          "default": 18
+        },
+        {
+          "type": "select",
+          "id": "heading_font_weight",
+          "label": "Heading font weight (Line weight)",
+          "options": [
+            { "value": "300", "label": "Light (300)" },
+            { "value": "400", "label": "Regular (400)" },
+            { "value": "500", "label": "Medium (500)" },
+            { "value": "600", "label": "Semi Bold (600)" },
+            { "value": "700", "label": "Bold (700)" },
+            { "value": "800", "label": "Extra Bold (800)" },
+            { "value": "900", "label": "Black (900)" }
+          ],
+          "default": "700"
+        },
+        {
+          "type": "select",
+          "id": "heading_line_height",
+          "label": "Heading line height",
+          "options": [
+            { "value": "1", "label": "Tight (1.0)" },
+            { "value": "1.2", "label": "Normal (1.2)" },
+            { "value": "1.4", "label": "Comfortable (1.4)" },
+            { "value": "1.6", "label": "Loose (1.6)" }
+          ],
+          "default": "1.2"
+        },
+        {
+          "type": "range",
           "id": "block_headings_font_size",
           "min": 0.5,
           "max": 1.5,
           "step": 0.1,
           "unit": "%",
-          "label": "Heading font size scale",
+          "label": "Heading font size scale (Legacy)",
           "default": 1
         },
         {
