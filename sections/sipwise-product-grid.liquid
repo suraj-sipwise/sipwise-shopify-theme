@@ -1,0 +1,1930 @@
+{% comment %}
+  Sipwise Product Browsing Section
+  Part 1: Collections Strip (Top) — swipeable on mobile, static row on desktop
+  Part 2: Full Product Grid (Bottom) — Owala-style individual variant cards with swatches, filters, sorting, and AJAX cart
+{% endcomment %}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700;1,900&display=swap" rel="stylesheet">
+
+{%- liquid
+  assign section_id = section.id
+  assign collection_blocks = section.blocks | where: "type", "collection_card"
+  assign product_blocks = section.blocks | where: "type", "product_variant"
+-%}
+
+<style>
+  #sipwise-shop-{{ section_id }} {
+    font-family: 'Figtree', sans-serif !important;
+    background-color: {{ section.settings.bg_color | default: '#ffffff' }};
+    padding-top: {{ section.settings.padding_top | default: 60 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | default: 80 }}px;
+    color: {{ section.settings.text_color | default: '#0f172a' }};
+    box-sizing: border-box;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  #sipwise-shop-{{ section_id }} * {
+    font-family: 'Figtree', sans-serif !important;
+    box-sizing: border-box;
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-container {
+    max-width: {{ section.settings.container_width | default: 1300 }}px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* =======================================================
+     PART 1: COLLECTIONS STRIP (TOP)
+     ======================================================= */
+  #sipwise-shop-{{ section_id }} .swp-coll-header {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-coll-title {
+    font-size: clamp(24px, 3.5vw, 36px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: {{ section.settings.heading_color | default: '#0f172a' }};
+    margin: 0 0 8px 0;
+    line-height: 1.15;
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-coll-subtitle {
+    font-size: 15px;
+    color: #64748b;
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  /* Collections Carousel / Row */
+  #sipwise-shop-{{ section_id }} .swp-coll-track-wrap {
+    position: relative;
+    margin-bottom: 56px;
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-coll-track {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: stretch;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: 10px 4px 20px 4px;
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-coll-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-coll-card {
+    flex: 0 0 240px;
+    scroll-snap-align: center;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    padding: 24px 20px 20px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
+    position: relative;
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-coll-card:hover,
+  #sipwise-shop-{{ section_id }} .swp-coll-card.is-active {
+    transform: translateY(-4px);
+    border-color: #1a56db;
+    box-shadow: 0 12px 28px rgba(26, 86, 219, 0.12);
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-coll-card.is-active {
+    border-width: 2px;
+    background: #f8faff;
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-coll-badge {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    background: #eff6ff;
+    color: #1a56db;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 100px;
+    letter-spacing: 0.02em;
+    border: 1px solid #dbeafe;
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-coll-img-wrap {
+    width: 140px;
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-coll-img-wrap img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    transition: transform 0.35s ease;
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-coll-card:hover .swp-coll-img-wrap img {
+    transform: scale(1.06);
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-coll-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 6px 0;
+    letter-spacing: -0.02em;
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-coll-link {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1a56db;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: auto;
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-coll-dots {
+    display: none;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 4px;
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-coll-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #cbd5e1;
+    transition: all 0.25s ease;
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-coll-dot.is-active {
+    width: 22px;
+    border-radius: 10px;
+    background: #1a56db;
+  }
+
+  /* =======================================================
+     PART 2: FILTER & SORT BAR (OWALA STYLE)
+     ======================================================= */
+  #sipwise-shop-{{ section_id }} .swp-grid-header {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-grid-main-title {
+    font-size: clamp(26px, 4vw, 40px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: {{ section.settings.heading_color | default: '#0f172a' }};
+    margin: 0 0 8px 0;
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-toolbar-wrapper {
+    position: relative;
+    z-index: 10;
+    margin-bottom: 24px;
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    background: #ffffff;
+    padding: 12px 0;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-results-count {
+    font-size: 15px;
+    font-weight: 600;
+    color: #64748b;
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-results-count strong {
+    color: #0f172a;
+    font-weight: 800;
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-filter-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  /* Filter buttons & dropdown triggers (Owala style rounded pills) */
+  #sipwise-shop-{{ section_id }} .swp-pill-btn {
+    appearance: none;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 100px;
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #334155;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+    user-select: none;
+    position: relative;
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-pill-btn:hover {
+    border-color: #cbd5e1;
+    background: #f8fafc;
+    color: #0f172a;
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-pill-btn.is-active {
+    background: #0f172a;
+    color: #ffffff;
+    border-color: #0f172a;
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-pill-btn svg {
+    width: 14px;
+    height: 14px;
+    fill: currentColor;
+    transition: transform 0.2s ease;
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-dropdown {
+    position: relative;
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    box-shadow: 0 12px 32px rgba(15, 23, 42, 0.12);
+    min-width: 200px;
+    padding: 8px;
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    z-index: 50;
+    animation: swpFadeIn 0.2s ease;
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-dropdown.is-open .swp-dropdown-menu {
+    display: flex;
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-dropdown-item {
+    background: none;
+    border: none;
+    text-align: left;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #334155;
+    cursor: pointer;
+    transition: background 0.15s ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-dropdown-item:hover,
+  #sipwise-shop-{{ section_id }} .swp-dropdown-item.is-selected {
+    background: #f1f5f9;
+    color: #0f172a;
+    font-weight: 700;
+  }
+
+  /* Hide out of stock checkbox pill */
+  #sipwise-shop-{{ section_id }} .swp-checkbox-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #334155;
+    border: 1px solid #e2e8f0;
+    border-radius: 100px;
+    padding: 8px 16px;
+    cursor: pointer;
+    background: #ffffff;
+    transition: all 0.2s ease;
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-checkbox-pill:hover {
+    background: #f8fafc;
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-checkbox-pill input {
+    accent-color: #1a56db;
+    cursor: pointer;
+  }
+
+  /* Active Tags Bar */
+  #sipwise-shop-{{ section_id }} .swp-active-tags {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding-top: 12px;
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-tag-pill {
+    background: #f1f5f9;
+    color: #0f172a;
+    border-radius: 100px;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-tag-pill:hover {
+    background: #e2e8f0;
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-clear-all {
+    font-size: 12px;
+    font-weight: 600;
+    color: #64748b;
+    text-decoration: underline;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px 8px;
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-clear-all:hover {
+    color: #0f172a;
+  }
+
+  /* View toggles */
+  #sipwise-shop-{{ section_id }} .swp-view-toggles {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-view-btn {
+    background: none;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    padding: 6px;
+    cursor: pointer;
+    color: #94a3b8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-view-btn:hover,
+  #sipwise-shop-{{ section_id }} .swp-view-btn.is-active {
+    color: #0f172a;
+    background: #f1f5f9;
+  }
+
+  /* =======================================================
+     PART 3: OWALA-STYLE PRODUCT VARIANT GRID
+     ======================================================= */
+  #sipwise-shop-{{ section_id }} .swp-product-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    margin-top: 24px;
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-product-grid.grid--3-col {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-product-grid.grid--2-col {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-product-card {
+    background: #ffffff;
+    border: 1px solid #f1f5f9;
+    border-radius: 24px;
+    padding: 24px 20px;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.03);
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-product-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 36px rgba(15, 23, 42, 0.08);
+    border-color: #e2e8f0;
+  }
+
+  /* Badges */
+  #sipwise-shop-{{ section_id }} .swp-card-badges {
+    position: absolute;
+    top: 18px;
+    left: 18px;
+    right: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-badge-bt {
+    background: #eff6ff;
+    color: #1a56db;
+    border: 1px solid #bfdbfe;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 8px;
+    border-radius: 100px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    letter-spacing: 0.01em;
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-badge-bt svg {
+    width: 12px;
+    height: 12px;
+    fill: currentColor;
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-badge-sale {
+    background: #0f172a;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 8px;
+    border-radius: 100px;
+  }
+
+  /* Product Media */
+  #sipwise-shop-{{ section_id }} .swp-card-media {
+    width: 100%;
+    height: 260px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    text-decoration: none;
+    position: relative;
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-card-media img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-product-card:hover .swp-card-media img {
+    transform: scale(1.08);
+  }
+
+  /* Card Details */
+  #sipwise-shop-{{ section_id }} .swp-card-details {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-card-title-row {
+    margin-bottom: 4px;
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-card-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-card-variant-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: #64748b;
+    margin: 2px 0 0 0;
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-card-price-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 6px 0 10px 0;
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-price-current {
+    font-size: 16px;
+    font-weight: 800;
+    color: #0f172a;
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-price-compare {
+    font-size: 14px;
+    color: #94a3b8;
+    text-decoration: line-through;
+    font-weight: 500;
+  }
+
+  /* Rating */
+  #sipwise-shop-{{ section_id }} .swp-card-rating {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 12px;
+    font-size: 12px;
+    color: #64748b;
+    font-weight: 600;
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-stars {
+    display: inline-flex;
+    gap: 2px;
+    color: #0284c7;
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-stars svg {
+    width: 13px;
+    height: 13px;
+    fill: currentColor;
+  }
+
+  /* Swatches Row (Owala Style Dots) */
+  #sipwise-shop-{{ section_id }} .swp-swatches-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-swatch-dot {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    padding: 2px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background-clip: content-box;
+    display: inline-block;
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-swatch-dot.is-active,
+  #sipwise-shop-{{ section_id }} .swp-swatch-dot:hover {
+    border-color: #0f172a;
+    transform: scale(1.15);
+  }
+
+  /* Add to Cart Pill Button */
+  #sipwise-shop-{{ section_id }} .swp-atc-btn {
+    width: 100%;
+    background: #334155;
+    color: #ffffff;
+    border: none;
+    border-radius: 100px;
+    padding: 13px 20px;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: auto;
+    user-select: none;
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-atc-btn:hover {
+    background: #0f172a;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.2);
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-atc-btn.is-loading {
+    opacity: 0.75;
+    pointer-events: none;
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: #ffffff;
+    border-radius: 50%;
+    animation: swpSpin 0.6s linear infinite;
+    display: none;
+  }
+
+  #sipwise-shop-{{ section_id }} .swp-atc-btn.is-loading .swp-spinner {
+    display: inline-block;
+  }
+
+  @keyframes swpSpin {
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes swpFadeIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* =======================================================
+     RESPONSIVE BREAKPOINTS
+     ======================================================= */
+  @media screen and (max-width: 1024px) {
+    #sipwise-shop-{{ section_id }} .swp-product-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    #sipwise-shop-{{ section_id }} {
+      padding-top: 40px;
+      padding-bottom: 60px;
+    }
+
+    #sipwise-shop-{{ section_id }} .swp-container {
+      padding: 0 16px;
+    }
+
+    /* Swipeable Collections */
+    #sipwise-shop-{{ section_id }} .swp-coll-track {
+      justify-content: flex-start;
+      margin: 0 -16px;
+      padding: 10px 16px 16px 16px;
+    }
+
+    #sipwise-shop-{{ section_id }} .swp-coll-card {
+      flex: 0 0 180px;
+      padding: 18px 14px 14px 14px;
+      border-radius: 16px;
+    }
+
+    #sipwise-shop-{{ section_id }} .swp-coll-img-wrap {
+      width: 100px;
+      height: 120px;
+      margin-bottom: 10px;
+    }
+
+    #sipwise-shop-{{ section_id }} .swp-coll-name {
+      font-size: 15px;
+    }
+
+    #sipwise-shop-{{ section_id }} .swp-coll-dots {
+      display: flex;
+    }
+
+    /* 2-Column Mobile Product Grid (matches Owala/Aquaminder) */
+    #sipwise-shop-{{ section_id }} .swp-product-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    #sipwise-shop-{{ section_id }} .swp-product-card {
+      padding: 16px 12px;
+      border-radius: 18px;
+    }
+
+    #sipwise-shop-{{ section_id }} .swp-card-media {
+      height: 180px;
+      margin-bottom: 12px;
+    }
+
+    #sipwise-shop-{{ section_id }} .swp-card-title {
+      font-size: 14px;
+    }
+
+    #sipwise-shop-{{ section_id }} .swp-card-variant-name {
+      font-size: 12px;
+    }
+
+    #sipwise-shop-{{ section_id }} .swp-price-current {
+      font-size: 14px;
+    }
+
+    #sipwise-shop-{{ section_id }} .swp-price-compare {
+      font-size: 12px;
+    }
+
+    #sipwise-shop-{{ section_id }} .swp-atc-btn {
+      padding: 10px 14px;
+      font-size: 12px;
+    }
+
+    #sipwise-shop-{{ section_id }} .swp-badge-bt {
+      font-size: 9px;
+      padding: 2px 6px;
+    }
+
+    #sipwise-shop-{{ section_id }} .swp-badge-sale {
+      font-size: 9px;
+      padding: 2px 6px;
+    }
+
+    #sipwise-shop-{{ section_id }} .swp-swatch-dot {
+      width: 18px;
+      height: 18px;
+    }
+  }
+</style>
+
+<section id="sipwise-shop-{{ section_id }}" class="sipwise-product-browsing">
+  <div class="swp-container">
+
+    <!-- ==========================================
+         PART 1: COLLECTIONS STRIP (TOP)
+         ========================================== -->
+    {%- if section.settings.show_collections_strip -%}
+      <div class="swp-coll-header">
+        <h2 class="swp-coll-title">{{ section.settings.collections_title | default: "Explore Sipwise Collection" }}</h2>
+        {%- if section.settings.collections_subtitle != blank -%}
+          <p class="swp-coll-subtitle">{{ section.settings.collections_subtitle }}</p>
+        {%- endif -%}
+      </div>
+
+      <div class="swp-coll-track-wrap">
+        <div class="swp-coll-track" id="swp-coll-track-{{ section_id }}">
+          {%- if collection_blocks.size > 0 -%}
+            {%- for block in collection_blocks -%}
+              <div class="swp-coll-card" data-filter-coll="{{ block.settings.filter_tag | default: 'all' }}" {{ block.shopify_attributes }}>
+                {%- if block.settings.badge != blank -%}
+                  <span class="swp-coll-badge">{{ block.settings.badge }}</span>
+                {%- endif -%}
+
+                <div class="swp-coll-img-wrap">
+                  {%- if block.settings.image != blank -%}
+                    <img src="{{ block.settings.image | image_url: width: 320 }}" alt="{{ block.settings.title | escape }}" loading="lazy">
+                  {%- else -%}
+                    <img src="https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=320&auto=format&fit=crop&q=80" alt="{{ block.settings.title }}" loading="lazy">
+                  {%- endif -%}
+                </div>
+
+                <h3 class="swp-coll-name">{{ block.settings.title }}</h3>
+                <span class="swp-coll-link">
+                  {{ block.settings.button_text | default: "Shop now" }}
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </span>
+              </div>
+            {%- endfor -%}
+          {%- else -%}
+            <!-- Fallback Default Collection Cards -->
+            <div class="swp-coll-card" data-filter-coll="lite">
+              <span class="swp-coll-badge">Smart Hydration</span>
+              <div class="swp-coll-img-wrap">
+                <img src="https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=320&auto=format&fit=crop&q=80" alt="Sipwise LITE+">
+              </div>
+              <h3 class="swp-coll-name">Sipwise LITE+</h3>
+              <span class="swp-coll-link">Shop now <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+            </div>
+
+            <div class="swp-coll-card" data-filter-coll="pro">
+              <span class="swp-coll-badge" style="background:#eff6ff; color:#1a56db;">Bluetooth Model</span>
+              <div class="swp-coll-img-wrap">
+                <img src="https://images.unsplash.com/photo-1544816155-12df9643f363?w=320&auto=format&fit=crop&q=80" alt="Sipwise PRO">
+              </div>
+              <h3 class="swp-coll-name">Sipwise PRO</h3>
+              <span class="swp-coll-link">Shop now <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+            </div>
+          {%- endif -%}
+        </div>
+
+        <!-- Mobile Carousel Dots -->
+        <div class="swp-coll-dots" id="swp-coll-dots-{{ section_id }}"></div>
+      </div>
+    {%- endif -%}
+
+
+    <!-- ==========================================
+         PART 2: EXPLORE ALL PRODUCTS + FILTER BAR
+         ========================================== -->
+    <div class="swp-grid-header">
+      <h2 class="swp-grid-main-title">{{ section.settings.grid_title | default: "Explore All Products" }}</h2>
+    </div>
+
+    <!-- Filter & Sort Toolbar -->
+    <div class="swp-toolbar-wrapper" id="swp-toolbar-{{ section_id }}">
+      <div class="swp-toolbar">
+        <div class="swp-results-count">
+          <span id="swp-count-num-{{ section_id }}">7</span> Results
+        </div>
+
+        <div class="swp-filter-group">
+          <!-- Sort Dropdown -->
+          <div class="swp-dropdown" data-swp-dropdown="sort">
+            <button class="swp-pill-btn" type="button">
+              <svg viewBox="0 0 24 24"><path d="M3 18h6v-2H3v2zM3 6v2h18V6H3zm0 7h12v-2H3v2z"/></svg>
+              <span class="swp-sort-label">Sort: Featured</span>
+              <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+            </button>
+            <div class="swp-dropdown-menu">
+              <button class="swp-dropdown-item is-selected" data-sort="featured" type="button">Featured</button>
+              <button class="swp-dropdown-item" data-sort="price-low" type="button">Price: Low to High</button>
+              <button class="swp-dropdown-item" data-sort="price-high" type="button">Price: High to Low</button>
+              <button class="swp-dropdown-item" data-sort="rating" type="button">Highest Rated</button>
+              <button class="swp-dropdown-item" data-sort="newest" type="button">Newest</button>
+            </div>
+          </div>
+
+          <!-- Collection Filter Dropdown -->
+          <div class="swp-dropdown" data-swp-dropdown="coll">
+            <button class="swp-pill-btn" type="button">
+              <span>Collection</span>
+              <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+            </button>
+            <div class="swp-dropdown-menu">
+              <button class="swp-dropdown-item is-selected" data-filter-type="coll" data-filter-val="all" type="button">All Collections</button>
+              <button class="swp-dropdown-item" data-filter-type="coll" data-filter-val="lite" type="button">Sipwise LITE+</button>
+              <button class="swp-dropdown-item" data-filter-type="coll" data-filter-val="pro" type="button">Sipwise PRO (Bluetooth)</button>
+            </div>
+          </div>
+
+          <!-- Color Filter Dropdown -->
+          <div class="swp-dropdown" data-swp-dropdown="color">
+            <button class="swp-pill-btn" type="button">
+              <span>Color</span>
+              <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+            </button>
+            <div class="swp-dropdown-menu">
+              <button class="swp-dropdown-item is-selected" data-filter-type="color" data-filter-val="all" type="button">All Colors</button>
+              <button class="swp-dropdown-item" data-filter-type="color" data-filter-val="blue" type="button">Ocean Blue</button>
+              <button class="swp-dropdown-item" data-filter-type="color" data-filter-val="black" type="button">Midnight Black</button>
+              <button class="swp-dropdown-item" data-filter-type="color" data-filter-val="coral" type="button">Electric Coral</button>
+              <button class="swp-dropdown-item" data-filter-type="color" data-filter-val="navy" type="button">Deep Navy</button>
+              <button class="swp-dropdown-item" data-filter-type="color" data-filter-val="orange" type="button">Sunrise Orange</button>
+            </div>
+          </div>
+
+          <!-- Hide Out of Stock Checkbox -->
+          <label class="swp-checkbox-pill">
+            <input type="checkbox" id="swp-instock-{{ section_id }}">
+            <span>In Stock Only</span>
+          </label>
+        </div>
+
+        <!-- Grid View Switcher (Desktop) -->
+        <div class="swp-view-toggles">
+          <button class="swp-view-btn is-active" data-view="4" title="4 Columns" type="button">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="4" height="18" rx="1"/><rect x="8.5" y="3" width="4" height="18" rx="1"/><rect x="14" y="3" width="4" height="18" rx="1"/><rect x="19.5" y="3" width="4" height="18" rx="1"/></svg>
+          </button>
+          <button class="swp-view-btn" data-view="2" title="2 Columns" type="button">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="8.5" height="18" rx="1.5"/><rect x="13.5" y="3" width="8.5" height="18" rx="1.5"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Active Filter Tags (Owala style) -->
+      <div class="swp-active-tags" id="swp-active-tags-{{ section_id }}" style="display:none;">
+        <!-- Dynamic Tag Pills injected by JS -->
+      </div>
+    </div>
+
+
+    <!-- ==========================================
+         PART 3: FULL PRODUCT VARIANT GRID
+         ========================================== -->
+    <div class="swp-product-grid" id="swp-product-grid-{{ section_id }}">
+
+      {%- if product_blocks.size > 0 -%}
+        {%- for block in product_blocks -%}
+          <div class="swp-product-card"
+            data-coll="{{ block.settings.collection_type | default: 'lite' }}"
+            data-color="{{ block.settings.color_family | default: 'blue' }}"
+            data-price="{{ block.settings.price_num | default: 49 }}"
+            data-rating="{{ block.settings.rating | default: 5 }}"
+            data-instock="{{ block.settings.in_stock | default: true }}"
+            data-is-pro="{{ block.settings.is_bluetooth | default: false }}"
+            {{ block.shopify_attributes }}
+          >
+            <!-- Card Badges -->
+            <div class="swp-card-badges">
+              {%- if block.settings.is_bluetooth -%}
+                <span class="swp-badge-bt">
+                  <svg viewBox="0 0 24 24"><path d="M14.88 16.29L13 14.41V19.17l1.88-2.88zM13 4.83l1.88 2.88L13 9.59V4.83M17.71 7.71L12 2h-1v7.59L6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 11 14.41V22h1l5.71-5.71-4.3-4.29 4.3-4.29z"/></svg>
+                  Bluetooth
+                </span>
+              {%- else -%}
+                <span></span>
+              {%- endif -%}
+
+              {%- if block.settings.discount_badge != blank -%}
+                <span class="swp-badge-sale">{{ block.settings.discount_badge }}</span>
+              {%- endif -%}
+            </div>
+
+            <!-- Product Media -->
+            <a href="{{ block.settings.product_url | default: '#' }}" class="swp-card-media">
+              {%- if block.settings.image != blank -%}
+                <img class="swp-main-img" src="{{ block.settings.image | image_url: width: 600 }}" alt="{{ block.settings.title | escape }}" loading="lazy">
+              {%- else -%}
+                <img class="swp-main-img" src="https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=600&auto=format&fit=crop&q=80" alt="{{ block.settings.title }}" loading="lazy">
+              {%- endif -%}
+            </a>
+
+            <!-- Card Info -->
+            <div class="swp-card-details">
+              <div class="swp-card-title-row">
+                <h3 class="swp-card-title">{{ block.settings.title }}</h3>
+                <p class="swp-card-variant-name">{{ block.settings.variant_title }}</p>
+              </div>
+
+              <div class="swp-card-price-row">
+                <span class="swp-price-current">{{ block.settings.price }}</span>
+                {%- if block.settings.compare_at_price != blank -%}
+                  <span class="swp-price-compare">{{ block.settings.compare_at_price }}</span>
+                {%- endif -%}
+              </div>
+
+              <div class="swp-card-rating">
+                <span class="swp-stars">
+                  <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                  <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                  <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                  <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                  <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                </span>
+                <span>({{ block.settings.review_count | default: 128 }})</span>
+              </div>
+
+              <!-- Color Swatches (Owala style interactive dots) -->
+              <div class="swp-swatches-row">
+                <span class="swp-swatch-dot is-active" style="background-color: {{ block.settings.color_hex | default: '#0ea5e9' }};" title="{{ block.settings.color_name }}"></span>
+              </div>
+
+              <!-- Add To Cart Pill Button -->
+              <button
+                class="swp-atc-btn"
+                type="button"
+                data-variant-id="{{ block.settings.variant_id }}"
+                data-product-title="{{ block.settings.title | escape }} - {{ block.settings.variant_title | escape }}"
+              >
+                <span class="swp-btn-text">Add To Cart</span>
+                <span class="swp-spinner"></span>
+              </button>
+            </div>
+          </div>
+        {%- endfor -%}
+
+      {%- else -%}
+        <!-- =========================================================================
+             PRESET DEFAULT VARIANT CARDS (Sipwise LITE+ in 3 Colors, Sipwise PRO in 4 Colors)
+             Total 7 Rich Variant Cards Matching Owala's Density
+             ========================================================================= -->
+
+        <!-- CARD 1: Sipwise LITE+ (Ocean Blue) -->
+        <div class="swp-product-card" data-coll="lite" data-color="blue" data-price="49" data-rating="5" data-instock="true" data-is-pro="false">
+          <div class="swp-card-badges">
+            <span></span>
+            <span class="swp-badge-sale">SAVE 20%</span>
+          </div>
+          <a href="/products/sipwise-lite" class="swp-card-media">
+            <img class="swp-main-img" src="https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=600&auto=format&fit=crop&q=80" alt="Sipwise LITE+ Ocean Blue" loading="lazy">
+          </a>
+          <div class="swp-card-details">
+            <div class="swp-card-title-row">
+              <h3 class="swp-card-title">Sipwise LITE+</h3>
+              <p class="swp-card-variant-name">Ocean Blue · 24oz</p>
+            </div>
+            <div class="swp-card-price-row">
+              <span class="swp-price-current">$49.00</span>
+              <span class="swp-price-compare">$65.00</span>
+            </div>
+            <div class="swp-card-rating">
+              <span class="swp-stars">
+                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              </span>
+              <span>(184)</span>
+            </div>
+            <div class="swp-swatches-row">
+              <span class="swp-swatch-dot is-active" style="background-color: #0ea5e9;" title="Ocean Blue"></span>
+              <span class="swp-swatch-dot" style="background-color: #1e293b;" title="Midnight Black"></span>
+              <span class="swp-swatch-dot" style="background-color: #fb7185;" title="Electric Coral"></span>
+            </div>
+            <button class="swp-atc-btn" type="button" data-variant-id="default" data-product-title="Sipwise LITE+ - Ocean Blue">
+              <span class="swp-btn-text">Add To Cart</span>
+              <span class="swp-spinner"></span>
+            </button>
+          </div>
+        </div>
+
+        <!-- CARD 2: Sipwise LITE+ (Midnight Black) -->
+        <div class="swp-product-card" data-coll="lite" data-color="black" data-price="49" data-rating="5" data-instock="true" data-is-pro="false">
+          <div class="swp-card-badges">
+            <span></span>
+            <span class="swp-badge-sale">SAVE 20%</span>
+          </div>
+          <a href="/products/sipwise-lite" class="swp-card-media">
+            <img class="swp-main-img" src="https://images.unsplash.com/photo-1544816155-12df9643f363?w=600&auto=format&fit=crop&q=80" alt="Sipwise LITE+ Midnight Black" loading="lazy">
+          </a>
+          <div class="swp-card-details">
+            <div class="swp-card-title-row">
+              <h3 class="swp-card-title">Sipwise LITE+</h3>
+              <p class="swp-card-variant-name">Midnight Black · 24oz</p>
+            </div>
+            <div class="swp-card-price-row">
+              <span class="swp-price-current">$49.00</span>
+              <span class="swp-price-compare">$65.00</span>
+            </div>
+            <div class="swp-card-rating">
+              <span class="swp-stars">
+                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              </span>
+              <span>(142)</span>
+            </div>
+            <div class="swp-swatches-row">
+              <span class="swp-swatch-dot is-active" style="background-color: #1e293b;" title="Midnight Black"></span>
+              <span class="swp-swatch-dot" style="background-color: #0ea5e9;" title="Ocean Blue"></span>
+              <span class="swp-swatch-dot" style="background-color: #fb7185;" title="Electric Coral"></span>
+            </div>
+            <button class="swp-atc-btn" type="button" data-variant-id="default" data-product-title="Sipwise LITE+ - Midnight Black">
+              <span class="swp-btn-text">Add To Cart</span>
+              <span class="swp-spinner"></span>
+            </button>
+          </div>
+        </div>
+
+        <!-- CARD 3: Sipwise LITE+ (Electric Coral) -->
+        <div class="swp-product-card" data-coll="lite" data-color="coral" data-price="49" data-rating="5" data-instock="true" data-is-pro="false">
+          <div class="swp-card-badges">
+            <span></span>
+            <span class="swp-badge-sale">SAVE 20%</span>
+          </div>
+          <a href="/products/sipwise-lite" class="swp-card-media">
+            <img class="swp-main-img" src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=600&auto=format&fit=crop&q=80" alt="Sipwise LITE+ Electric Coral" loading="lazy">
+          </a>
+          <div class="swp-card-details">
+            <div class="swp-card-title-row">
+              <h3 class="swp-card-title">Sipwise LITE+</h3>
+              <p class="swp-card-variant-name">Electric Coral · 24oz</p>
+            </div>
+            <div class="swp-card-price-row">
+              <span class="swp-price-current">$49.00</span>
+              <span class="swp-price-compare">$65.00</span>
+            </div>
+            <div class="swp-card-rating">
+              <span class="swp-stars">
+                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              </span>
+              <span>(96)</span>
+            </div>
+            <div class="swp-swatches-row">
+              <span class="swp-swatch-dot is-active" style="background-color: #fb7185;" title="Electric Coral"></span>
+              <span class="swp-swatch-dot" style="background-color: #0ea5e9;" title="Ocean Blue"></span>
+              <span class="swp-swatch-dot" style="background-color: #1e293b;" title="Midnight Black"></span>
+            </div>
+            <button class="swp-atc-btn" type="button" data-variant-id="default" data-product-title="Sipwise LITE+ - Electric Coral">
+              <span class="swp-btn-text">Add To Cart</span>
+              <span class="swp-spinner"></span>
+            </button>
+          </div>
+        </div>
+
+        <!-- CARD 4: Sipwise PRO (Deep Navy) -->
+        <div class="swp-product-card" data-coll="pro" data-color="navy" data-price="79" data-rating="5" data-instock="true" data-is-pro="true">
+          <div class="swp-card-badges">
+            <span class="swp-badge-bt">
+              <svg viewBox="0 0 24 24"><path d="M14.88 16.29L13 14.41V19.17l1.88-2.88zM13 4.83l1.88 2.88L13 9.59V4.83M17.71 7.71L12 2h-1v7.59L6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 11 14.41V22h1l5.71-5.71-4.3-4.29 4.3-4.29z"/></svg>
+              Bluetooth
+            </span>
+            <span class="swp-badge-sale">SAVE $20</span>
+          </div>
+          <a href="/products/sipwise-pro" class="swp-card-media">
+            <img class="swp-main-img" src="https://images.unsplash.com/photo-1556817411-31ae72fa3ea0?w=600&auto=format&fit=crop&q=80" alt="Sipwise PRO Deep Navy" loading="lazy">
+          </a>
+          <div class="swp-card-details">
+            <div class="swp-card-title-row">
+              <h3 class="swp-card-title">Sipwise PRO</h3>
+              <p class="swp-card-variant-name">Deep Navy · 32oz</p>
+            </div>
+            <div class="swp-card-price-row">
+              <span class="swp-price-current">$79.00</span>
+              <span class="swp-price-compare">$99.00</span>
+            </div>
+            <div class="swp-card-rating">
+              <span class="swp-stars">
+                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              </span>
+              <span>(312)</span>
+            </div>
+            <div class="swp-swatches-row">
+              <span class="swp-swatch-dot is-active" style="background-color: #1e3a8a;" title="Deep Navy"></span>
+              <span class="swp-swatch-dot" style="background-color: #2563eb;" title="Electric Blue"></span>
+              <span class="swp-swatch-dot" style="background-color: #f97316;" title="Sunrise Orange"></span>
+              <span class="swp-swatch-dot" style="background-color: #0f172a;" title="Carbon Black"></span>
+            </div>
+            <button class="swp-atc-btn" type="button" data-variant-id="default" data-product-title="Sipwise PRO - Deep Navy">
+              <span class="swp-btn-text">Add To Cart</span>
+              <span class="swp-spinner"></span>
+            </button>
+          </div>
+        </div>
+
+        <!-- CARD 5: Sipwise PRO (Electric Blue) -->
+        <div class="swp-product-card" data-coll="pro" data-color="blue" data-price="79" data-rating="5" data-instock="true" data-is-pro="true">
+          <div class="swp-card-badges">
+            <span class="swp-badge-bt">
+              <svg viewBox="0 0 24 24"><path d="M14.88 16.29L13 14.41V19.17l1.88-2.88zM13 4.83l1.88 2.88L13 9.59V4.83M17.71 7.71L12 2h-1v7.59L6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 11 14.41V22h1l5.71-5.71-4.3-4.29 4.3-4.29z"/></svg>
+              Bluetooth
+            </span>
+            <span class="swp-badge-sale">SAVE $20</span>
+          </div>
+          <a href="/products/sipwise-pro" class="swp-card-media">
+            <img class="swp-main-img" src="https://images.unsplash.com/photo-1517686469429-8bdb88b9f907?w=600&auto=format&fit=crop&q=80" alt="Sipwise PRO Electric Blue" loading="lazy">
+          </a>
+          <div class="swp-card-details">
+            <div class="swp-card-title-row">
+              <h3 class="swp-card-title">Sipwise PRO</h3>
+              <p class="swp-card-variant-name">Electric Blue · 32oz</p>
+            </div>
+            <div class="swp-card-price-row">
+              <span class="swp-price-current">$79.00</span>
+              <span class="swp-price-compare">$99.00</span>
+            </div>
+            <div class="swp-card-rating">
+              <span class="swp-stars">
+                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              </span>
+              <span>(285)</span>
+            </div>
+            <div class="swp-swatches-row">
+              <span class="swp-swatch-dot is-active" style="background-color: #2563eb;" title="Electric Blue"></span>
+              <span class="swp-swatch-dot" style="background-color: #1e3a8a;" title="Deep Navy"></span>
+              <span class="swp-swatch-dot" style="background-color: #f97316;" title="Sunrise Orange"></span>
+              <span class="swp-swatch-dot" style="background-color: #0f172a;" title="Carbon Black"></span>
+            </div>
+            <button class="swp-atc-btn" type="button" data-variant-id="default" data-product-title="Sipwise PRO - Electric Blue">
+              <span class="swp-btn-text">Add To Cart</span>
+              <span class="swp-spinner"></span>
+            </button>
+          </div>
+        </div>
+
+        <!-- CARD 6: Sipwise PRO (Sunrise Orange) -->
+        <div class="swp-product-card" data-coll="pro" data-color="orange" data-price="79" data-rating="5" data-instock="true" data-is-pro="true">
+          <div class="swp-card-badges">
+            <span class="swp-badge-bt">
+              <svg viewBox="0 0 24 24"><path d="M14.88 16.29L13 14.41V19.17l1.88-2.88zM13 4.83l1.88 2.88L13 9.59V4.83M17.71 7.71L12 2h-1v7.59L6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 11 14.41V22h1l5.71-5.71-4.3-4.29 4.3-4.29z"/></svg>
+              Bluetooth
+            </span>
+            <span class="swp-badge-sale">SAVE $20</span>
+          </div>
+          <a href="/products/sipwise-pro" class="swp-card-media">
+            <img class="swp-main-img" src="https://images.unsplash.com/photo-1544816155-12df9643f363?w=600&auto=format&fit=crop&q=80" alt="Sipwise PRO Sunrise Orange" loading="lazy">
+          </a>
+          <div class="swp-card-details">
+            <div class="swp-card-title-row">
+              <h3 class="swp-card-title">Sipwise PRO</h3>
+              <p class="swp-card-variant-name">Sunrise Orange · 32oz</p>
+            </div>
+            <div class="swp-card-price-row">
+              <span class="swp-price-current">$79.00</span>
+              <span class="swp-price-compare">$99.00</span>
+            </div>
+            <div class="swp-card-rating">
+              <span class="swp-stars">
+                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              </span>
+              <span>(219)</span>
+            </div>
+            <div class="swp-swatches-row">
+              <span class="swp-swatch-dot is-active" style="background-color: #f97316;" title="Sunrise Orange"></span>
+              <span class="swp-swatch-dot" style="background-color: #1e3a8a;" title="Deep Navy"></span>
+              <span class="swp-swatch-dot" style="background-color: #2563eb;" title="Electric Blue"></span>
+              <span class="swp-swatch-dot" style="background-color: #0f172a;" title="Carbon Black"></span>
+            </div>
+            <button class="swp-atc-btn" type="button" data-variant-id="default" data-product-title="Sipwise PRO - Sunrise Orange">
+              <span class="swp-btn-text">Add To Cart</span>
+              <span class="swp-spinner"></span>
+            </button>
+          </div>
+        </div>
+
+        <!-- CARD 7: Sipwise PRO (Carbon Black) -->
+        <div class="swp-product-card" data-coll="pro" data-color="black" data-price="79" data-rating="5" data-instock="true" data-is-pro="true">
+          <div class="swp-card-badges">
+            <span class="swp-badge-bt">
+              <svg viewBox="0 0 24 24"><path d="M14.88 16.29L13 14.41V19.17l1.88-2.88zM13 4.83l1.88 2.88L13 9.59V4.83M17.71 7.71L12 2h-1v7.59L6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 11 14.41V22h1l5.71-5.71-4.3-4.29 4.3-4.29z"/></svg>
+              Bluetooth
+            </span>
+            <span class="swp-badge-sale">SAVE $20</span>
+          </div>
+          <a href="/products/sipwise-pro" class="swp-card-media">
+            <img class="swp-main-img" src="https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=600&auto=format&fit=crop&q=80" alt="Sipwise PRO Carbon Black" loading="lazy">
+          </a>
+          <div class="swp-card-details">
+            <div class="swp-card-title-row">
+              <h3 class="swp-card-title">Sipwise PRO</h3>
+              <p class="swp-card-variant-name">Carbon Black · 32oz</p>
+            </div>
+            <div class="swp-card-price-row">
+              <span class="swp-price-current">$79.00</span>
+              <span class="swp-price-compare">$99.00</span>
+            </div>
+            <div class="swp-card-rating">
+              <span class="swp-stars">
+                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              </span>
+              <span>(268)</span>
+            </div>
+            <div class="swp-swatches-row">
+              <span class="swp-swatch-dot is-active" style="background-color: #0f172a;" title="Carbon Black"></span>
+              <span class="swp-swatch-dot" style="background-color: #1e3a8a;" title="Deep Navy"></span>
+              <span class="swp-swatch-dot" style="background-color: #2563eb;" title="Electric Blue"></span>
+              <span class="swp-swatch-dot" style="background-color: #f97316;" title="Sunrise Orange"></span>
+            </div>
+            <button class="swp-atc-btn" type="button" data-variant-id="default" data-product-title="Sipwise PRO - Carbon Black">
+              <span class="swp-btn-text">Add To Cart</span>
+              <span class="swp-spinner"></span>
+            </button>
+          </div>
+        </div>
+
+      {%- endif -%}
+
+    </div>
+  </div>
+</section>
+
+<!-- =======================================================
+     INTERACTIVE JAVASCRIPT: FILTERING, SORTING & CART
+     ======================================================= -->
+<script>
+  (function() {
+    var section = document.getElementById('sipwise-shop-{{ section_id }}');
+    if (!section) return;
+
+    var grid = section.querySelector('#swp-product-grid-{{ section_id }}');
+    var countEl = section.querySelector('#swp-count-num-{{ section_id }}');
+    var activeTagsContainer = section.querySelector('#swp-active-tags-{{ section_id }}');
+    var collTrack = section.querySelector('#swp-coll-track-{{ section_id }}');
+    var dotsContainer = section.querySelector('#swp-coll-dots-{{ section_id }}');
+    var inStockCheckbox = section.querySelector('#swp-instock-{{ section_id }}');
+    var sortLabel = section.querySelector('.swp-sort-label');
+
+    var currentFilters = {
+      coll: 'all',
+      color: 'all',
+      inStockOnly: false,
+      sort: 'featured'
+    };
+
+    // 1. Mobile Collections Carousel Dots
+    if (collTrack && dotsContainer) {
+      var cards = collTrack.querySelectorAll('.swp-coll-card');
+      dotsContainer.innerHTML = '';
+      cards.forEach(function(_, idx) {
+        var dot = document.createElement('span');
+        dot.className = 'swp-coll-dot' + (idx === 0 ? ' is-active' : '');
+        dotsContainer.appendChild(dot);
+      });
+
+      collTrack.addEventListener('scroll', function() {
+        var cardWidth = cards[0] ? cards[0].offsetWidth + 20 : 200;
+        var activeIndex = Math.round(collTrack.scrollLeft / cardWidth);
+        var dots = dotsContainer.querySelectorAll('.swp-coll-dot');
+        dots.forEach(function(d, i) {
+          d.classList.toggle('is-active', i === activeIndex);
+        });
+      });
+    }
+
+    // 2. Collection Cards Click -> Filter Grid
+    var collCards = section.querySelectorAll('.swp-coll-card');
+    collCards.forEach(function(card) {
+      card.addEventListener('click', function(e) {
+        e.preventDefault();
+        var targetColl = card.getAttribute('data-filter-coll');
+        
+        collCards.forEach(function(c) { c.classList.remove('is-active'); });
+        if (currentFilters.coll === targetColl) {
+          currentFilters.coll = 'all';
+        } else {
+          currentFilters.coll = targetColl;
+          card.classList.add('is-active');
+        }
+
+        applyFilters();
+
+        // Smooth scroll to product grid
+        var toolbar = section.querySelector('#swp-toolbar-{{ section_id }}');
+        if (toolbar) {
+          toolbar.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    // 3. Dropdowns Behavior (Toggle Open / Close)
+    var dropdowns = section.querySelectorAll('[data-swp-dropdown]');
+    dropdowns.forEach(function(dd) {
+      var btn = dd.querySelector('.swp-pill-btn');
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        var isOpen = dd.classList.contains('is-open');
+        dropdowns.forEach(function(d) { d.classList.remove('is-open'); });
+        if (!isOpen) dd.classList.add('is-open');
+      });
+    });
+
+    document.addEventListener('click', function() {
+      dropdowns.forEach(function(d) { d.classList.remove('is-open'); });
+    });
+
+    // Dropdown Items Click
+    section.querySelectorAll('.swp-dropdown-item').forEach(function(item) {
+      item.addEventListener('click', function(e) {
+        e.stopPropagation();
+        var menu = item.closest('.swp-dropdown-menu');
+        var dd = item.closest('.swp-dropdown');
+        if (menu) {
+          menu.querySelectorAll('.swp-dropdown-item').forEach(function(i) { i.classList.remove('is-selected'); });
+          item.classList.add('is-selected');
+        }
+        if (dd) dd.classList.remove('is-open');
+
+        // Check if Sort or Filter
+        var sortVal = item.getAttribute('data-sort');
+        if (sortVal) {
+          currentFilters.sort = sortVal;
+          if (sortLabel) sortLabel.textContent = 'Sort: ' + item.textContent.trim();
+        }
+
+        var filterType = item.getAttribute('data-filter-type');
+        var filterVal = item.getAttribute('data-filter-val');
+        if (filterType && filterVal) {
+          currentFilters[filterType] = filterVal;
+        }
+
+        applyFilters();
+      });
+    });
+
+    // 4. In Stock Checkbox
+    if (inStockCheckbox) {
+      inStockCheckbox.addEventListener('change', function() {
+        currentFilters.inStockOnly = inStockCheckbox.checked;
+        applyFilters();
+      });
+    }
+
+    // 5. View Toggles (4-col vs 2-col)
+    var viewBtns = section.querySelectorAll('.swp-view-btn');
+    viewBtns.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        viewBtns.forEach(function(b) { b.classList.remove('is-active'); });
+        btn.classList.add('is-active');
+        var view = btn.getAttribute('data-view');
+        if (grid) {
+          grid.classList.remove('grid--2-col', 'grid--3-col');
+          if (view === '2') grid.classList.add('grid--2-col');
+          if (view === '3') grid.classList.add('grid--3-col');
+        }
+      });
+    });
+
+    // 6. Filter & Sort Execution Engine
+    function applyFilters() {
+      if (!grid) return;
+      var cards = Array.from(grid.querySelectorAll('.swp-product-card'));
+      var visibleCount = 0;
+
+      cards.forEach(function(card) {
+        var cardColl = card.getAttribute('data-coll');
+        var cardColor = card.getAttribute('data-color');
+        var cardInStock = card.getAttribute('data-instock') === 'true';
+
+        var matchColl = (currentFilters.coll === 'all' || cardColl === currentFilters.coll);
+        var matchColor = (currentFilters.color === 'all' || cardColor === currentFilters.color);
+        var matchStock = (!currentFilters.inStockOnly || cardInStock);
+
+        if (matchColl && matchColor && matchStock) {
+          card.style.display = 'flex';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      // Sorting
+      var sortedCards = cards.filter(function(c) { return c.style.display !== 'none'; });
+      sortedCards.sort(function(a, b) {
+        var priceA = parseFloat(a.getAttribute('data-price')) || 0;
+        var priceB = parseFloat(b.getAttribute('data-price')) || 0;
+        var ratingA = parseFloat(a.getAttribute('data-rating')) || 0;
+        var ratingB = parseFloat(b.getAttribute('data-rating')) || 0;
+
+        if (currentFilters.sort === 'price-low') return priceA - priceB;
+        if (currentFilters.sort === 'price-high') return priceB - priceA;
+        if (currentFilters.sort === 'rating') return ratingB - ratingA;
+        return 0; // featured default
+      });
+
+      sortedCards.forEach(function(card) {
+        grid.appendChild(card);
+      });
+
+      if (countEl) countEl.textContent = visibleCount;
+      renderActiveTags();
+    }
+
+    // 7. Active Tags Render
+    function renderActiveTags() {
+      if (!activeTagsContainer) return;
+      var tags = [];
+
+      if (currentFilters.coll !== 'all') {
+        var name = currentFilters.coll === 'pro' ? 'Sipwise PRO' : 'Sipwise LITE+';
+        tags.push({ key: 'coll', label: name });
+      }
+      if (currentFilters.color !== 'all') {
+        tags.push({ key: 'color', label: 'Color: ' + currentFilters.color.charAt(0).toUpperCase() + currentFilters.color.slice(1) });
+      }
+      if (currentFilters.inStockOnly) {
+        tags.push({ key: 'inStockOnly', label: 'In Stock Only' });
+      }
+      if (currentFilters.sort !== 'featured') {
+        tags.push({ key: 'sort', label: 'Sort: ' + currentFilters.sort });
+      }
+
+      if (tags.length === 0) {
+        activeTagsContainer.style.display = 'none';
+        activeTagsContainer.innerHTML = '';
+        return;
+      }
+
+      activeTagsContainer.style.display = 'flex';
+      activeTagsContainer.innerHTML = '';
+
+      tags.forEach(function(tag) {
+        var pill = document.createElement('button');
+        pill.className = 'swp-tag-pill';
+        pill.type = 'button';
+        pill.innerHTML = tag.label + ' <span>&times;</span>';
+        pill.addEventListener('click', function() {
+          if (tag.key === 'inStockOnly') {
+            currentFilters.inStockOnly = false;
+            if (inStockCheckbox) inStockCheckbox.checked = false;
+          } else if (tag.key === 'sort') {
+            currentFilters.sort = 'featured';
+            if (sortLabel) sortLabel.textContent = 'Sort: Featured';
+          } else {
+            currentFilters[tag.key] = 'all';
+          }
+          applyFilters();
+        });
+        activeTagsContainer.appendChild(pill);
+      });
+
+      var clearBtn = document.createElement('button');
+      clearBtn.className = 'swp-clear-all';
+      clearBtn.type = 'button';
+      clearBtn.textContent = 'Clear all';
+      clearBtn.addEventListener('click', function() {
+        currentFilters.coll = 'all';
+        currentFilters.color = 'all';
+        currentFilters.inStockOnly = false;
+        currentFilters.sort = 'featured';
+        if (inStockCheckbox) inStockCheckbox.checked = false;
+        if (sortLabel) sortLabel.textContent = 'Sort: Featured';
+        collCards.forEach(function(c) { c.classList.remove('is-active'); });
+        applyFilters();
+      });
+      activeTagsContainer.appendChild(clearBtn);
+    }
+
+    // 8. Card Swatch Click Event (Live color preview per card)
+    section.querySelectorAll('.swp-product-card').forEach(function(card) {
+      var swatches = card.querySelectorAll('.swp-swatch-dot');
+      var variantNameEl = card.querySelector('.swp-card-variant-name');
+      var atcBtn = card.querySelector('.swp-atc-btn');
+      var cardTitle = card.querySelector('.swp-card-title');
+
+      swatches.forEach(function(swatch) {
+        swatch.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          swatches.forEach(function(s) { s.classList.remove('is-active'); });
+          swatch.classList.add('is-active');
+
+          var colorTitle = swatch.getAttribute('title');
+          if (colorTitle && variantNameEl) {
+            var sizeMatch = variantNameEl.textContent.match(/·\s*([^·]+)$/);
+            var sizeStr = sizeMatch ? ' · ' + sizeMatch[1].trim() : '';
+            variantNameEl.textContent = colorTitle + sizeStr;
+
+            if (atcBtn && cardTitle) {
+              atcBtn.setAttribute('data-product-title', cardTitle.textContent.trim() + ' - ' + colorTitle);
+            }
+          }
+        });
+      });
+    });
+
+    // 9. Add to Cart AJAX handler
+    section.querySelectorAll('.swp-atc-btn').forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        var variantId = btn.getAttribute('data-variant-id');
+        var btnText = btn.querySelector('.swp-btn-text');
+
+        btn.classList.add('is-loading');
+
+        // If default sample variant without ID, simulate instant add
+        if (!variantId || variantId === 'default') {
+          setTimeout(function() {
+            btn.classList.remove('is-loading');
+            if (btnText) btnText.textContent = 'Added ✓';
+            
+            // Try opening cart drawer if present
+            var cartDrawer = document.querySelector('cart-drawer');
+            if (cartDrawer) {
+              if (typeof cartDrawer.open === 'function') cartDrawer.open();
+              else cartDrawer.classList.add('active');
+            }
+
+            setTimeout(function() {
+              if (btnText) btnText.textContent = 'Add To Cart';
+            }, 2000);
+          }, 600);
+          return;
+        }
+
+        // Live Shopify /cart/add.js
+        fetch('/cart/add.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ items: [{ id: variantId, quantity: 1 }] })
+        })
+        .then(function(res) { return res.json(); })
+        .then(function(data) {
+          btn.classList.remove('is-loading');
+          if (btnText) btnText.textContent = 'Added ✓';
+
+          var cartDrawer = document.querySelector('cart-drawer');
+          if (cartDrawer) {
+            if (typeof cartDrawer.renderContents === 'function') {
+              cartDrawer.renderContents(data);
+            } else if (typeof cartDrawer.open === 'function') {
+              cartDrawer.open();
+            } else {
+              cartDrawer.classList.add('active');
+            }
+          }
+
+          setTimeout(function() {
+            if (btnText) btnText.textContent = 'Add To Cart';
+          }, 2000);
+        })
+        .catch(function(err) {
+          console.error('Add to cart error:', err);
+          btn.classList.remove('is-loading');
+        });
+      });
+    });
+
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Sipwise Shop Browsing",
+  "tag": "section",
+  "class": "sipwise-shop-browsing-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Part 1: Collections Strip"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_collections_strip",
+      "label": "Show Collections Strip",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "collections_title",
+      "label": "Collections Heading",
+      "default": "Explore Sipwise Collection"
+    },
+    {
+      "type": "text",
+      "id": "collections_subtitle",
+      "label": "Collections Subtitle"
+    },
+    {
+      "type": "header",
+      "content": "Part 2: Product Variant Grid"
+    },
+    {
+      "type": "text",
+      "id": "grid_title",
+      "label": "Grid Heading",
+      "default": "Explore All Products"
+    },
+    {
+      "type": "header",
+      "content": "Layout & Styling"
+    },
+    {
+      "type": "range",
+      "id": "container_width",
+      "min": 1000,
+      "max": 1600,
+      "step": 50,
+      "unit": "px",
+      "label": "Container Max Width",
+      "default": 1300
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 20,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 20,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 80
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#0f172a"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#0f172a"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection_card",
+      "name": "Collection Card (Top)",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Collection Name",
+          "default": "Sipwise PRO"
+        },
+        {
+          "type": "select",
+          "id": "filter_tag",
+          "label": "Grid Filter Category",
+          "options": [
+            { "value": "lite", "label": "Sipwise LITE+" },
+            { "value": "pro", "label": "Sipwise PRO" }
+          ],
+          "default": "pro"
+        },
+        {
+          "type": "text",
+          "id": "badge",
+          "label": "Card Badge Text",
+          "default": "Bluetooth Model"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Collection / Box Image"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button Text",
+          "default": "Shop now"
+        }
+      ]
+    },
+    {
+      "type": "product_variant",
+      "name": "Product Variant Card",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Product Model Name",
+          "default": "Sipwise PRO"
+        },
+        {
+          "type": "text",
+          "id": "variant_title",
+          "label": "Variant / Color & Size",
+          "default": "Ocean Blue · 32oz"
+        },
+        {
+          "type": "select",
+          "id": "collection_type",
+          "label": "Collection Group",
+          "options": [
+            { "value": "lite", "label": "Sipwise LITE+" },
+            { "value": "pro", "label": "Sipwise PRO" }
+          ],
+          "default": "pro"
+        },
+        {
+          "type": "select",
+          "id": "color_family",
+          "label": "Color Family Filter",
+          "options": [
+            { "value": "blue", "label": "Blue" },
+            { "value": "black", "label": "Black" },
+            { "value": "coral", "label": "Coral / Pink" },
+            { "value": "navy", "label": "Navy" },
+            { "value": "orange", "label": "Orange" }
+          ],
+          "default": "blue"
+        },
+        {
+          "type": "text",
+          "id": "color_name",
+          "label": "Color Name (Tooltip)",
+          "default": "Ocean Blue"
+        },
+        {
+          "type": "color",
+          "id": "color_hex",
+          "label": "Color Swatch Hex",
+          "default": "#0ea5e9"
+        },
+        {
+          "type": "text",
+          "id": "price",
+          "label": "Price (Display)",
+          "default": "$79.00"
+        },
+        {
+          "type": "number",
+          "id": "price_num",
+          "label": "Numeric Price (for Sorting)",
+          "default": 79
+        },
+        {
+          "type": "text",
+          "id": "compare_at_price",
+          "label": "Original Price (Strikethrough)",
+          "default": "$99.00"
+        },
+        {
+          "type": "text",
+          "id": "discount_badge",
+          "label": "Discount Badge Text",
+          "default": "SAVE $20"
+        },
+        {
+          "type": "checkbox",
+          "id": "is_bluetooth",
+          "label": "Bluetooth Connected Model (Show Badge)",
+          "default": true
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "label": "Star Rating",
+          "default": 5
+        },
+        {
+          "type": "number",
+          "id": "review_count",
+          "label": "Review Count",
+          "default": 128
+        },
+        {
+          "type": "checkbox",
+          "id": "in_stock",
+          "label": "In Stock",
+          "default": true
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Variant Image"
+        },
+        {
+          "type": "url",
+          "id": "product_url",
+          "label": "Product Page URL"
+        },
+        {
+          "type": "text",
+          "id": "variant_id",
+          "label": "Shopify Variant ID (for Cart Add)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sipwise Shop Browsing",
+      "blocks": [
+        {
+          "type": "collection_card",
+          "settings": {
+            "title": "Sipwise LITE+",
+            "filter_tag": "lite",
+            "badge": "Smart Hydration"
+          }
+        },
+        {
+          "type": "collection_card",
+          "settings": {
+            "title": "Sipwise PRO",
+            "filter_tag": "pro",
+            "badge": "Bluetooth Model"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
