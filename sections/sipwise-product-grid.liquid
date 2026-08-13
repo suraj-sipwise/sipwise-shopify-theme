@@ -1,7 +1,7 @@
 {% comment %}
   Sipwise Product Browsing Section
   Part 1: Collections Strip (Top) — swipeable on mobile, static row on desktop
-  Part 2: Full Product Grid (Bottom) — Owala-style individual variant cards with swatches, filters, sorting, and AJAX cart
+  Part 2: Full Product Grid (Bottom) — Owala-style individual variant cards (1 swatch per card) with filters, sorting, and AJAX cart
 {% endcomment %}
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -315,6 +315,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    white-space: nowrap;
   }
 
   #sipwise-shop-{{ section_id }} .swp-dropdown-item:hover,
@@ -418,7 +419,7 @@
   }
 
   /* =======================================================
-     PART 3: OWALA-STYLE PRODUCT VARIANT GRID
+     PART 3: OWALA-STYLE PRODUCT VARIANT GRID (1 SWATCH/CARD)
      ======================================================= */
   #sipwise-shop-{{ section_id }} .swp-product-grid {
     display: grid;
@@ -588,7 +589,7 @@
     fill: currentColor;
   }
 
-  /* Swatches Row (Owala Style Dots) */
+  /* Single Swatch Dot (Owala Style) */
   #sipwise-shop-{{ section_id }} .swp-swatches-row {
     display: flex;
     align-items: center;
@@ -597,21 +598,14 @@
   }
 
   #sipwise-shop-{{ section_id }} .swp-swatch-dot {
-    width: 22px;
-    height: 22px;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
-    border: 2px solid transparent;
+    border: 2px solid #0f172a;
     padding: 2px;
-    cursor: pointer;
-    transition: all 0.2s ease;
     background-clip: content-box;
     display: inline-block;
-  }
-
-  #sipwise-shop-{{ section_id }} .swp-swatch-dot.is-active,
-  #sipwise-shop-{{ section_id }} .swp-swatch-dot:hover {
-    border-color: #0f172a;
-    transform: scale(1.15);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   }
 
   /* Add to Cart Pill Button */
@@ -764,8 +758,8 @@
     }
 
     #sipwise-shop-{{ section_id }} .swp-swatch-dot {
-      width: 18px;
-      height: 18px;
+      width: 20px;
+      height: 20px;
     }
   }
 </style>
@@ -788,30 +782,86 @@
         <div class="swp-coll-track" id="swp-coll-track-{{ section_id }}">
           {%- if collection_blocks.size > 0 -%}
             {%- for block in collection_blocks -%}
-              <div class="swp-coll-card" data-filter-coll="{{ block.settings.filter_tag | default: 'all' }}" {{ block.shopify_attributes }}>
+              {%- liquid
+                assign coll_obj = block.settings.collection
+                assign card_title = block.settings.title
+                if card_title == blank and coll_obj != blank
+                  assign card_title = coll_obj.title
+                endif
+                if card_title == blank
+                  assign card_title = "Collection"
+                endif
+
+                assign card_filter = block.settings.filter_tag
+                if card_filter == blank and coll_obj != blank
+                  assign card_filter = coll_obj.handle
+                endif
+                if card_filter == blank
+                  assign card_filter = "all"
+                endif
+
+                assign card_url = block.settings.custom_url
+                if card_url == blank and coll_obj != blank
+                  assign card_url = coll_obj.url
+                endif
+              -%}
+
+              <div
+                class="swp-coll-card"
+                data-filter-coll="{{ card_filter | downcase }}"
+                data-card-action="{{ block.settings.card_action | default: 'filter' }}"
+                data-url="{{ card_url | default: '#' }}"
+                {{ block.shopify_attributes }}
+              >
                 {%- if block.settings.badge != blank -%}
                   <span class="swp-coll-badge">{{ block.settings.badge }}</span>
                 {%- endif -%}
 
                 <div class="swp-coll-img-wrap">
                   {%- if block.settings.image != blank -%}
-                    <img src="{{ block.settings.image | image_url: width: 320 }}" alt="{{ block.settings.title | escape }}" loading="lazy">
+                    <img src="{{ block.settings.image | image_url: width: 320 }}" alt="{{ card_title | escape }}" loading="lazy">
+                  {%- elsif coll_obj != blank and coll_obj.featured_image != blank -%}
+                    <img src="{{ coll_obj.featured_image | image_url: width: 320 }}" alt="{{ card_title | escape }}" loading="lazy">
+                  {%- elsif coll_obj != blank and coll_obj.image != blank -%}
+                    <img src="{{ coll_obj.image | image_url: width: 320 }}" alt="{{ card_title | escape }}" loading="lazy">
                   {%- else -%}
-                    <img src="https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=320&auto=format&fit=crop&q=80" alt="{{ block.settings.title }}" loading="lazy">
+                    <img src="https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=320&auto=format&fit=crop&q=80" alt="{{ card_title }}" loading="lazy">
                   {%- endif -%}
                 </div>
 
-                <h3 class="swp-coll-name">{{ block.settings.title }}</h3>
+                <h3 class="swp-coll-name">{{ card_title }}</h3>
                 <span class="swp-coll-link">
                   {{ block.settings.button_text | default: "Shop now" }}
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                 </span>
               </div>
             {%- endfor -%}
+
+          {%- elsif section.settings.collections_list != blank -%}
+            {%- for coll in section.settings.collections_list -%}
+              <div
+                class="swp-coll-card"
+                data-filter-coll="{{ coll.handle }}"
+                data-card-action="filter"
+                data-url="{{ coll.url }}"
+              >
+                <div class="swp-coll-img-wrap">
+                  {%- if coll.featured_image != blank -%}
+                    <img src="{{ coll.featured_image | image_url: width: 320 }}" alt="{{ coll.title | escape }}" loading="lazy">
+                  {%- elsif coll.image != blank -%}
+                    <img src="{{ coll.image | image_url: width: 320 }}" alt="{{ coll.title | escape }}" loading="lazy">
+                  {%- else -%}
+                    <img src="https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=320&auto=format&fit=crop&q=80" alt="{{ coll.title }}" loading="lazy">
+                  {%- endif -%}
+                </div>
+                <h3 class="swp-coll-name">{{ coll.title }}</h3>
+                <span class="swp-coll-link">Shop now <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+              </div>
+            {%- endfor -%}
+
           {%- else -%}
             <!-- Fallback Default Collection Cards -->
-            <div class="swp-coll-card" data-filter-coll="lite">
-              <span class="swp-coll-badge">Smart Hydration</span>
+            <div class="swp-coll-card" data-filter-coll="lite" data-card-action="filter">
               <div class="swp-coll-img-wrap">
                 <img src="https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=320&auto=format&fit=crop&q=80" alt="Sipwise LITE+">
               </div>
@@ -819,8 +869,7 @@
               <span class="swp-coll-link">Shop now <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
             </div>
 
-            <div class="swp-coll-card" data-filter-coll="pro">
-              <span class="swp-coll-badge" style="background:#eff6ff; color:#1a56db;">Bluetooth Model</span>
+            <div class="swp-coll-card" data-filter-coll="pro" data-card-action="filter">
               <div class="swp-coll-img-wrap">
                 <img src="https://images.unsplash.com/photo-1544816155-12df9643f363?w=320&auto=format&fit=crop&q=80" alt="Sipwise PRO">
               </div>
@@ -867,39 +916,65 @@
             </div>
           </div>
 
-          <!-- Collection Filter Dropdown -->
+          <!-- Collection / Category Filter Dropdown -->
           <div class="swp-dropdown" data-swp-dropdown="coll">
             <button class="swp-pill-btn" type="button">
-              <span>Collection</span>
+              <span class="swp-coll-filter-label">{{ section.settings.coll_filter_label | default: "Collection" }}</span>
               <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
             </button>
-            <div class="swp-dropdown-menu">
-              <button class="swp-dropdown-item is-selected" data-filter-type="coll" data-filter-val="all" type="button">All Collections</button>
-              <button class="swp-dropdown-item" data-filter-type="coll" data-filter-val="lite" type="button">Sipwise LITE+</button>
-              <button class="swp-dropdown-item" data-filter-type="coll" data-filter-val="pro" type="button">Sipwise PRO (Bluetooth)</button>
+            <div class="swp-dropdown-menu" id="swp-coll-dropdown-menu-{{ section_id }}">
+              <button class="swp-dropdown-item is-selected" data-filter-type="coll" data-filter-val="all" type="button">{{ section.settings.coll_all_label | default: "All Collections" }}</button>
+              {%- if section.settings.cat_1_label != blank -%}
+                <button class="swp-dropdown-item" data-filter-type="coll" data-filter-val="{{ section.settings.cat_1_val | default: 'lite' | downcase }}" type="button">{{ section.settings.cat_1_label }}</button>
+              {%- else -%}
+                <button class="swp-dropdown-item" data-filter-type="coll" data-filter-val="lite" type="button">Sipwise LITE+</button>
+              {%- endif -%}
+
+              {%- if section.settings.cat_2_label != blank -%}
+                <button class="swp-dropdown-item" data-filter-type="coll" data-filter-val="{{ section.settings.cat_2_val | default: 'pro' | downcase }}" type="button">{{ section.settings.cat_2_label }}</button>
+              {%- else -%}
+                <button class="swp-dropdown-item" data-filter-type="coll" data-filter-val="pro" type="button">Sipwise PRO (Bluetooth)</button>
+              {%- endif -%}
+
+              {%- if section.settings.cat_3_label != blank -%}
+                <button class="swp-dropdown-item" data-filter-type="coll" data-filter-val="{{ section.settings.cat_3_val | downcase }}" type="button">{{ section.settings.cat_3_label }}</button>
+              {%- endif -%}
             </div>
           </div>
 
           <!-- Color Filter Dropdown -->
           <div class="swp-dropdown" data-swp-dropdown="color">
             <button class="swp-pill-btn" type="button">
-              <span>Color</span>
+              <span class="swp-color-filter-label">{{ section.settings.color_filter_label | default: "Color" }}</span>
               <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
             </button>
-            <div class="swp-dropdown-menu">
-              <button class="swp-dropdown-item is-selected" data-filter-type="color" data-filter-val="all" type="button">All Colors</button>
-              <button class="swp-dropdown-item" data-filter-type="color" data-filter-val="blue" type="button">Ocean Blue</button>
-              <button class="swp-dropdown-item" data-filter-type="color" data-filter-val="black" type="button">Midnight Black</button>
-              <button class="swp-dropdown-item" data-filter-type="color" data-filter-val="coral" type="button">Electric Coral</button>
-              <button class="swp-dropdown-item" data-filter-type="color" data-filter-val="navy" type="button">Deep Navy</button>
-              <button class="swp-dropdown-item" data-filter-type="color" data-filter-val="orange" type="button">Sunrise Orange</button>
+            <div class="swp-dropdown-menu" id="swp-color-dropdown-menu-{{ section_id }}">
+              <button class="swp-dropdown-item is-selected" data-filter-type="color" data-filter-val="all" type="button">{{ section.settings.color_all_label | default: "All Colors" }}</button>
+              
+              {%- if section.settings.custom_colors_list != blank -%}
+                {%- assign color_pairs = section.settings.custom_colors_list | split: "," -%}
+                {%- for pair in color_pairs -%}
+                  {%- assign parts = pair | split: ":" -%}
+                  {%- assign c_label = parts[0] | strip -%}
+                  {%- assign c_val = parts[1] | default: parts[0] | strip | downcase -%}
+                  {%- if c_label != blank -%}
+                    <button class="swp-dropdown-item" data-filter-type="color" data-filter-val="{{ c_val }}" type="button">{{ c_label }}</button>
+                  {%- endif -%}
+                {%- endfor -%}
+              {%- else -%}
+                <button class="swp-dropdown-item" data-filter-type="color" data-filter-val="blue" type="button">Ocean Blue</button>
+                <button class="swp-dropdown-item" data-filter-type="color" data-filter-val="black" type="button">Midnight Black</button>
+                <button class="swp-dropdown-item" data-filter-type="color" data-filter-val="coral" type="button">Electric Coral</button>
+                <button class="swp-dropdown-item" data-filter-type="color" data-filter-val="navy" type="button">Deep Navy</button>
+                <button class="swp-dropdown-item" data-filter-type="color" data-filter-val="orange" type="button">Sunrise Orange</button>
+              {%- endif -%}
             </div>
           </div>
 
           <!-- Hide Out of Stock Checkbox -->
           <label class="swp-checkbox-pill">
             <input type="checkbox" id="swp-instock-{{ section_id }}">
-            <span>In Stock Only</span>
+            <span>{{ section.settings.stock_filter_label | default: "In Stock Only" }}</span>
           </label>
         </div>
 
@@ -922,15 +997,15 @@
 
 
     <!-- ==========================================
-         PART 3: FULL PRODUCT VARIANT GRID
+         PART 3: FULL PRODUCT VARIANT GRID (1 SWATCH/CARD)
          ========================================== -->
     <div class="swp-product-grid" id="swp-product-grid-{{ section_id }}">
 
       {%- if product_blocks.size > 0 -%}
         {%- for block in product_blocks -%}
           <div class="swp-product-card"
-            data-coll="{{ block.settings.collection_type | default: 'lite' }}"
-            data-color="{{ block.settings.color_family | default: 'blue' }}"
+            data-coll="{{ block.settings.collection_type | default: 'lite' | downcase }}"
+            data-color="{{ block.settings.color_family | default: 'blue' | downcase }}"
             data-price="{{ block.settings.price_num | default: 49 }}"
             data-rating="{{ block.settings.rating | default: 5 }}"
             data-instock="{{ block.settings.in_stock | default: true }}"
@@ -987,9 +1062,9 @@
                 <span>({{ block.settings.review_count | default: 128 }})</span>
               </div>
 
-              <!-- Color Swatches (Owala style interactive dots) -->
+              <!-- Only ONE swatch dot per card (Owala Style) -->
               <div class="swp-swatches-row">
-                <span class="swp-swatch-dot is-active" style="background-color: {{ block.settings.color_hex | default: '#0ea5e9' }};" title="{{ block.settings.color_name }}"></span>
+                <span class="swp-swatch-dot" style="background-color: {{ block.settings.color_hex | default: '#0ea5e9' }};" title="{{ block.settings.color_name }}"></span>
               </div>
 
               <!-- Add To Cart Pill Button -->
@@ -1009,7 +1084,7 @@
       {%- else -%}
         <!-- =========================================================================
              PRESET DEFAULT VARIANT CARDS (Sipwise LITE+ in 3 Colors, Sipwise PRO in 4 Colors)
-             Total 7 Rich Variant Cards Matching Owala's Density
+             Each Card Features Exactly 1 Swatch Dot (Owala Style)
              ========================================================================= -->
 
         <!-- CARD 1: Sipwise LITE+ (Ocean Blue) -->
@@ -1040,10 +1115,9 @@
               </span>
               <span>(184)</span>
             </div>
+            <!-- EXACTLY 1 SWATCH DOT -->
             <div class="swp-swatches-row">
-              <span class="swp-swatch-dot is-active" style="background-color: #0ea5e9;" title="Ocean Blue"></span>
-              <span class="swp-swatch-dot" style="background-color: #1e293b;" title="Midnight Black"></span>
-              <span class="swp-swatch-dot" style="background-color: #fb7185;" title="Electric Coral"></span>
+              <span class="swp-swatch-dot" style="background-color: #0ea5e9;" title="Ocean Blue"></span>
             </div>
             <button class="swp-atc-btn" type="button" data-variant-id="default" data-product-title="Sipwise LITE+ - Ocean Blue">
               <span class="swp-btn-text">Add To Cart</span>
@@ -1080,10 +1154,9 @@
               </span>
               <span>(142)</span>
             </div>
+            <!-- EXACTLY 1 SWATCH DOT -->
             <div class="swp-swatches-row">
-              <span class="swp-swatch-dot is-active" style="background-color: #1e293b;" title="Midnight Black"></span>
-              <span class="swp-swatch-dot" style="background-color: #0ea5e9;" title="Ocean Blue"></span>
-              <span class="swp-swatch-dot" style="background-color: #fb7185;" title="Electric Coral"></span>
+              <span class="swp-swatch-dot" style="background-color: #1e293b;" title="Midnight Black"></span>
             </div>
             <button class="swp-atc-btn" type="button" data-variant-id="default" data-product-title="Sipwise LITE+ - Midnight Black">
               <span class="swp-btn-text">Add To Cart</span>
@@ -1120,10 +1193,9 @@
               </span>
               <span>(96)</span>
             </div>
+            <!-- EXACTLY 1 SWATCH DOT -->
             <div class="swp-swatches-row">
-              <span class="swp-swatch-dot is-active" style="background-color: #fb7185;" title="Electric Coral"></span>
-              <span class="swp-swatch-dot" style="background-color: #0ea5e9;" title="Ocean Blue"></span>
-              <span class="swp-swatch-dot" style="background-color: #1e293b;" title="Midnight Black"></span>
+              <span class="swp-swatch-dot" style="background-color: #fb7185;" title="Electric Coral"></span>
             </div>
             <button class="swp-atc-btn" type="button" data-variant-id="default" data-product-title="Sipwise LITE+ - Electric Coral">
               <span class="swp-btn-text">Add To Cart</span>
@@ -1163,11 +1235,9 @@
               </span>
               <span>(312)</span>
             </div>
+            <!-- EXACTLY 1 SWATCH DOT -->
             <div class="swp-swatches-row">
-              <span class="swp-swatch-dot is-active" style="background-color: #1e3a8a;" title="Deep Navy"></span>
-              <span class="swp-swatch-dot" style="background-color: #2563eb;" title="Electric Blue"></span>
-              <span class="swp-swatch-dot" style="background-color: #f97316;" title="Sunrise Orange"></span>
-              <span class="swp-swatch-dot" style="background-color: #0f172a;" title="Carbon Black"></span>
+              <span class="swp-swatch-dot" style="background-color: #1e3a8a;" title="Deep Navy"></span>
             </div>
             <button class="swp-atc-btn" type="button" data-variant-id="default" data-product-title="Sipwise PRO - Deep Navy">
               <span class="swp-btn-text">Add To Cart</span>
@@ -1207,11 +1277,9 @@
               </span>
               <span>(285)</span>
             </div>
+            <!-- EXACTLY 1 SWATCH DOT -->
             <div class="swp-swatches-row">
-              <span class="swp-swatch-dot is-active" style="background-color: #2563eb;" title="Electric Blue"></span>
-              <span class="swp-swatch-dot" style="background-color: #1e3a8a;" title="Deep Navy"></span>
-              <span class="swp-swatch-dot" style="background-color: #f97316;" title="Sunrise Orange"></span>
-              <span class="swp-swatch-dot" style="background-color: #0f172a;" title="Carbon Black"></span>
+              <span class="swp-swatch-dot" style="background-color: #2563eb;" title="Electric Blue"></span>
             </div>
             <button class="swp-atc-btn" type="button" data-variant-id="default" data-product-title="Sipwise PRO - Electric Blue">
               <span class="swp-btn-text">Add To Cart</span>
@@ -1251,11 +1319,9 @@
               </span>
               <span>(219)</span>
             </div>
+            <!-- EXACTLY 1 SWATCH DOT -->
             <div class="swp-swatches-row">
-              <span class="swp-swatch-dot is-active" style="background-color: #f97316;" title="Sunrise Orange"></span>
-              <span class="swp-swatch-dot" style="background-color: #1e3a8a;" title="Deep Navy"></span>
-              <span class="swp-swatch-dot" style="background-color: #2563eb;" title="Electric Blue"></span>
-              <span class="swp-swatch-dot" style="background-color: #0f172a;" title="Carbon Black"></span>
+              <span class="swp-swatch-dot" style="background-color: #f97316;" title="Sunrise Orange"></span>
             </div>
             <button class="swp-atc-btn" type="button" data-variant-id="default" data-product-title="Sipwise PRO - Sunrise Orange">
               <span class="swp-btn-text">Add To Cart</span>
@@ -1295,11 +1361,9 @@
               </span>
               <span>(268)</span>
             </div>
+            <!-- EXACTLY 1 SWATCH DOT -->
             <div class="swp-swatches-row">
-              <span class="swp-swatch-dot is-active" style="background-color: #0f172a;" title="Carbon Black"></span>
-              <span class="swp-swatch-dot" style="background-color: #1e3a8a;" title="Deep Navy"></span>
-              <span class="swp-swatch-dot" style="background-color: #2563eb;" title="Electric Blue"></span>
-              <span class="swp-swatch-dot" style="background-color: #f97316;" title="Sunrise Orange"></span>
+              <span class="swp-swatch-dot" style="background-color: #0f172a;" title="Carbon Black"></span>
             </div>
             <button class="swp-atc-btn" type="button" data-variant-id="default" data-product-title="Sipwise PRO - Carbon Black">
               <span class="swp-btn-text">Add To Cart</span>
@@ -1329,6 +1393,8 @@
     var dotsContainer = section.querySelector('#swp-coll-dots-{{ section_id }}');
     var inStockCheckbox = section.querySelector('#swp-instock-{{ section_id }}');
     var sortLabel = section.querySelector('.swp-sort-label');
+    var collFilterLabel = section.querySelector('.swp-coll-filter-label');
+    var colorFilterLabel = section.querySelector('.swp-color-filter-label');
 
     var currentFilters = {
       coll: 'all',
@@ -1357,12 +1423,20 @@
       });
     }
 
-    // 2. Collection Cards Click -> Filter Grid
+    // 2. Collection Cards Click -> Filter Grid or Navigate URL
     var collCards = section.querySelectorAll('.swp-coll-card');
     collCards.forEach(function(card) {
       card.addEventListener('click', function(e) {
+        var action = card.getAttribute('data-card-action');
+        var targetUrl = card.getAttribute('data-url');
+
+        if (action === 'link' && targetUrl && targetUrl !== '#') {
+          window.location.href = targetUrl;
+          return;
+        }
+
         e.preventDefault();
-        var targetColl = card.getAttribute('data-filter-coll');
+        var targetColl = (card.getAttribute('data-filter-coll') || 'all').toLowerCase();
         
         collCards.forEach(function(c) { c.classList.remove('is-active'); });
         if (currentFilters.coll === targetColl) {
@@ -1371,6 +1445,13 @@
           currentFilters.coll = targetColl;
           card.classList.add('is-active');
         }
+
+        // Update dropdown active state too
+        var collDropdownItems = section.querySelectorAll('#swp-coll-dropdown-menu-{{ section_id }} .swp-dropdown-item');
+        collDropdownItems.forEach(function(item) {
+          var val = (item.getAttribute('data-filter-val') || 'all').toLowerCase();
+          item.classList.toggle('is-selected', val === currentFilters.coll);
+        });
 
         applyFilters();
 
@@ -1418,9 +1499,16 @@
         }
 
         var filterType = item.getAttribute('data-filter-type');
-        var filterVal = item.getAttribute('data-filter-val');
+        var filterVal = (item.getAttribute('data-filter-val') || 'all').toLowerCase();
         if (filterType && filterVal) {
           currentFilters[filterType] = filterVal;
+
+          if (filterType === 'coll') {
+            collCards.forEach(function(c) {
+              var cVal = (c.getAttribute('data-filter-coll') || 'all').toLowerCase();
+              c.classList.toggle('is-active', cVal === filterVal && filterVal !== 'all');
+            });
+          }
         }
 
         applyFilters();
@@ -1457,12 +1545,12 @@
       var visibleCount = 0;
 
       cards.forEach(function(card) {
-        var cardColl = card.getAttribute('data-coll');
-        var cardColor = card.getAttribute('data-color');
+        var cardColl = (card.getAttribute('data-coll') || '').toLowerCase();
+        var cardColor = (card.getAttribute('data-color') || '').toLowerCase();
         var cardInStock = card.getAttribute('data-instock') === 'true';
 
-        var matchColl = (currentFilters.coll === 'all' || cardColl === currentFilters.coll);
-        var matchColor = (currentFilters.color === 'all' || cardColor === currentFilters.color);
+        var matchColl = (currentFilters.coll === 'all' || cardColl === currentFilters.coll || cardColl.indexOf(currentFilters.coll) !== -1);
+        var matchColor = (currentFilters.color === 'all' || cardColor === currentFilters.color || cardColor.indexOf(currentFilters.color) !== -1);
         var matchStock = (!currentFilters.inStockOnly || cardInStock);
 
         if (matchColl && matchColor && matchStock) {
@@ -1501,11 +1589,14 @@
       var tags = [];
 
       if (currentFilters.coll !== 'all') {
-        var name = currentFilters.coll === 'pro' ? 'Sipwise PRO' : 'Sipwise LITE+';
-        tags.push({ key: 'coll', label: name });
+        var collItem = section.querySelector('#swp-coll-dropdown-menu-{{ section_id }} [data-filter-val="' + currentFilters.coll + '"]');
+        var collName = collItem ? collItem.textContent.trim() : currentFilters.coll.toUpperCase();
+        tags.push({ key: 'coll', label: collName });
       }
       if (currentFilters.color !== 'all') {
-        tags.push({ key: 'color', label: 'Color: ' + currentFilters.color.charAt(0).toUpperCase() + currentFilters.color.slice(1) });
+        var colorItem = section.querySelector('#swp-color-dropdown-menu-{{ section_id }} [data-filter-val="' + currentFilters.color + '"]');
+        var colorName = colorItem ? colorItem.textContent.trim() : currentFilters.color.charAt(0).toUpperCase() + currentFilters.color.slice(1);
+        tags.push({ key: 'color', label: 'Color: ' + colorName });
       }
       if (currentFilters.inStockOnly) {
         tags.push({ key: 'inStockOnly', label: 'In Stock Only' });
@@ -1560,35 +1651,7 @@
       activeTagsContainer.appendChild(clearBtn);
     }
 
-    // 8. Card Swatch Click Event (Live color preview per card)
-    section.querySelectorAll('.swp-product-card').forEach(function(card) {
-      var swatches = card.querySelectorAll('.swp-swatch-dot');
-      var variantNameEl = card.querySelector('.swp-card-variant-name');
-      var atcBtn = card.querySelector('.swp-atc-btn');
-      var cardTitle = card.querySelector('.swp-card-title');
-
-      swatches.forEach(function(swatch) {
-        swatch.addEventListener('click', function(e) {
-          e.preventDefault();
-          e.stopPropagation();
-          swatches.forEach(function(s) { s.classList.remove('is-active'); });
-          swatch.classList.add('is-active');
-
-          var colorTitle = swatch.getAttribute('title');
-          if (colorTitle && variantNameEl) {
-            var sizeMatch = variantNameEl.textContent.match(/·\s*([^·]+)$/);
-            var sizeStr = sizeMatch ? ' · ' + sizeMatch[1].trim() : '';
-            variantNameEl.textContent = colorTitle + sizeStr;
-
-            if (atcBtn && cardTitle) {
-              atcBtn.setAttribute('data-product-title', cardTitle.textContent.trim() + ' - ' + colorTitle);
-            }
-          }
-        });
-      });
-    });
-
-    // 9. Add to Cart AJAX handler
+    // 8. Add to Cart AJAX handler
     section.querySelectorAll('.swp-atc-btn').forEach(function(btn) {
       btn.addEventListener('click', function(e) {
         e.preventDefault();
@@ -1681,6 +1744,12 @@
       "label": "Collections Subtitle"
     },
     {
+      "type": "collection_list",
+      "id": "collections_list",
+      "label": "Select Shopify Collections to Display (Optional Auto List)",
+      "info": "If left empty, the Collection Card blocks below will be used."
+    },
+    {
       "type": "header",
       "content": "Part 2: Product Variant Grid"
     },
@@ -1689,6 +1758,81 @@
       "id": "grid_title",
       "label": "Grid Heading",
       "default": "Explore All Products"
+    },
+    {
+      "type": "header",
+      "content": "Filter & Sort Dropdown Customization"
+    },
+    {
+      "type": "text",
+      "id": "coll_filter_label",
+      "label": "Category / Collection Filter Label",
+      "default": "Collection"
+    },
+    {
+      "type": "text",
+      "id": "coll_all_label",
+      "label": "'All' Option Label",
+      "default": "All Collections"
+    },
+    {
+      "type": "text",
+      "id": "cat_1_label",
+      "label": "Category 1 Label",
+      "default": "Sipwise LITE+"
+    },
+    {
+      "type": "text",
+      "id": "cat_1_val",
+      "label": "Category 1 Tag/Value",
+      "default": "lite"
+    },
+    {
+      "type": "text",
+      "id": "cat_2_label",
+      "label": "Category 2 Label",
+      "default": "Sipwise PRO (Bluetooth)"
+    },
+    {
+      "type": "text",
+      "id": "cat_2_val",
+      "label": "Category 2 Tag/Value",
+      "default": "pro"
+    },
+    {
+      "type": "text",
+      "id": "cat_3_label",
+      "label": "Category 3 Label (Optional)"
+    },
+    {
+      "type": "text",
+      "id": "cat_3_val",
+      "label": "Category 3 Tag/Value"
+    },
+    {
+      "type": "text",
+      "id": "color_filter_label",
+      "label": "Color Filter Dropdown Label",
+      "default": "Color"
+    },
+    {
+      "type": "text",
+      "id": "color_all_label",
+      "label": "All Colors Label",
+      "default": "All Colors"
+    },
+    {
+      "type": "textarea",
+      "id": "custom_colors_list",
+      "label": "Color Filter Options (Comma-separated Label:value)",
+      "default": "Ocean Blue:blue, Midnight Black:black, Electric Coral:coral, Deep Navy:navy, Sunrise Orange:orange",
+      "info": "Example: Ocean Blue:blue, Midnight Black:black, Pearl White:white"
+    },
+    {
+      "type": "text",
+      "id": "stock_filter_label",
+      "label": "In Stock Filter Label",
+      "default": "In Stock Only"
     },
     {
       "type": "header",
@@ -1749,37 +1893,55 @@
       "name": "Collection Card (Top)",
       "settings": [
         {
-          "type": "text",
-          "id": "title",
-          "label": "Collection Name",
-          "default": "Sipwise PRO"
+          "type": "collection",
+          "id": "collection",
+          "label": "Select Shopify Store Collection",
+          "info": "Pulls title, featured image, and URL automatically"
         },
         {
-          "type": "select",
+          "type": "text",
+          "id": "title",
+          "label": "Custom Collection Name (Optional override)",
+          "info": "Leave blank to use the selected Shopify collection's name"
+        },
+        {
+          "type": "text",
           "id": "filter_tag",
-          "label": "Grid Filter Category",
-          "options": [
-            { "value": "lite", "label": "Sipwise LITE+" },
-            { "value": "pro", "label": "Sipwise PRO" }
-          ],
+          "label": "Filter Tag / Category ID",
+          "info": "Matching tag/category used to filter product cards below (e.g. lite, pro)",
           "default": "pro"
         },
         {
           "type": "text",
           "id": "badge",
-          "label": "Card Badge Text",
-          "default": "Bluetooth Model"
+          "label": "Card Badge Text (Leave empty to remove badge)"
         },
         {
           "type": "image_picker",
           "id": "image",
-          "label": "Collection / Box Image"
+          "label": "Custom Image (Optional override)",
+          "info": "Leave blank to use the collection's featured image"
         },
         {
           "type": "text",
           "id": "button_text",
           "label": "Button Text",
           "default": "Shop now"
+        },
+        {
+          "type": "select",
+          "id": "card_action",
+          "label": "Card Click Action",
+          "options": [
+            { "value": "filter", "label": "Filter Products Grid Below" },
+            { "value": "link", "label": "Navigate to Collection Page" }
+          ],
+          "default": "filter"
+        },
+        {
+          "type": "url",
+          "id": "custom_url",
+          "label": "Custom URL (Optional override)"
         }
       ]
     },
@@ -1911,16 +2073,14 @@
           "type": "collection_card",
           "settings": {
             "title": "Sipwise LITE+",
-            "filter_tag": "lite",
-            "badge": "Smart Hydration"
+            "filter_tag": "lite"
           }
         },
         {
           "type": "collection_card",
           "settings": {
             "title": "Sipwise PRO",
-            "filter_tag": "pro",
-            "badge": "Bluetooth Model"
+            "filter_tag": "pro"
           }
         }
       ]
