@@ -17,8 +17,50 @@
         "color_scheme": "background-1"
       }
     },
+    "sipwise_product_grid_E9erET": {
+      "type": "sipwise-product-grid",
+      "blocks": {
+        "collection_card_9r3ctb": {
+          "type": "collection_card",
+          "settings": {
+            "title": "Sipwise LITE",
+            "filter_tag": "lite",
+            "badge": "Smart Hydration",
+            "image": "shopify://shop_images/Liteplus_capWhite.png",
+            "button_text": "Shop now"
+          }
+        },
+        "collection_card_rUM9MX": {
+          "type": "collection_card",
+          "settings": {
+            "title": "Sipwise LITE+",
+            "filter_tag": "pro",
+            "badge": "Bluetooth Model",
+            "button_text": "Shop now"
+          }
+        }
+      },
+      "block_order": [
+        "collection_card_9r3ctb",
+        "collection_card_rUM9MX"
+      ],
+      "name": "Sipwise Shop Browsing",
+      "settings": {
+        "show_collections_strip": true,
+        "collections_title": "Explore Sipwise Collection",
+        "collections_subtitle": "",
+        "grid_title": "Explore All Products",
+        "container_width": 1300,
+        "padding_top": 60,
+        "padding_bottom": 80,
+        "bg_color": "#ffffff",
+        "heading_color": "#0f172a",
+        "text_color": "#0f172a"
+      }
+    },
     "main-collection-product-grid": {
       "type": "main-collection-product-grid",
+      "disabled": true,
       "custom_css": [],
       "settings": {
         "columns_desktop": 4,
@@ -164,6 +206,7 @@
   },
   "order": [
     "main-collection-banner",
+    "sipwise_product_grid_E9erET",
     "main-collection-product-grid",
     "collage"
   ]
