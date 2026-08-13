@@ -308,28 +308,43 @@
   #sw-footer-{{ section.id }} .swf-app-col {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: {{ section.settings.app_align | default: 'center' }};
+    text-align: {{ section.settings.app_align | default: 'center' }};
   }
 
   #sw-footer-{{ section.id }} .swf-app-heading {
-    font-size: {{ section.settings.heading_size }}px;
-    font-weight: {{ section.settings.heading_weight }};
+    font-size: {{ section.settings.app_heading_size | default: 14 }}px;
+    font-weight: {{ section.settings.app_heading_weight | default: 700 }};
     color: {{ section.settings.heading_color }};
     margin: 0 0 {{ section.settings.heading_gap }}px 0;
     line-height: 1.2;
+    text-align: {{ section.settings.app_align | default: 'center' }};
+    width: 100%;
+  }
+
+  #sw-footer-{{ section.id }} .swf-app-logo-wrap {
+    display: flex;
+    justify-content: {{ section.settings.app_align | default: 'center' }};
+    align-items: center;
+    width: 100%;
+    margin-bottom: 14px;
   }
 
   #sw-footer-{{ section.id }} .swf-app-logo {
     max-width: {{ section.settings.app_logo_width }}px;
     height: auto;
     display: block;
-    margin-bottom: 14px;
+    margin: 0 auto;
+    border-radius: {{ section.settings.app_logo_radius | default: 16 }}px;
   }
 
   #sw-footer-{{ section.id }} .swf-app-buttons {
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
+    justify-content: {{ section.settings.app_align | default: 'center' }};
+    align-items: center;
+    width: 100%;
   }
 
   #sw-footer-{{ section.id }} .swf-app-btn {
@@ -353,6 +368,27 @@
   #sw-footer-{{ section.id }} .swf-app-mobile {
     padding: {{ section.settings.accordion_padding }}px 0;
     border-bottom: 1px solid {{ section.settings.divider_color }};
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  #sw-footer-{{ section.id }} .swf-app-mobile .swf-app-logo-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 14px;
+  }
+
+  #sw-footer-{{ section.id }} .swf-app-mobile .swf-app-logo {
+    margin: 0 auto;
+  }
+
+  #sw-footer-{{ section.id }} .swf-app-mobile .swf-app-buttons {
+    justify-content: center;
+    width: 100%;
   }
 
   @media screen and (min-width: 750px) {
@@ -454,7 +490,9 @@
                 <h3 class="swf-app-heading">{{ section.settings.app_heading }}</h3>
               {%- endif -%}
               {%- if section.settings.app_logo != blank -%}
-                <img class="swf-app-logo" src="{{ section.settings.app_logo | image_url: width: 400 }}" alt="App" loading="lazy">
+                <div class="swf-app-logo-wrap">
+                  <img class="swf-app-logo" src="{{ section.settings.app_logo | image_url: width: 400 }}" alt="App" loading="lazy">
+                </div>
               {%- endif -%}
               <div class="swf-app-buttons">
                 {%- if section.settings.app_store_url != blank -%}
@@ -515,7 +553,9 @@
               <h3 class="swf-app-heading">{{ section.settings.app_heading }}</h3>
             {%- endif -%}
             {%- if section.settings.app_logo != blank -%}
-              <img class="swf-app-logo" src="{{ section.settings.app_logo | image_url: width: 400 }}" alt="App" loading="lazy">
+              <div class="swf-app-logo-wrap">
+                <img class="swf-app-logo" src="{{ section.settings.app_logo | image_url: width: 400 }}" alt="App" loading="lazy">
+              </div>
             {%- endif -%}
             <div class="swf-app-buttons">
               {%- if section.settings.app_store_url != blank -%}
@@ -825,6 +865,42 @@
       "default": "Get the App"
     },
     {
+      "type": "select",
+      "id": "app_align",
+      "label": "App Section Alignment",
+      "options": [
+        { "value": "center", "label": "Center" },
+        { "value": "flex-start", "label": "Left" },
+        { "value": "flex-end", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "app_heading_size",
+      "min": 10,
+      "max": 36,
+      "step": 1,
+      "unit": "px",
+      "label": "App Heading Font Size",
+      "default": 14
+    },
+    {
+      "type": "select",
+      "id": "app_heading_weight",
+      "label": "App Heading Font Weight",
+      "options": [
+        { "value": "300", "label": "Light (300)" },
+        { "value": "400", "label": "Regular (400)" },
+        { "value": "500", "label": "Medium (500)" },
+        { "value": "600", "label": "Semi Bold (600)" },
+        { "value": "700", "label": "Bold (700)" },
+        { "value": "800", "label": "Extra Bold (800)" },
+        { "value": "900", "label": "Black (900)" }
+      ],
+      "default": "700"
+    },
+    {
       "type": "image_picker",
       "id": "app_logo",
       "label": "App Logo / Icon"
@@ -838,6 +914,16 @@
       "unit": "px",
       "label": "App Logo Width",
       "default": 70
+    },
+    {
+      "type": "range",
+      "id": "app_logo_radius",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "App Logo Border Radius",
+      "default": 16
     },
     {
       "type": "url",
