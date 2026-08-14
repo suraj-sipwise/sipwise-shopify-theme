@@ -23,20 +23,27 @@
         "collection_card_9r3ctb": {
           "type": "collection_card",
           "settings": {
+            "collection": "sipwise",
             "title": "Sipwise LITE",
             "filter_tag": "lite",
-            "badge": "Smart Hydration",
+            "badge": "",
             "image": "shopify://shop_images/Liteplus_capWhite.png",
-            "button_text": "Shop now"
+            "button_text": "Shop now",
+            "card_action": "filter",
+            "custom_url": ""
           }
         },
         "collection_card_rUM9MX": {
           "type": "collection_card",
           "settings": {
+            "collection": "",
             "title": "Sipwise LITE+",
             "filter_tag": "pro",
-            "badge": "Bluetooth Model",
-            "button_text": "Shop now"
+            "badge": "",
+            "image": "shopify://shop_images/sipwise-liteplus-with_app_374082ec-88c0-4509-8fab-b94fe273c56a.png",
+            "button_text": "Shop now",
+            "card_action": "filter",
+            "custom_url": ""
           }
         }
       },
@@ -49,7 +56,20 @@
         "show_collections_strip": true,
         "collections_title": "Explore Sipwise Collection",
         "collections_subtitle": "",
+        "collections_list": [],
         "grid_title": "Explore All Products",
+        "coll_filter_label": "Collection",
+        "coll_all_label": "All Collections",
+        "cat_1_label": "Sipwise LITE+",
+        "cat_1_val": "lite",
+        "cat_2_label": "Sipwise PRO (Bluetooth)",
+        "cat_2_val": "pro",
+        "cat_3_label": "",
+        "cat_3_val": "",
+        "color_filter_label": "Color",
+        "color_all_label": "All Colors",
+        "custom_colors_list": "Ocean Blue:blue, Midnight Black:black, Electric Coral:coral, Deep Navy:navy, Sunrise Orange:orange",
+        "stock_filter_label": "In Stock Only",
         "container_width": 1300,
         "padding_top": 60,
         "padding_bottom": 80,
