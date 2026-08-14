@@ -167,24 +167,7 @@
   }
 
   #sipwise-shop-{{ section_id }} .swp-coll-dots {
-    display: none;
-    justify-content: center;
-    gap: 8px;
-    margin-top: 4px;
-  }
-
-  #sipwise-shop-{{ section_id }} .swp-coll-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: #cbd5e1;
-    transition: all 0.25s ease;
-  }
-
-  #sipwise-shop-{{ section_id }} .swp-coll-dot.is-active {
-    width: 22px;
-    border-radius: 10px;
-    background: #1a56db;
+    display: none !important;
   }
 
   /* =======================================================
@@ -706,10 +689,6 @@
       font-size: 15px;
     }
 
-    #sipwise-shop-{{ section_id }} .swp-coll-dots {
-      display: flex;
-    }
-
     /* 2-Column Mobile Product Grid (matches Owala/Aquaminder) */
     #sipwise-shop-{{ section_id }} .swp-product-grid {
       grid-template-columns: repeat(2, 1fr);
@@ -878,9 +857,6 @@
             </div>
           {%- endif -%}
         </div>
-
-        <!-- Mobile Carousel Dots -->
-        <div class="swp-coll-dots" id="swp-coll-dots-{{ section_id }}"></div>
       </div>
     {%- endif -%}
 
