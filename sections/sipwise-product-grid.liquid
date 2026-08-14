@@ -6,12 +6,15 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700;1,900&display=swap" rel="stylesheet">
+<link
+  href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700;1,900&display=swap"
+  rel="stylesheet"
+>
 
 {%- liquid
   assign section_id = section.id
-  assign collection_blocks = section.blocks | where: "type", "collection_card"
-  assign product_blocks = section.blocks | where: "type", "product_variant"
+  assign collection_blocks = section.blocks | where: 'type', 'collection_card'
+  assign product_blocks = section.blocks | where: 'type', 'product_variant'
 -%}
 
 <style>
@@ -745,13 +748,14 @@
 
 <section id="sipwise-shop-{{ section_id }}" class="sipwise-product-browsing">
   <div class="swp-container">
-
-    <!-- ==========================================
-         PART 1: COLLECTIONS STRIP (TOP)
-         ========================================== -->
+    <!--
+      ==========================================
+      PART 1: COLLECTIONS STRIP (TOP)
+      ==========================================
+    -->
     {%- if section.settings.show_collections_strip -%}
       <div class="swp-coll-header">
-        <h2 class="swp-coll-title">{{ section.settings.collections_title | default: "Explore Sipwise Collection" }}</h2>
+        <h2 class="swp-coll-title">{{ section.settings.collections_title | default: 'Explore Sipwise Collection' }}</h2>
         {%- if section.settings.collections_subtitle != blank -%}
           <p class="swp-coll-subtitle">{{ section.settings.collections_subtitle }}</p>
         {%- endif -%}
@@ -768,7 +772,7 @@
                   assign card_title = coll_obj.title
                 endif
                 if card_title == blank
-                  assign card_title = "Collection"
+                  assign card_title = 'Collection'
                 endif
 
                 assign card_filter = block.settings.filter_tag
@@ -776,7 +780,7 @@
                   assign card_filter = coll_obj.handle
                 endif
                 if card_filter == blank
-                  assign card_filter = "all"
+                  assign card_filter = 'all'
                 endif
 
                 assign card_url = block.settings.custom_url
@@ -798,20 +802,47 @@
 
                 <div class="swp-coll-img-wrap">
                   {%- if block.settings.image != blank -%}
-                    <img src="{{ block.settings.image | image_url: width: 320 }}" alt="{{ card_title | escape }}" loading="lazy">
+                    <img
+                      src="{{ block.settings.image | image_url: width: 320 }}"
+                      alt="{{ card_title | escape }}"
+                      loading="lazy"
+                    >
                   {%- elsif coll_obj != blank and coll_obj.featured_image != blank -%}
-                    <img src="{{ coll_obj.featured_image | image_url: width: 320 }}" alt="{{ card_title | escape }}" loading="lazy">
+                    <img
+                      src="{{ coll_obj.featured_image | image_url: width: 320 }}"
+                      alt="{{ card_title | escape }}"
+                      loading="lazy"
+                    >
                   {%- elsif coll_obj != blank and coll_obj.image != blank -%}
-                    <img src="{{ coll_obj.image | image_url: width: 320 }}" alt="{{ card_title | escape }}" loading="lazy">
+                    <img
+                      src="{{ coll_obj.image | image_url: width: 320 }}"
+                      alt="{{ card_title | escape }}"
+                      loading="lazy"
+                    >
                   {%- else -%}
-                    <img src="https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=320&auto=format&fit=crop&q=80" alt="{{ card_title }}" loading="lazy">
+                    <img
+                      src="https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=320&auto=format&fit=crop&q=80"
+                      alt="{{ card_title }}"
+                      loading="lazy"
+                    >
                   {%- endif -%}
                 </div>
 
                 <h3 class="swp-coll-name">{{ card_title }}</h3>
                 <span class="swp-coll-link">
-                  {{ block.settings.button_text | default: "Shop now" }}
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                  {{ block.settings.button_text | default: 'Shop now' }}
+                  <svg
+                    width="12"
+                    height="12"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                  </svg>
                 </span>
               </div>
             {%- endfor -%}
@@ -826,15 +857,28 @@
               >
                 <div class="swp-coll-img-wrap">
                   {%- if coll.featured_image != blank -%}
-                    <img src="{{ coll.featured_image | image_url: width: 320 }}" alt="{{ coll.title | escape }}" loading="lazy">
+                    <img
+                      src="{{ coll.featured_image | image_url: width: 320 }}"
+                      alt="{{ coll.title | escape }}"
+                      loading="lazy"
+                    >
                   {%- elsif coll.image != blank -%}
                     <img src="{{ coll.image | image_url: width: 320 }}" alt="{{ coll.title | escape }}" loading="lazy">
                   {%- else -%}
-                    <img src="https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=320&auto=format&fit=crop&q=80" alt="{{ coll.title }}" loading="lazy">
+                    <img
+                      src="https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=320&auto=format&fit=crop&q=80"
+                      alt="{{ coll.title }}"
+                      loading="lazy"
+                    >
                   {%- endif -%}
                 </div>
                 <h3 class="swp-coll-name">{{ coll.title }}</h3>
-                <span class="swp-coll-link">Shop now <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+                <span class="swp-coll-link"
+                  >Shop now
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                  </svg>
+                </span>
               </div>
             {%- endfor -%}
 
@@ -842,46 +886,65 @@
             <!-- Fallback Default Collection Cards -->
             <div class="swp-coll-card" data-filter-coll="lite" data-card-action="filter">
               <div class="swp-coll-img-wrap">
-                <img src="https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=320&auto=format&fit=crop&q=80" alt="Sipwise LITE+">
+                <img
+                  src="https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=320&auto=format&fit=crop&q=80"
+                  alt="Sipwise LITE+"
+                >
               </div>
               <h3 class="swp-coll-name">Sipwise LITE+</h3>
-              <span class="swp-coll-link">Shop now <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+              <span class="swp-coll-link"
+                >Shop now
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </span>
             </div>
 
             <div class="swp-coll-card" data-filter-coll="pro" data-card-action="filter">
               <div class="swp-coll-img-wrap">
-                <img src="https://images.unsplash.com/photo-1544816155-12df9643f363?w=320&auto=format&fit=crop&q=80" alt="Sipwise PRO">
+                <img
+                  src="https://images.unsplash.com/photo-1544816155-12df9643f363?w=320&auto=format&fit=crop&q=80"
+                  alt="Sipwise PRO"
+                >
               </div>
               <h3 class="swp-coll-name">Sipwise PRO</h3>
-              <span class="swp-coll-link">Shop now <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+              <span class="swp-coll-link"
+                >Shop now
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </span>
             </div>
           {%- endif -%}
         </div>
       </div>
     {%- endif -%}
 
-
-    <!-- ==========================================
-         PART 2: EXPLORE ALL PRODUCTS + FILTER BAR
-         ========================================== -->
+    <!--
+      ==========================================
+      PART 2: EXPLORE ALL PRODUCTS + FILTER BAR
+      ==========================================
+    -->
     <div class="swp-grid-header">
-      <h2 class="swp-grid-main-title">{{ section.settings.grid_title | default: "Explore All Products" }}</h2>
+      <h2 class="swp-grid-main-title">{{ section.settings.grid_title | default: 'Explore All Products' }}</h2>
     </div>
 
     <!-- Filter & Sort Toolbar -->
     <div class="swp-toolbar-wrapper" id="swp-toolbar-{{ section_id }}">
       <div class="swp-toolbar">
-        <div class="swp-results-count">
-          <span id="swp-count-num-{{ section_id }}">7</span> Results
-        </div>
+        <div class="swp-results-count"><span id="swp-count-num-{{ section_id }}">7</span> Results</div>
 
         <div class="swp-filter-group">
           <!-- Sort Dropdown -->
           <div class="swp-dropdown" data-swp-dropdown="sort">
             <button class="swp-pill-btn" type="button">
-              <svg viewBox="0 0 24 24"><path d="M3 18h6v-2H3v2zM3 6v2h18V6H3zm0 7h12v-2H3v2z"/></svg>
+              <svg viewBox="0 0 24 24">
+                <path d="M3 18h6v-2H3v2zM3 6v2h18V6H3zm0 7h12v-2H3v2z"/>
+              </svg>
               <span class="swp-sort-label">Sort: Featured</span>
-              <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+              <svg viewBox="0 0 24 24">
+                <path d="M7 10l5 5 5-5z"/>
+              </svg>
             </button>
             <div class="swp-dropdown-menu">
               <button class="swp-dropdown-item is-selected" data-sort="featured" type="button">Featured</button>
@@ -895,25 +958,56 @@
           <!-- Collection / Category Filter Dropdown -->
           <div class="swp-dropdown" data-swp-dropdown="coll">
             <button class="swp-pill-btn" type="button">
-              <span class="swp-coll-filter-label">{{ section.settings.coll_filter_label | default: "Collection" }}</span>
-              <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+              <span class="swp-coll-filter-label">
+                {{- section.settings.coll_filter_label | default: 'Collection' -}}
+              </span>
+              <svg viewBox="0 0 24 24">
+                <path d="M7 10l5 5 5-5z"/>
+              </svg>
             </button>
             <div class="swp-dropdown-menu" id="swp-coll-dropdown-menu-{{ section_id }}">
-              <button class="swp-dropdown-item is-selected" data-filter-type="coll" data-filter-val="all" type="button">{{ section.settings.coll_all_label | default: "All Collections" }}</button>
+              <button class="swp-dropdown-item is-selected" data-filter-type="coll" data-filter-val="all" type="button">
+                {{ section.settings.coll_all_label | default: 'All Collections' }}
+              </button>
               {%- if section.settings.cat_1_label != blank -%}
-                <button class="swp-dropdown-item" data-filter-type="coll" data-filter-val="{{ section.settings.cat_1_val | default: 'lite' | downcase }}" type="button">{{ section.settings.cat_1_label }}</button>
+                <button
+                  class="swp-dropdown-item"
+                  data-filter-type="coll"
+                  data-filter-val="{{ section.settings.cat_1_val | default: 'lite' | downcase }}"
+                  type="button"
+                >
+                  {{ section.settings.cat_1_label }}
+                </button>
               {%- else -%}
-                <button class="swp-dropdown-item" data-filter-type="coll" data-filter-val="lite" type="button">Sipwise LITE+</button>
+                <button class="swp-dropdown-item" data-filter-type="coll" data-filter-val="lite" type="button">
+                  Sipwise LITE+
+                </button>
               {%- endif -%}
 
               {%- if section.settings.cat_2_label != blank -%}
-                <button class="swp-dropdown-item" data-filter-type="coll" data-filter-val="{{ section.settings.cat_2_val | default: 'pro' | downcase }}" type="button">{{ section.settings.cat_2_label }}</button>
+                <button
+                  class="swp-dropdown-item"
+                  data-filter-type="coll"
+                  data-filter-val="{{ section.settings.cat_2_val | default: 'pro' | downcase }}"
+                  type="button"
+                >
+                  {{ section.settings.cat_2_label }}
+                </button>
               {%- else -%}
-                <button class="swp-dropdown-item" data-filter-type="coll" data-filter-val="pro" type="button">Sipwise PRO (Bluetooth)</button>
+                <button class="swp-dropdown-item" data-filter-type="coll" data-filter-val="pro" type="button">
+                  Sipwise PRO (Bluetooth)
+                </button>
               {%- endif -%}
 
               {%- if section.settings.cat_3_label != blank -%}
-                <button class="swp-dropdown-item" data-filter-type="coll" data-filter-val="{{ section.settings.cat_3_val | downcase }}" type="button">{{ section.settings.cat_3_label }}</button>
+                <button
+                  class="swp-dropdown-item"
+                  data-filter-type="coll"
+                  data-filter-val="{{ section.settings.cat_3_val | downcase }}"
+                  type="button"
+                >
+                  {{ section.settings.cat_3_label }}
+                </button>
               {%- endif -%}
             </div>
           </div>
@@ -921,28 +1015,54 @@
           <!-- Color Filter Dropdown -->
           <div class="swp-dropdown" data-swp-dropdown="color">
             <button class="swp-pill-btn" type="button">
-              <span class="swp-color-filter-label">{{ section.settings.color_filter_label | default: "Color" }}</span>
-              <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+              <span class="swp-color-filter-label">{{ section.settings.color_filter_label | default: 'Color' }}</span>
+              <svg viewBox="0 0 24 24">
+                <path d="M7 10l5 5 5-5z"/>
+              </svg>
             </button>
             <div class="swp-dropdown-menu" id="swp-color-dropdown-menu-{{ section_id }}">
-              <button class="swp-dropdown-item is-selected" data-filter-type="color" data-filter-val="all" type="button">{{ section.settings.color_all_label | default: "All Colors" }}</button>
-              
+              <button
+                class="swp-dropdown-item is-selected"
+                data-filter-type="color"
+                data-filter-val="all"
+                type="button"
+              >
+                {{ section.settings.color_all_label | default: 'All Colors' }}
+              </button>
+
               {%- if section.settings.custom_colors_list != blank -%}
-                {%- assign color_pairs = section.settings.custom_colors_list | split: "," -%}
+                {%- assign color_pairs = section.settings.custom_colors_list | split: ',' -%}
                 {%- for pair in color_pairs -%}
-                  {%- assign parts = pair | split: ":" -%}
+                  {%- assign parts = pair | split: ':' -%}
                   {%- assign c_label = parts[0] | strip -%}
                   {%- assign c_val = parts[1] | default: parts[0] | strip | downcase -%}
                   {%- if c_label != blank -%}
-                    <button class="swp-dropdown-item" data-filter-type="color" data-filter-val="{{ c_val }}" type="button">{{ c_label }}</button>
+                    <button
+                      class="swp-dropdown-item"
+                      data-filter-type="color"
+                      data-filter-val="{{ c_val }}"
+                      type="button"
+                    >
+                      {{ c_label }}
+                    </button>
                   {%- endif -%}
                 {%- endfor -%}
               {%- else -%}
-                <button class="swp-dropdown-item" data-filter-type="color" data-filter-val="blue" type="button">Ocean Blue</button>
-                <button class="swp-dropdown-item" data-filter-type="color" data-filter-val="black" type="button">Midnight Black</button>
-                <button class="swp-dropdown-item" data-filter-type="color" data-filter-val="coral" type="button">Electric Coral</button>
-                <button class="swp-dropdown-item" data-filter-type="color" data-filter-val="navy" type="button">Deep Navy</button>
-                <button class="swp-dropdown-item" data-filter-type="color" data-filter-val="orange" type="button">Sunrise Orange</button>
+                <button class="swp-dropdown-item" data-filter-type="color" data-filter-val="blue" type="button">
+                  Ocean Blue
+                </button>
+                <button class="swp-dropdown-item" data-filter-type="color" data-filter-val="black" type="button">
+                  Midnight Black
+                </button>
+                <button class="swp-dropdown-item" data-filter-type="color" data-filter-val="coral" type="button">
+                  Electric Coral
+                </button>
+                <button class="swp-dropdown-item" data-filter-type="color" data-filter-val="navy" type="button">
+                  Deep Navy
+                </button>
+                <button class="swp-dropdown-item" data-filter-type="color" data-filter-val="orange" type="button">
+                  Sunrise Orange
+                </button>
               {%- endif -%}
             </div>
           </div>
@@ -950,17 +1070,21 @@
           <!-- Hide Out of Stock Checkbox -->
           <label class="swp-checkbox-pill">
             <input type="checkbox" id="swp-instock-{{ section_id }}">
-            <span>{{ section.settings.stock_filter_label | default: "In Stock Only" }}</span>
+            <span>{{ section.settings.stock_filter_label | default: 'In Stock Only' }}</span>
           </label>
         </div>
 
         <!-- Grid View Switcher (Desktop) -->
         <div class="swp-view-toggles">
           <button class="swp-view-btn is-active" data-view="4" title="4 Columns" type="button">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="4" height="18" rx="1"/><rect x="8.5" y="3" width="4" height="18" rx="1"/><rect x="14" y="3" width="4" height="18" rx="1"/><rect x="19.5" y="3" width="4" height="18" rx="1"/></svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <rect x="3" y="3" width="4" height="18" rx="1"/><rect x="8.5" y="3" width="4" height="18" rx="1"/><rect x="14" y="3" width="4" height="18" rx="1"/><rect x="19.5" y="3" width="4" height="18" rx="1"/>
+            </svg>
           </button>
           <button class="swp-view-btn" data-view="2" title="2 Columns" type="button">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="8.5" height="18" rx="1.5"/><rect x="13.5" y="3" width="8.5" height="18" rx="1.5"/></svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <rect x="3" y="3" width="8.5" height="18" rx="1.5"/><rect x="13.5" y="3" width="8.5" height="18" rx="1.5"/>
+            </svg>
           </button>
         </div>
       </div>
@@ -971,15 +1095,16 @@
       </div>
     </div>
 
-
-    <!-- ==========================================
-         PART 3: FULL PRODUCT VARIANT GRID (1 SWATCH/CARD)
-         ========================================== -->
+    <!--
+      ==========================================
+      PART 3: FULL PRODUCT VARIANT GRID (1 SWATCH/CARD)
+      ==========================================
+    -->
     <div class="swp-product-grid" id="swp-product-grid-{{ section_id }}">
-
       {%- if product_blocks.size > 0 -%}
         {%- for block in product_blocks -%}
-          <div class="swp-product-card"
+          <div
+            class="swp-product-card"
             data-coll="{{ block.settings.collection_type | default: 'lite' | downcase }}"
             data-color="{{ block.settings.color_family | default: 'blue' | downcase }}"
             data-price="{{ block.settings.price_num | default: 49 }}"
@@ -992,7 +1117,9 @@
             <div class="swp-card-badges">
               {%- if block.settings.is_bluetooth -%}
                 <span class="swp-badge-bt">
-                  <svg viewBox="0 0 24 24"><path d="M14.88 16.29L13 14.41V19.17l1.88-2.88zM13 4.83l1.88 2.88L13 9.59V4.83M17.71 7.71L12 2h-1v7.59L6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 11 14.41V22h1l5.71-5.71-4.3-4.29 4.3-4.29z"/></svg>
+                  <svg viewBox="0 0 24 24">
+                    <path d="M14.88 16.29L13 14.41V19.17l1.88-2.88zM13 4.83l1.88 2.88L13 9.59V4.83M17.71 7.71L12 2h-1v7.59L6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 11 14.41V22h1l5.71-5.71-4.3-4.29 4.3-4.29z"/>
+                  </svg>
                   Bluetooth
                 </span>
               {%- else -%}
@@ -1007,9 +1134,19 @@
             <!-- Product Media -->
             <a href="{{ block.settings.product_url | default: '#' }}" class="swp-card-media">
               {%- if block.settings.image != blank -%}
-                <img class="swp-main-img" src="{{ block.settings.image | image_url: width: 600 }}" alt="{{ block.settings.title | escape }}" loading="lazy">
+                <img
+                  class="swp-main-img"
+                  src="{{ block.settings.image | image_url: width: 600 }}"
+                  alt="{{ block.settings.title | escape }}"
+                  loading="lazy"
+                >
               {%- else -%}
-                <img class="swp-main-img" src="https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=600&auto=format&fit=crop&q=80" alt="{{ block.settings.title }}" loading="lazy">
+                <img
+                  class="swp-main-img"
+                  src="https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=600&auto=format&fit=crop&q=80"
+                  alt="{{ block.settings.title }}"
+                  loading="lazy"
+                >
               {%- endif -%}
             </a>
 
@@ -1029,18 +1166,32 @@
 
               <div class="swp-card-rating">
                 <span class="swp-stars">
-                  <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                  <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                  <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                  <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                  <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                  <svg viewBox="0 0 24 24">
+                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                  </svg>
+                  <svg viewBox="0 0 24 24">
+                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                  </svg>
+                  <svg viewBox="0 0 24 24">
+                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                  </svg>
+                  <svg viewBox="0 0 24 24">
+                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                  </svg>
+                  <svg viewBox="0 0 24 24">
+                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                  </svg>
                 </span>
                 <span>({{ block.settings.review_count | default: 128 }})</span>
               </div>
 
               <!-- Only ONE swatch dot per card (Owala Style) -->
               <div class="swp-swatches-row">
-                <span class="swp-swatch-dot" style="background-color: {{ block.settings.color_hex | default: '#0ea5e9' }};" title="{{ block.settings.color_name }}"></span>
+                <span
+                  class="swp-swatch-dot"
+                  style="background-color: {{ block.settings.color_hex | default: '#0ea5e9' }};"
+                  title="{{ block.settings.color_name }}"
+                ></span>
               </div>
 
               <!-- Add To Cart Pill Button -->
@@ -1058,19 +1209,34 @@
         {%- endfor -%}
 
       {%- else -%}
-        <!-- =========================================================================
-             PRESET DEFAULT VARIANT CARDS (Sipwise LITE+ in 3 Colors, Sipwise PRO in 4 Colors)
-             Each Card Features Exactly 1 Swatch Dot (Owala Style)
-             ========================================================================= -->
+        <!--
+          =========================================================================
+          PRESET DEFAULT VARIANT CARDS (Sipwise LITE+ in 3 Colors, Sipwise PRO in 4 Colors)
+          Each Card Features Exactly 1 Swatch Dot (Owala Style)
+          =========================================================================
+        -->
 
         <!-- CARD 1: Sipwise LITE+ (Ocean Blue) -->
-        <div class="swp-product-card" data-coll="lite" data-color="blue" data-price="49" data-rating="5" data-instock="true" data-is-pro="false">
+        <div
+          class="swp-product-card"
+          data-coll="lite"
+          data-color="blue"
+          data-price="49"
+          data-rating="5"
+          data-instock="true"
+          data-is-pro="false"
+        >
           <div class="swp-card-badges">
             <span></span>
             <span class="swp-badge-sale">SAVE 20%</span>
           </div>
           <a href="/products/sipwise-lite" class="swp-card-media">
-            <img class="swp-main-img" src="https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=600&auto=format&fit=crop&q=80" alt="Sipwise LITE+ Ocean Blue" loading="lazy">
+            <img
+              class="swp-main-img"
+              src="https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=600&auto=format&fit=crop&q=80"
+              alt="Sipwise LITE+ Ocean Blue"
+              loading="lazy"
+            >
           </a>
           <div class="swp-card-details">
             <div class="swp-card-title-row">
@@ -1083,11 +1249,21 @@
             </div>
             <div class="swp-card-rating">
               <span class="swp-stars">
-                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                </svg>
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                </svg>
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                </svg>
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                </svg>
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                </svg>
               </span>
               <span>(184)</span>
             </div>
@@ -1095,7 +1271,12 @@
             <div class="swp-swatches-row">
               <span class="swp-swatch-dot" style="background-color: #0ea5e9;" title="Ocean Blue"></span>
             </div>
-            <button class="swp-atc-btn" type="button" data-variant-id="default" data-product-title="Sipwise LITE+ - Ocean Blue">
+            <button
+              class="swp-atc-btn"
+              type="button"
+              data-variant-id="default"
+              data-product-title="Sipwise LITE+ - Ocean Blue"
+            >
               <span class="swp-btn-text">Add To Cart</span>
               <span class="swp-spinner"></span>
             </button>
@@ -1103,13 +1284,26 @@
         </div>
 
         <!-- CARD 2: Sipwise LITE+ (Midnight Black) -->
-        <div class="swp-product-card" data-coll="lite" data-color="black" data-price="49" data-rating="5" data-instock="true" data-is-pro="false">
+        <div
+          class="swp-product-card"
+          data-coll="lite"
+          data-color="black"
+          data-price="49"
+          data-rating="5"
+          data-instock="true"
+          data-is-pro="false"
+        >
           <div class="swp-card-badges">
             <span></span>
             <span class="swp-badge-sale">SAVE 20%</span>
           </div>
           <a href="/products/sipwise-lite" class="swp-card-media">
-            <img class="swp-main-img" src="https://images.unsplash.com/photo-1544816155-12df9643f363?w=600&auto=format&fit=crop&q=80" alt="Sipwise LITE+ Midnight Black" loading="lazy">
+            <img
+              class="swp-main-img"
+              src="https://images.unsplash.com/photo-1544816155-12df9643f363?w=600&auto=format&fit=crop&q=80"
+              alt="Sipwise LITE+ Midnight Black"
+              loading="lazy"
+            >
           </a>
           <div class="swp-card-details">
             <div class="swp-card-title-row">
@@ -1122,11 +1316,21 @@
             </div>
             <div class="swp-card-rating">
               <span class="swp-stars">
-                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                </svg>
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                </svg>
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                </svg>
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                </svg>
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                </svg>
               </span>
               <span>(142)</span>
             </div>
@@ -1134,7 +1338,12 @@
             <div class="swp-swatches-row">
               <span class="swp-swatch-dot" style="background-color: #1e293b;" title="Midnight Black"></span>
             </div>
-            <button class="swp-atc-btn" type="button" data-variant-id="default" data-product-title="Sipwise LITE+ - Midnight Black">
+            <button
+              class="swp-atc-btn"
+              type="button"
+              data-variant-id="default"
+              data-product-title="Sipwise LITE+ - Midnight Black"
+            >
               <span class="swp-btn-text">Add To Cart</span>
               <span class="swp-spinner"></span>
             </button>
@@ -1142,13 +1351,26 @@
         </div>
 
         <!-- CARD 3: Sipwise LITE+ (Electric Coral) -->
-        <div class="swp-product-card" data-coll="lite" data-color="coral" data-price="49" data-rating="5" data-instock="true" data-is-pro="false">
+        <div
+          class="swp-product-card"
+          data-coll="lite"
+          data-color="coral"
+          data-price="49"
+          data-rating="5"
+          data-instock="true"
+          data-is-pro="false"
+        >
           <div class="swp-card-badges">
             <span></span>
             <span class="swp-badge-sale">SAVE 20%</span>
           </div>
           <a href="/products/sipwise-lite" class="swp-card-media">
-            <img class="swp-main-img" src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=600&auto=format&fit=crop&q=80" alt="Sipwise LITE+ Electric Coral" loading="lazy">
+            <img
+              class="swp-main-img"
+              src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=600&auto=format&fit=crop&q=80"
+              alt="Sipwise LITE+ Electric Coral"
+              loading="lazy"
+            >
           </a>
           <div class="swp-card-details">
             <div class="swp-card-title-row">
@@ -1161,11 +1383,21 @@
             </div>
             <div class="swp-card-rating">
               <span class="swp-stars">
-                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                </svg>
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                </svg>
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                </svg>
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                </svg>
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                </svg>
               </span>
               <span>(96)</span>
             </div>
@@ -1173,7 +1405,12 @@
             <div class="swp-swatches-row">
               <span class="swp-swatch-dot" style="background-color: #fb7185;" title="Electric Coral"></span>
             </div>
-            <button class="swp-atc-btn" type="button" data-variant-id="default" data-product-title="Sipwise LITE+ - Electric Coral">
+            <button
+              class="swp-atc-btn"
+              type="button"
+              data-variant-id="default"
+              data-product-title="Sipwise LITE+ - Electric Coral"
+            >
               <span class="swp-btn-text">Add To Cart</span>
               <span class="swp-spinner"></span>
             </button>
@@ -1181,16 +1418,31 @@
         </div>
 
         <!-- CARD 4: Sipwise PRO (Deep Navy) -->
-        <div class="swp-product-card" data-coll="pro" data-color="navy" data-price="79" data-rating="5" data-instock="true" data-is-pro="true">
+        <div
+          class="swp-product-card"
+          data-coll="pro"
+          data-color="navy"
+          data-price="79"
+          data-rating="5"
+          data-instock="true"
+          data-is-pro="true"
+        >
           <div class="swp-card-badges">
             <span class="swp-badge-bt">
-              <svg viewBox="0 0 24 24"><path d="M14.88 16.29L13 14.41V19.17l1.88-2.88zM13 4.83l1.88 2.88L13 9.59V4.83M17.71 7.71L12 2h-1v7.59L6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 11 14.41V22h1l5.71-5.71-4.3-4.29 4.3-4.29z"/></svg>
+              <svg viewBox="0 0 24 24">
+                <path d="M14.88 16.29L13 14.41V19.17l1.88-2.88zM13 4.83l1.88 2.88L13 9.59V4.83M17.71 7.71L12 2h-1v7.59L6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 11 14.41V22h1l5.71-5.71-4.3-4.29 4.3-4.29z"/>
+              </svg>
               Bluetooth
             </span>
             <span class="swp-badge-sale">SAVE $20</span>
           </div>
           <a href="/products/sipwise-pro" class="swp-card-media">
-            <img class="swp-main-img" src="https://images.unsplash.com/photo-1556817411-31ae72fa3ea0?w=600&auto=format&fit=crop&q=80" alt="Sipwise PRO Deep Navy" loading="lazy">
+            <img
+              class="swp-main-img"
+              src="https://images.unsplash.com/photo-1556817411-31ae72fa3ea0?w=600&auto=format&fit=crop&q=80"
+              alt="Sipwise PRO Deep Navy"
+              loading="lazy"
+            >
           </a>
           <div class="swp-card-details">
             <div class="swp-card-title-row">
@@ -1203,11 +1455,21 @@
             </div>
             <div class="swp-card-rating">
               <span class="swp-stars">
-                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                </svg>
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                </svg>
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                </svg>
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                </svg>
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                </svg>
               </span>
               <span>(312)</span>
             </div>
@@ -1215,7 +1477,12 @@
             <div class="swp-swatches-row">
               <span class="swp-swatch-dot" style="background-color: #1e3a8a;" title="Deep Navy"></span>
             </div>
-            <button class="swp-atc-btn" type="button" data-variant-id="default" data-product-title="Sipwise PRO - Deep Navy">
+            <button
+              class="swp-atc-btn"
+              type="button"
+              data-variant-id="default"
+              data-product-title="Sipwise PRO - Deep Navy"
+            >
               <span class="swp-btn-text">Add To Cart</span>
               <span class="swp-spinner"></span>
             </button>
@@ -1223,16 +1490,31 @@
         </div>
 
         <!-- CARD 5: Sipwise PRO (Electric Blue) -->
-        <div class="swp-product-card" data-coll="pro" data-color="blue" data-price="79" data-rating="5" data-instock="true" data-is-pro="true">
+        <div
+          class="swp-product-card"
+          data-coll="pro"
+          data-color="blue"
+          data-price="79"
+          data-rating="5"
+          data-instock="true"
+          data-is-pro="true"
+        >
           <div class="swp-card-badges">
             <span class="swp-badge-bt">
-              <svg viewBox="0 0 24 24"><path d="M14.88 16.29L13 14.41V19.17l1.88-2.88zM13 4.83l1.88 2.88L13 9.59V4.83M17.71 7.71L12 2h-1v7.59L6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 11 14.41V22h1l5.71-5.71-4.3-4.29 4.3-4.29z"/></svg>
+              <svg viewBox="0 0 24 24">
+                <path d="M14.88 16.29L13 14.41V19.17l1.88-2.88zM13 4.83l1.88 2.88L13 9.59V4.83M17.71 7.71L12 2h-1v7.59L6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 11 14.41V22h1l5.71-5.71-4.3-4.29 4.3-4.29z"/>
+              </svg>
               Bluetooth
             </span>
             <span class="swp-badge-sale">SAVE $20</span>
           </div>
           <a href="/products/sipwise-pro" class="swp-card-media">
-            <img class="swp-main-img" src="https://images.unsplash.com/photo-1517686469429-8bdb88b9f907?w=600&auto=format&fit=crop&q=80" alt="Sipwise PRO Electric Blue" loading="lazy">
+            <img
+              class="swp-main-img"
+              src="https://images.unsplash.com/photo-1517686469429-8bdb88b9f907?w=600&auto=format&fit=crop&q=80"
+              alt="Sipwise PRO Electric Blue"
+              loading="lazy"
+            >
           </a>
           <div class="swp-card-details">
             <div class="swp-card-title-row">
@@ -1245,11 +1527,21 @@
             </div>
             <div class="swp-card-rating">
               <span class="swp-stars">
-                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                </svg>
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                </svg>
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                </svg>
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                </svg>
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                </svg>
               </span>
               <span>(285)</span>
             </div>
@@ -1257,7 +1549,12 @@
             <div class="swp-swatches-row">
               <span class="swp-swatch-dot" style="background-color: #2563eb;" title="Electric Blue"></span>
             </div>
-            <button class="swp-atc-btn" type="button" data-variant-id="default" data-product-title="Sipwise PRO - Electric Blue">
+            <button
+              class="swp-atc-btn"
+              type="button"
+              data-variant-id="default"
+              data-product-title="Sipwise PRO - Electric Blue"
+            >
               <span class="swp-btn-text">Add To Cart</span>
               <span class="swp-spinner"></span>
             </button>
@@ -1265,16 +1562,31 @@
         </div>
 
         <!-- CARD 6: Sipwise PRO (Sunrise Orange) -->
-        <div class="swp-product-card" data-coll="pro" data-color="orange" data-price="79" data-rating="5" data-instock="true" data-is-pro="true">
+        <div
+          class="swp-product-card"
+          data-coll="pro"
+          data-color="orange"
+          data-price="79"
+          data-rating="5"
+          data-instock="true"
+          data-is-pro="true"
+        >
           <div class="swp-card-badges">
             <span class="swp-badge-bt">
-              <svg viewBox="0 0 24 24"><path d="M14.88 16.29L13 14.41V19.17l1.88-2.88zM13 4.83l1.88 2.88L13 9.59V4.83M17.71 7.71L12 2h-1v7.59L6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 11 14.41V22h1l5.71-5.71-4.3-4.29 4.3-4.29z"/></svg>
+              <svg viewBox="0 0 24 24">
+                <path d="M14.88 16.29L13 14.41V19.17l1.88-2.88zM13 4.83l1.88 2.88L13 9.59V4.83M17.71 7.71L12 2h-1v7.59L6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 11 14.41V22h1l5.71-5.71-4.3-4.29 4.3-4.29z"/>
+              </svg>
               Bluetooth
             </span>
             <span class="swp-badge-sale">SAVE $20</span>
           </div>
           <a href="/products/sipwise-pro" class="swp-card-media">
-            <img class="swp-main-img" src="https://images.unsplash.com/photo-1544816155-12df9643f363?w=600&auto=format&fit=crop&q=80" alt="Sipwise PRO Sunrise Orange" loading="lazy">
+            <img
+              class="swp-main-img"
+              src="https://images.unsplash.com/photo-1544816155-12df9643f363?w=600&auto=format&fit=crop&q=80"
+              alt="Sipwise PRO Sunrise Orange"
+              loading="lazy"
+            >
           </a>
           <div class="swp-card-details">
             <div class="swp-card-title-row">
@@ -1287,11 +1599,21 @@
             </div>
             <div class="swp-card-rating">
               <span class="swp-stars">
-                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                </svg>
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                </svg>
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                </svg>
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                </svg>
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                </svg>
               </span>
               <span>(219)</span>
             </div>
@@ -1299,7 +1621,12 @@
             <div class="swp-swatches-row">
               <span class="swp-swatch-dot" style="background-color: #f97316;" title="Sunrise Orange"></span>
             </div>
-            <button class="swp-atc-btn" type="button" data-variant-id="default" data-product-title="Sipwise PRO - Sunrise Orange">
+            <button
+              class="swp-atc-btn"
+              type="button"
+              data-variant-id="default"
+              data-product-title="Sipwise PRO - Sunrise Orange"
+            >
               <span class="swp-btn-text">Add To Cart</span>
               <span class="swp-spinner"></span>
             </button>
@@ -1307,16 +1634,31 @@
         </div>
 
         <!-- CARD 7: Sipwise PRO (Carbon Black) -->
-        <div class="swp-product-card" data-coll="pro" data-color="black" data-price="79" data-rating="5" data-instock="true" data-is-pro="true">
+        <div
+          class="swp-product-card"
+          data-coll="pro"
+          data-color="black"
+          data-price="79"
+          data-rating="5"
+          data-instock="true"
+          data-is-pro="true"
+        >
           <div class="swp-card-badges">
             <span class="swp-badge-bt">
-              <svg viewBox="0 0 24 24"><path d="M14.88 16.29L13 14.41V19.17l1.88-2.88zM13 4.83l1.88 2.88L13 9.59V4.83M17.71 7.71L12 2h-1v7.59L6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 11 14.41V22h1l5.71-5.71-4.3-4.29 4.3-4.29z"/></svg>
+              <svg viewBox="0 0 24 24">
+                <path d="M14.88 16.29L13 14.41V19.17l1.88-2.88zM13 4.83l1.88 2.88L13 9.59V4.83M17.71 7.71L12 2h-1v7.59L6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 11 14.41V22h1l5.71-5.71-4.3-4.29 4.3-4.29z"/>
+              </svg>
               Bluetooth
             </span>
             <span class="swp-badge-sale">SAVE $20</span>
           </div>
           <a href="/products/sipwise-pro" class="swp-card-media">
-            <img class="swp-main-img" src="https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=600&auto=format&fit=crop&q=80" alt="Sipwise PRO Carbon Black" loading="lazy">
+            <img
+              class="swp-main-img"
+              src="https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=600&auto=format&fit=crop&q=80"
+              alt="Sipwise PRO Carbon Black"
+              loading="lazy"
+            >
           </a>
           <div class="swp-card-details">
             <div class="swp-card-title-row">
@@ -1329,11 +1671,21 @@
             </div>
             <div class="swp-card-rating">
               <span class="swp-stars">
-                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                </svg>
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                </svg>
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                </svg>
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                </svg>
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                </svg>
               </span>
               <span>(268)</span>
             </div>
@@ -1341,24 +1693,29 @@
             <div class="swp-swatches-row">
               <span class="swp-swatch-dot" style="background-color: #0f172a;" title="Carbon Black"></span>
             </div>
-            <button class="swp-atc-btn" type="button" data-variant-id="default" data-product-title="Sipwise PRO - Carbon Black">
+            <button
+              class="swp-atc-btn"
+              type="button"
+              data-variant-id="default"
+              data-product-title="Sipwise PRO - Carbon Black"
+            >
               <span class="swp-btn-text">Add To Cart</span>
               <span class="swp-spinner"></span>
             </button>
           </div>
         </div>
-
       {%- endif -%}
-
     </div>
   </div>
 </section>
 
-<!-- =======================================================
-     INTERACTIVE JAVASCRIPT: FILTERING, SORTING & CART
-     ======================================================= -->
+<!--
+  =======================================================
+  INTERACTIVE JAVASCRIPT: FILTERING, SORTING & CART
+  =======================================================
+-->
 <script>
-  (function() {
+  (function () {
     var section = document.getElementById('sipwise-shop-{{ section_id }}');
     if (!section) return;
 
@@ -1376,24 +1733,24 @@
       coll: 'all',
       color: 'all',
       inStockOnly: false,
-      sort: 'featured'
+      sort: 'featured',
     };
 
     // 1. Mobile Collections Carousel Dots
     if (collTrack && dotsContainer) {
       var cards = collTrack.querySelectorAll('.swp-coll-card');
       dotsContainer.innerHTML = '';
-      cards.forEach(function(_, idx) {
+      cards.forEach(function (_, idx) {
         var dot = document.createElement('span');
         dot.className = 'swp-coll-dot' + (idx === 0 ? ' is-active' : '');
         dotsContainer.appendChild(dot);
       });
 
-      collTrack.addEventListener('scroll', function() {
+      collTrack.addEventListener('scroll', function () {
         var cardWidth = cards[0] ? cards[0].offsetWidth + 20 : 200;
         var activeIndex = Math.round(collTrack.scrollLeft / cardWidth);
         var dots = dotsContainer.querySelectorAll('.swp-coll-dot');
-        dots.forEach(function(d, i) {
+        dots.forEach(function (d, i) {
           d.classList.toggle('is-active', i === activeIndex);
         });
       });
@@ -1401,8 +1758,8 @@
 
     // 2. Collection Cards Click -> Filter Grid or Navigate URL
     var collCards = section.querySelectorAll('.swp-coll-card');
-    collCards.forEach(function(card) {
-      card.addEventListener('click', function(e) {
+    collCards.forEach(function (card) {
+      card.addEventListener('click', function (e) {
         var action = card.getAttribute('data-card-action');
         var targetUrl = card.getAttribute('data-url');
 
@@ -1413,8 +1770,10 @@
 
         e.preventDefault();
         var targetColl = (card.getAttribute('data-filter-coll') || 'all').toLowerCase();
-        
-        collCards.forEach(function(c) { c.classList.remove('is-active'); });
+
+        collCards.forEach(function (c) {
+          c.classList.remove('is-active');
+        });
         if (currentFilters.coll === targetColl) {
           currentFilters.coll = 'all';
         } else {
@@ -1424,7 +1783,7 @@
 
         // Update dropdown active state too
         var collDropdownItems = section.querySelectorAll('#swp-coll-dropdown-menu-{{ section_id }} .swp-dropdown-item');
-        collDropdownItems.forEach(function(item) {
+        collDropdownItems.forEach(function (item) {
           var val = (item.getAttribute('data-filter-val') || 'all').toLowerCase();
           item.classList.toggle('is-selected', val === currentFilters.coll);
         });
@@ -1441,28 +1800,34 @@
 
     // 3. Dropdowns Behavior (Toggle Open / Close)
     var dropdowns = section.querySelectorAll('[data-swp-dropdown]');
-    dropdowns.forEach(function(dd) {
+    dropdowns.forEach(function (dd) {
       var btn = dd.querySelector('.swp-pill-btn');
-      btn.addEventListener('click', function(e) {
+      btn.addEventListener('click', function (e) {
         e.stopPropagation();
         var isOpen = dd.classList.contains('is-open');
-        dropdowns.forEach(function(d) { d.classList.remove('is-open'); });
+        dropdowns.forEach(function (d) {
+          d.classList.remove('is-open');
+        });
         if (!isOpen) dd.classList.add('is-open');
       });
     });
 
-    document.addEventListener('click', function() {
-      dropdowns.forEach(function(d) { d.classList.remove('is-open'); });
+    document.addEventListener('click', function () {
+      dropdowns.forEach(function (d) {
+        d.classList.remove('is-open');
+      });
     });
 
     // Dropdown Items Click
-    section.querySelectorAll('.swp-dropdown-item').forEach(function(item) {
-      item.addEventListener('click', function(e) {
+    section.querySelectorAll('.swp-dropdown-item').forEach(function (item) {
+      item.addEventListener('click', function (e) {
         e.stopPropagation();
         var menu = item.closest('.swp-dropdown-menu');
         var dd = item.closest('.swp-dropdown');
         if (menu) {
-          menu.querySelectorAll('.swp-dropdown-item').forEach(function(i) { i.classList.remove('is-selected'); });
+          menu.querySelectorAll('.swp-dropdown-item').forEach(function (i) {
+            i.classList.remove('is-selected');
+          });
           item.classList.add('is-selected');
         }
         if (dd) dd.classList.remove('is-open');
@@ -1480,7 +1845,7 @@
           currentFilters[filterType] = filterVal;
 
           if (filterType === 'coll') {
-            collCards.forEach(function(c) {
+            collCards.forEach(function (c) {
               var cVal = (c.getAttribute('data-filter-coll') || 'all').toLowerCase();
               c.classList.toggle('is-active', cVal === filterVal && filterVal !== 'all');
             });
@@ -1493,7 +1858,7 @@
 
     // 4. In Stock Checkbox
     if (inStockCheckbox) {
-      inStockCheckbox.addEventListener('change', function() {
+      inStockCheckbox.addEventListener('change', function () {
         currentFilters.inStockOnly = inStockCheckbox.checked;
         applyFilters();
       });
@@ -1501,9 +1866,11 @@
 
     // 5. View Toggles (4-col vs 2-col)
     var viewBtns = section.querySelectorAll('.swp-view-btn');
-    viewBtns.forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        viewBtns.forEach(function(b) { b.classList.remove('is-active'); });
+    viewBtns.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        viewBtns.forEach(function (b) {
+          b.classList.remove('is-active');
+        });
         btn.classList.add('is-active');
         var view = btn.getAttribute('data-view');
         if (grid) {
@@ -1520,14 +1887,20 @@
       var cards = Array.from(grid.querySelectorAll('.swp-product-card'));
       var visibleCount = 0;
 
-      cards.forEach(function(card) {
+      cards.forEach(function (card) {
         var cardColl = (card.getAttribute('data-coll') || '').toLowerCase();
         var cardColor = (card.getAttribute('data-color') || '').toLowerCase();
         var cardInStock = card.getAttribute('data-instock') === 'true';
 
-        var matchColl = (currentFilters.coll === 'all' || cardColl === currentFilters.coll || cardColl.indexOf(currentFilters.coll) !== -1);
-        var matchColor = (currentFilters.color === 'all' || cardColor === currentFilters.color || cardColor.indexOf(currentFilters.color) !== -1);
-        var matchStock = (!currentFilters.inStockOnly || cardInStock);
+        var matchColl =
+          currentFilters.coll === 'all' ||
+          cardColl === currentFilters.coll ||
+          cardColl.indexOf(currentFilters.coll) !== -1;
+        var matchColor =
+          currentFilters.color === 'all' ||
+          cardColor === currentFilters.color ||
+          cardColor.indexOf(currentFilters.color) !== -1;
+        var matchStock = !currentFilters.inStockOnly || cardInStock;
 
         if (matchColl && matchColor && matchStock) {
           card.style.display = 'flex';
@@ -1538,8 +1911,10 @@
       });
 
       // Sorting
-      var sortedCards = cards.filter(function(c) { return c.style.display !== 'none'; });
-      sortedCards.sort(function(a, b) {
+      var sortedCards = cards.filter(function (c) {
+        return c.style.display !== 'none';
+      });
+      sortedCards.sort(function (a, b) {
         var priceA = parseFloat(a.getAttribute('data-price')) || 0;
         var priceB = parseFloat(b.getAttribute('data-price')) || 0;
         var ratingA = parseFloat(a.getAttribute('data-rating')) || 0;
@@ -1551,7 +1926,7 @@
         return 0; // featured default
       });
 
-      sortedCards.forEach(function(card) {
+      sortedCards.forEach(function (card) {
         grid.appendChild(card);
       });
 
@@ -1565,13 +1940,19 @@
       var tags = [];
 
       if (currentFilters.coll !== 'all') {
-        var collItem = section.querySelector('#swp-coll-dropdown-menu-{{ section_id }} [data-filter-val="' + currentFilters.coll + '"]');
+        var collItem = section.querySelector(
+          '#swp-coll-dropdown-menu-{{ section_id }} [data-filter-val="' + currentFilters.coll + '"]'
+        );
         var collName = collItem ? collItem.textContent.trim() : currentFilters.coll.toUpperCase();
         tags.push({ key: 'coll', label: collName });
       }
       if (currentFilters.color !== 'all') {
-        var colorItem = section.querySelector('#swp-color-dropdown-menu-{{ section_id }} [data-filter-val="' + currentFilters.color + '"]');
-        var colorName = colorItem ? colorItem.textContent.trim() : currentFilters.color.charAt(0).toUpperCase() + currentFilters.color.slice(1);
+        var colorItem = section.querySelector(
+          '#swp-color-dropdown-menu-{{ section_id }} [data-filter-val="' + currentFilters.color + '"]'
+        );
+        var colorName = colorItem
+          ? colorItem.textContent.trim()
+          : currentFilters.color.charAt(0).toUpperCase() + currentFilters.color.slice(1);
         tags.push({ key: 'color', label: 'Color: ' + colorName });
       }
       if (currentFilters.inStockOnly) {
@@ -1590,12 +1971,12 @@
       activeTagsContainer.style.display = 'flex';
       activeTagsContainer.innerHTML = '';
 
-      tags.forEach(function(tag) {
+      tags.forEach(function (tag) {
         var pill = document.createElement('button');
         pill.className = 'swp-tag-pill';
         pill.type = 'button';
         pill.innerHTML = tag.label + ' <span>&times;</span>';
-        pill.addEventListener('click', function() {
+        pill.addEventListener('click', function () {
           if (tag.key === 'inStockOnly') {
             currentFilters.inStockOnly = false;
             if (inStockCheckbox) inStockCheckbox.checked = false;
@@ -1614,22 +1995,24 @@
       clearBtn.className = 'swp-clear-all';
       clearBtn.type = 'button';
       clearBtn.textContent = 'Clear all';
-      clearBtn.addEventListener('click', function() {
+      clearBtn.addEventListener('click', function () {
         currentFilters.coll = 'all';
         currentFilters.color = 'all';
         currentFilters.inStockOnly = false;
         currentFilters.sort = 'featured';
         if (inStockCheckbox) inStockCheckbox.checked = false;
         if (sortLabel) sortLabel.textContent = 'Sort: Featured';
-        collCards.forEach(function(c) { c.classList.remove('is-active'); });
+        collCards.forEach(function (c) {
+          c.classList.remove('is-active');
+        });
         applyFilters();
       });
       activeTagsContainer.appendChild(clearBtn);
     }
 
     // 8. Add to Cart AJAX handler
-    section.querySelectorAll('.swp-atc-btn').forEach(function(btn) {
-      btn.addEventListener('click', function(e) {
+    section.querySelectorAll('.swp-atc-btn').forEach(function (btn) {
+      btn.addEventListener('click', function (e) {
         e.preventDefault();
         var variantId = btn.getAttribute('data-variant-id');
         var btnText = btn.querySelector('.swp-btn-text');
@@ -1638,10 +2021,10 @@
 
         // If default sample variant without ID, simulate instant add
         if (!variantId || variantId === 'default') {
-          setTimeout(function() {
+          setTimeout(function () {
             btn.classList.remove('is-loading');
             if (btnText) btnText.textContent = 'Added ✓';
-            
+
             // Try opening cart drawer if present
             var cartDrawer = document.querySelector('cart-drawer');
             if (cartDrawer) {
@@ -1649,7 +2032,7 @@
               else cartDrawer.classList.add('active');
             }
 
-            setTimeout(function() {
+            setTimeout(function () {
               if (btnText) btnText.textContent = 'Add To Cart';
             }, 2000);
           }, 600);
@@ -1660,35 +2043,36 @@
         fetch('/cart/add.js', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ items: [{ id: variantId, quantity: 1 }] })
+          body: JSON.stringify({ items: [{ id: variantId, quantity: 1 }] }),
         })
-        .then(function(res) { return res.json(); })
-        .then(function(data) {
-          btn.classList.remove('is-loading');
-          if (btnText) btnText.textContent = 'Added ✓';
+          .then(function (res) {
+            return res.json();
+          })
+          .then(function (data) {
+            btn.classList.remove('is-loading');
+            if (btnText) btnText.textContent = 'Added ✓';
 
-          var cartDrawer = document.querySelector('cart-drawer');
-          if (cartDrawer) {
-            if (typeof cartDrawer.renderContents === 'function') {
-              cartDrawer.renderContents(data);
-            } else if (typeof cartDrawer.open === 'function') {
-              cartDrawer.open();
-            } else {
-              cartDrawer.classList.add('active');
+            var cartDrawer = document.querySelector('cart-drawer');
+            if (cartDrawer) {
+              if (typeof cartDrawer.renderContents === 'function') {
+                cartDrawer.renderContents(data);
+              } else if (typeof cartDrawer.open === 'function') {
+                cartDrawer.open();
+              } else {
+                cartDrawer.classList.add('active');
+              }
             }
-          }
 
-          setTimeout(function() {
-            if (btnText) btnText.textContent = 'Add To Cart';
-          }, 2000);
-        })
-        .catch(function(err) {
-          console.error('Add to cart error:', err);
-          btn.classList.remove('is-loading');
-        });
+            setTimeout(function () {
+              if (btnText) btnText.textContent = 'Add To Cart';
+            }, 2000);
+          })
+          .catch(function (err) {
+            console.error('Add to cart error:', err);
+            btn.classList.remove('is-loading');
+          });
       });
     });
-
   })();
 </script>
 
