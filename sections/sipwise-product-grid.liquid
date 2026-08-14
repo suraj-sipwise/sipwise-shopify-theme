@@ -1950,31 +1950,56 @@
       "name": "Product Variant Card",
       "settings": [
         {
+          "type": "header",
+          "content": "Product & Variant Info"
+        },
+        {
           "type": "text",
           "id": "title",
           "label": "Product Model Name",
-          "default": "Sipwise PRO"
+          "default": "Sipwise LITE+"
         },
         {
           "type": "text",
           "id": "variant_title",
           "label": "Variant / Color & Size",
-          "default": "Ocean Blue · 32oz"
+          "default": "Ocean Blue · 24oz"
         },
         {
           "type": "select",
           "id": "collection_type",
-          "label": "Collection Group",
+          "label": "Collection Group (for Top Filter)",
           "options": [
             { "value": "lite", "label": "Sipwise LITE+" },
             { "value": "pro", "label": "Sipwise PRO" }
           ],
-          "default": "pro"
+          "default": "lite"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Product Image"
+        },
+        {
+          "type": "header",
+          "content": "Color & Swatch Dot"
+        },
+        {
+          "type": "color",
+          "id": "color_hex",
+          "label": "Color Swatch Dot Hex",
+          "default": "#0ea5e9"
+        },
+        {
+          "type": "text",
+          "id": "color_name",
+          "label": "Color Name (Tooltip)",
+          "default": "Ocean Blue"
         },
         {
           "type": "select",
           "id": "color_family",
-          "label": "Color Family Filter",
+          "label": "Color Filter Category",
           "options": [
             { "value": "blue", "label": "Blue" },
             { "value": "black", "label": "Black" },
@@ -1985,46 +2010,42 @@
           "default": "blue"
         },
         {
-          "type": "text",
-          "id": "color_name",
-          "label": "Color Name (Tooltip)",
-          "default": "Ocean Blue"
-        },
-        {
-          "type": "color",
-          "id": "color_hex",
-          "label": "Color Swatch Hex",
-          "default": "#0ea5e9"
+          "type": "header",
+          "content": "Pricing & Badges"
         },
         {
           "type": "text",
           "id": "price",
-          "label": "Price (Display)",
-          "default": "$79.00"
+          "label": "Display Price",
+          "default": "$49.00"
         },
         {
           "type": "number",
           "id": "price_num",
           "label": "Numeric Price (for Sorting)",
-          "default": 79
+          "default": 49
         },
         {
           "type": "text",
           "id": "compare_at_price",
-          "label": "Original Price (Strikethrough)",
-          "default": "$99.00"
+          "label": "Original / Strikethrough Price",
+          "default": "$65.00"
         },
         {
           "type": "text",
           "id": "discount_badge",
-          "label": "Discount Badge Text",
-          "default": "SAVE $20"
+          "label": "Discount Badge Text (e.g. SAVE 20%)",
+          "default": "SAVE 20%"
         },
         {
           "type": "checkbox",
           "id": "is_bluetooth",
-          "label": "Bluetooth Connected Model (Show Badge)",
-          "default": true
+          "label": "Show 'Bluetooth Connected' Badge",
+          "default": false
+        },
+        {
+          "type": "header",
+          "content": "Rating & Stock"
         },
         {
           "type": "range",
@@ -2039,7 +2060,7 @@
           "type": "number",
           "id": "review_count",
           "label": "Review Count",
-          "default": 128
+          "default": 184
         },
         {
           "type": "checkbox",
@@ -2048,9 +2069,8 @@
           "default": true
         },
         {
-          "type": "image_picker",
-          "id": "image",
-          "label": "Variant Image"
+          "type": "header",
+          "content": "Links & Cart"
         },
         {
           "type": "url",
@@ -2060,7 +2080,7 @@
         {
           "type": "text",
           "id": "variant_id",
-          "label": "Shopify Variant ID (for Cart Add)"
+          "label": "Shopify Variant ID (for Add To Cart)"
         }
       ]
     }
@@ -2081,6 +2101,139 @@
           "settings": {
             "title": "Sipwise PRO",
             "filter_tag": "pro"
+          }
+        },
+        {
+          "type": "product_variant",
+          "settings": {
+            "title": "Sipwise LITE+",
+            "variant_title": "Ocean Blue · 24oz",
+            "collection_type": "lite",
+            "color_family": "blue",
+            "color_name": "Ocean Blue",
+            "color_hex": "#0ea5e9",
+            "price": "$49.00",
+            "price_num": 49,
+            "compare_at_price": "$65.00",
+            "discount_badge": "SAVE 20%",
+            "is_bluetooth": false,
+            "rating": 5,
+            "review_count": 184,
+            "in_stock": true
+          }
+        },
+        {
+          "type": "product_variant",
+          "settings": {
+            "title": "Sipwise LITE+",
+            "variant_title": "Midnight Black · 24oz",
+            "collection_type": "lite",
+            "color_family": "black",
+            "color_name": "Midnight Black",
+            "color_hex": "#1e293b",
+            "price": "$49.00",
+            "price_num": 49,
+            "compare_at_price": "$65.00",
+            "discount_badge": "SAVE 20%",
+            "is_bluetooth": false,
+            "rating": 5,
+            "review_count": 142,
+            "in_stock": true
+          }
+        },
+        {
+          "type": "product_variant",
+          "settings": {
+            "title": "Sipwise LITE+",
+            "variant_title": "Electric Coral · 24oz",
+            "collection_type": "lite",
+            "color_family": "coral",
+            "color_name": "Electric Coral",
+            "color_hex": "#fb7185",
+            "price": "$49.00",
+            "price_num": 49,
+            "compare_at_price": "$65.00",
+            "discount_badge": "SAVE 20%",
+            "is_bluetooth": false,
+            "rating": 5,
+            "review_count": 96,
+            "in_stock": true
+          }
+        },
+        {
+          "type": "product_variant",
+          "settings": {
+            "title": "Sipwise PRO",
+            "variant_title": "Deep Navy · 32oz",
+            "collection_type": "pro",
+            "color_family": "navy",
+            "color_name": "Deep Navy",
+            "color_hex": "#1e3a8a",
+            "price": "$79.00",
+            "price_num": 79,
+            "compare_at_price": "$99.00",
+            "discount_badge": "SAVE $20",
+            "is_bluetooth": true,
+            "rating": 5,
+            "review_count": 312,
+            "in_stock": true
+          }
+        },
+        {
+          "type": "product_variant",
+          "settings": {
+            "title": "Sipwise PRO",
+            "variant_title": "Electric Blue · 32oz",
+            "collection_type": "pro",
+            "color_family": "blue",
+            "color_name": "Electric Blue",
+            "color_hex": "#2563eb",
+            "price": "$79.00",
+            "price_num": 79,
+            "compare_at_price": "$99.00",
+            "discount_badge": "SAVE $20",
+            "is_bluetooth": true,
+            "rating": 5,
+            "review_count": 285,
+            "in_stock": true
+          }
+        },
+        {
+          "type": "product_variant",
+          "settings": {
+            "title": "Sipwise PRO",
+            "variant_title": "Sunrise Orange · 32oz",
+            "collection_type": "pro",
+            "color_family": "orange",
+            "color_name": "Sunrise Orange",
+            "color_hex": "#f97316",
+            "price": "$79.00",
+            "price_num": 79,
+            "compare_at_price": "$99.00",
+            "discount_badge": "SAVE $20",
+            "is_bluetooth": true,
+            "rating": 5,
+            "review_count": 219,
+            "in_stock": true
+          }
+        },
+        {
+          "type": "product_variant",
+          "settings": {
+            "title": "Sipwise PRO",
+            "variant_title": "Carbon Black · 32oz",
+            "collection_type": "pro",
+            "color_family": "black",
+            "color_name": "Carbon Black",
+            "color_hex": "#0f172a",
+            "price": "$79.00",
+            "price_num": 79,
+            "compare_at_price": "$99.00",
+            "discount_badge": "SAVE $20",
+            "is_bluetooth": true,
+            "rating": 5,
+            "review_count": 268,
+            "in_stock": true
           }
         }
       ]
