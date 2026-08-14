@@ -20,6 +20,160 @@
     "sipwise_product_grid_E9erET": {
       "type": "sipwise-product-grid",
       "blocks": {
+        "product_variant_RAG84U": {
+          "type": "product_variant",
+          "settings": {
+            "title": "Sipwise LITE",
+            "variant_title": "Ocean Blue · 700ml",
+            "collection_type": "lite",
+            "image": "shopify://shop_images/ChatGPT_Image_Aug_10_2026_04_49_08_PM.png",
+            "color_hex": "#0ea5e9",
+            "color_name": "Ocean Blue",
+            "color_family": "blue",
+            "price": "₹1449.00",
+            "price_num": 49,
+            "compare_at_price": "₹1999.00",
+            "discount_badge": "SAVE 20%",
+            "is_bluetooth": false,
+            "rating": 5,
+            "review_count": 184,
+            "in_stock": true,
+            "product_url": "",
+            "variant_id": ""
+          }
+        },
+        "product_variant_7cnYC3": {
+          "type": "product_variant",
+          "settings": {
+            "title": "Sipwise LITE",
+            "variant_title": "Ocean Blue · 24oz",
+            "collection_type": "lite",
+            "image": "shopify://shop_images/Sipwise_LITE__studio_homepage.png",
+            "color_hex": "#0ea5e9",
+            "color_name": "Ocean Blue",
+            "color_family": "blue",
+            "price": "₹1449.00",
+            "price_num": 49,
+            "compare_at_price": "₹1999.00",
+            "discount_badge": "SAVE 20%",
+            "is_bluetooth": false,
+            "rating": 5,
+            "review_count": 184,
+            "in_stock": true,
+            "product_url": "",
+            "variant_id": ""
+          }
+        },
+        "product_variant_VQhgBJ": {
+          "type": "product_variant",
+          "settings": {
+            "title": "Sipwise LITE",
+            "variant_title": "Ocean Blue · 24oz",
+            "collection_type": "lite",
+            "image": "shopify://shop_images/Sipwise_LITE__studiostyle_image_0e924bb1-3261-4704-aa3f-7a8cc7e26eaf.png",
+            "color_hex": "#0ea5e9",
+            "color_name": "Ocean Blue",
+            "color_family": "blue",
+            "price": "₹1449.00",
+            "price_num": 49,
+            "compare_at_price": "₹1999.00",
+            "discount_badge": "SAVE 20%",
+            "is_bluetooth": false,
+            "rating": 5,
+            "review_count": 184,
+            "in_stock": true,
+            "product_url": "",
+            "variant_id": ""
+          }
+        },
+        "product_variant_MjyFKH": {
+          "type": "product_variant",
+          "settings": {
+            "title": "Sipwise LITE",
+            "variant_title": "Ocean Blue · 24oz",
+            "collection_type": "lite",
+            "image": "shopify://shop_images/Sipwise_LITE__studiostyle_image.png",
+            "color_hex": "#0ea5e9",
+            "color_name": "Ocean Blue",
+            "color_family": "blue",
+            "price": "₹1449.00",
+            "price_num": 49,
+            "compare_at_price": "₹1999.00",
+            "discount_badge": "SAVE 20%",
+            "is_bluetooth": false,
+            "rating": 5,
+            "review_count": 184,
+            "in_stock": true,
+            "product_url": "",
+            "variant_id": ""
+          }
+        },
+        "product_variant_KFeXUT": {
+          "type": "product_variant",
+          "settings": {
+            "title": "Sipwise LITE+",
+            "variant_title": "Ocean Blue · 24oz",
+            "collection_type": "lite",
+            "image": "shopify://shop_images/sipwise-liteplus-with_app_374082ec-88c0-4509-8fab-b94fe273c56a.png",
+            "color_hex": "#0ea5e9",
+            "color_name": "Ocean Blue",
+            "color_family": "blue",
+            "price": "₹1449.00",
+            "price_num": 49,
+            "compare_at_price": "₹1999.00",
+            "discount_badge": "SAVE 20%",
+            "is_bluetooth": false,
+            "rating": 5,
+            "review_count": 184,
+            "in_stock": true,
+            "product_url": "",
+            "variant_id": ""
+          }
+        },
+        "product_variant_t7Firx": {
+          "type": "product_variant",
+          "settings": {
+            "title": "Sipwise LITE+",
+            "variant_title": "Ocean Blue · 24oz",
+            "collection_type": "lite",
+            "image": "shopify://shop_images/sipwise-liteplus-with_app_374082ec-88c0-4509-8fab-b94fe273c56a.png",
+            "color_hex": "#0ea5e9",
+            "color_name": "Ocean Blue",
+            "color_family": "blue",
+            "price": "₹1799.00",
+            "price_num": 49,
+            "compare_at_price": "₹1999.00",
+            "discount_badge": "SAVE 20%",
+            "is_bluetooth": false,
+            "rating": 5,
+            "review_count": 184,
+            "in_stock": true,
+            "product_url": "",
+            "variant_id": ""
+          }
+        },
+        "product_variant_dziGdw": {
+          "type": "product_variant",
+          "settings": {
+            "title": "Sipwise LITE+",
+            "variant_title": "Ocean Blue · 24oz",
+            "collection_type": "lite",
+            "image": "shopify://shop_images/sipwise-liteplus-with_app_374082ec-88c0-4509-8fab-b94fe273c56a.png",
+            "color_hex": "#0ea5e9",
+            "color_name": "Ocean Blue",
+            "color_family": "blue",
+            "price": "₹1449.00",
+            "price_num": 49,
+            "compare_at_price": "₹1999.00",
+            "discount_badge": "SAVE 20%",
+            "is_bluetooth": false,
+            "rating": 5,
+            "review_count": 184,
+            "in_stock": true,
+            "product_url": "",
+            "variant_id": ""
+          }
+        },
         "collection_card_9r3ctb": {
           "type": "collection_card",
           "settings": {
@@ -48,6 +202,13 @@
         }
       },
       "block_order": [
+        "product_variant_RAG84U",
+        "product_variant_7cnYC3",
+        "product_variant_VQhgBJ",
+        "product_variant_MjyFKH",
+        "product_variant_KFeXUT",
+        "product_variant_t7Firx",
+        "product_variant_dziGdw",
         "collection_card_9r3ctb",
         "collection_card_rUM9MX"
       ],
