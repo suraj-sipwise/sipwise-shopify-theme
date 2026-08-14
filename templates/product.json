@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
@@ -6,24 +15,27 @@
         "Gallery": {
           "type": "main-product_gallery",
           "static": true,
+          "settings": {},
           "blocks": {
             "media-gallery": {
               "type": "main-product_media-gallery",
-              "settings": {}
+              "settings": {},
+              "blocks": {}
             }
           },
           "block_order": [
             "media-gallery"
-          ],
-          "settings": {}
+          ]
         },
         "Details": {
           "type": "main-product_details",
           "static": true,
+          "settings": {},
           "blocks": {
             "title": {
               "type": "product_title",
               "settings": {
+                "heading_tag": "h1",
                 "uppercase_title": false,
                 "desktop_size": 39,
                 "alignment": "left",
@@ -44,8 +56,24 @@
                 "bg_star_color": "#ececec",
                 "label": "(xxxx Reviews)",
                 "size": 16,
-                "alignment": "flex-start",
                 "scroll_id": "",
+                "alignment": "flex-start",
+                "width": "fit_content",
+                "bg_type": "none",
+                "bg_color": "#f4e1ff",
+                "bg_gradient": "linear-gradient(135deg, rgba(232, 220, 255, 1) 0%, rgba(255, 220, 232, 1) 100%)",
+                "bg_opacity": 100,
+                "border_thickness": 0,
+                "border_color": "#000000",
+                "border_style": "solid",
+                "corner_radius": 30,
+                "enable_shadow": false,
+                "shadow_color": "#000000",
+                "shadow_opacity": 15,
+                "shadow_horizontal_offset": 0,
+                "shadow_vertical_offset": 10,
+                "shadow_blur": 20,
+                "shadow_spread": 0,
                 "margin_top": 0,
                 "margin_bottom": 9
               },
@@ -60,6 +88,7 @@
                 "regular_price_size": 25,
                 "sale_price_size": 20,
                 "compare_price_size": 16,
+                "letter_spacing": 6,
                 "displayed_badge": "sale",
                 "sale_badge_color": "accent-2",
                 "custom_badge_text": "[icon_1] SPECIAL OFFER",
@@ -77,12 +106,33 @@
               "type": "product_product-variant-picker-block",
               "settings": {
                 "picker_types": "pills, dropdown, dropdown",
-                "custom_labels": "[name] - [selected]",
                 "skip_unavailable": false,
+                "custom_labels": "[name] - [selected]",
+                "labels_size": 15,
+                "labels_font": "body-bold",
+                "labels_color": "text",
+                "labels_custom_color": "#dd1d1d",
+                "show_label_lines": false,
+                "labels_alignment": "flex-start",
+                "labels_line_color": "text",
+                "labels_line_custom_color": "#dd1d1d",
+                "labels_line_thickness": 2,
+                "show_step_indicator": false,
+                "step_indicator_size": 22,
+                "step_indicator_bg_color": "#000000",
+                "step_indicator_text_color": "#ffffff",
+                "step_indicator_corner_radius": 60,
                 "append": "option_1_label_container",
                 "swatches_size": "medium",
                 "swatches_custom_colors": "disabled",
                 "swatches_custom_colors_list": "#000000, #6D388B, #0000FF, #FFCC00",
+                "swatch_pills_text_size": 15,
+                "swatch_pills_padding": 40,
+                "swatch_pills_radius": 40,
+                "swatch_pills_swatch_size": 150,
+                "swatch_pills_swatch_radius": 100,
+                "swatch_pills_custom_colors": "disabled",
+                "swatch_pills_custom_colors_list": "#1a1a1a, #3a7d7c, #9b2b48, #c9a76e",
                 "full_width_dropdowns": false,
                 "breaks_style": "normal",
                 "breaks_headline": "BUNDLE & SAVE",
@@ -295,12 +345,21 @@
                 "icon_scale": 120,
                 "icon_spacing": 10,
                 "atc_custom_label": "",
+                "atc_label_size": 18,
+                "atc_label_2": "",
+                "atc_label_2_size": 12,
+                "atc_label_2_font": "body",
+                "atc_label_2_uppercase": false,
+                "atc_lines_spacing": 3,
+                "atc_button_padding_y": 8,
                 "display_price": false,
                 "price_position": "left",
                 "price_separator": "•",
                 "enable_custom_color": false,
                 "custom_color": "#53af01",
                 "custom_text_color": "#ffffff",
+                "icon_1_attach": "both",
+                "icon_2_attach": "both",
                 "enable_secondary_btn": true,
                 "secondary_btn_label": "Buy It Now",
                 "secondary_btn_enable_custom_color": false,
@@ -350,17 +409,25 @@
             "e7a28cbe-03cb-4c9d-a2c4-0e3e76ffb3e5": {
               "type": "product_sticky-atc",
               "settings": {
-                "function": "add_to_cart",
                 "display_when": "after_scroll",
+                "display_pixels": 500,
+                "display_percent": 50,
+                "color_scheme": "background-1",
+                "title": "",
+                "subtitle": "",
+                "function": "add_to_cart",
                 "button_label": "Add to cart",
                 "enable_custom_btn_color": false,
                 "custom_btn_color": "#dd1d1d",
-                "color_scheme": "background-1",
+                "icon_scale": 120,
                 "star_color": "#ffcc00",
                 "stars_label": "(xxxx Reviews)",
                 "picker_type": "combined",
+                "desktop_layout": "full",
+                "desktop_max_width": 850,
                 "desktop_show_image": true,
                 "desktop_show_title": true,
+                "desktop_show_subtitle": true,
                 "desktop_rating_stars": false,
                 "desktop_show_price": true,
                 "desktop_show_sale_badge": true,
@@ -368,8 +435,10 @@
                 "desktop_full_button_width": false,
                 "desktop_show_price_in_button": false,
                 "desktop_transparent_bg": false,
+                "mobile_layout": "full",
                 "mobile_show_image": false,
                 "mobile_show_title": true,
+                "mobile_show_subtitle": true,
                 "mobile_rating_stars": false,
                 "mobile_show_price": true,
                 "mobile_show_sale_badge": false,
@@ -481,14 +550,9 @@
             "description",
             "reviews_8UgFbe",
             "de158e68-5d0d-4819-a625-e2dabdff87d1"
-          ],
-          "settings": {}
+          ]
         }
       },
-      "block_order": [
-        "Gallery",
-        "Details"
-      ],
       "custom_css": [],
       "settings": {
         "display_id": false,
@@ -502,11 +566,27 @@
         "pattern_opacity_mode": "low",
         "pattern_opacity_low": 7,
         "pattern_opacity_normal": 80,
+        "enable_breadcrumbs": false,
+        "breadcrumbs_position": "above_first_block",
+        "breadcrumbs_mode": "hybrid",
+        "breadcrumbs_show_home": true,
+        "breadcrumbs_home_label": "Home",
+        "breadcrumbs_show_product": false,
+        "breadcrumbs_separator": "›",
+        "breadcrumbs_desktop_text_size": 13,
+        "breadcrumbs_mobile_text_size": 12,
+        "breadcrumbs_font": "body",
+        "breadcrumbs_text_color": "text",
+        "breadcrumbs_custom_color": "#dd1d1d",
+        "breadcrumbs_alignment": "left",
+        "breadcrumbs_bottom_margin": 14,
         "display_variant_image_first": false,
         "disable_prepend": true,
         "hide_variants": false,
         "variant_image_filtering": "none",
-        "image_zoom": "none",
+        "image_zoom_desktop": "combined",
+        "hover_zoom_style": "inline",
+        "image_zoom_mobile": "lightbox",
         "thumbnails_ratio": "square",
         "arrows_color_scheme": "inverse",
         "transparent_arrows": false,
@@ -518,6 +598,8 @@
         "video_timeline": false,
         "play_btn_color_scheme": "accent-1",
         "sound_btn_color_scheme": "inverse",
+        "video_fullscreen_btn": false,
+        "fullscreen_btn_color_scheme": "inverse",
         "timeline_color": "accent-1",
         "media_size": "medium",
         "media_position": "left",
@@ -543,7 +625,8 @@
         "mobile_slides_container_width": 100,
         "mobile_slides_inner_width": 100,
         "trust_badge_position": "top-right",
-        "trust_badge_size": "medium",
+        "badge_display_on": "all",
+        "badge_size_percentage": 20,
         "mobile_padding_top": 0,
         "mobile_padding_bottom": 16,
         "desktop_padding_top": 36,
@@ -609,6 +692,99 @@
         "padding_bottom": 24
       }
     },
+    "product_swatch_buybox_Aix94r": {
+      "type": "product-swatch-buybox",
+      "blocks": {
+        "color_swatch_dpzyAJ": {
+          "type": "color_swatch",
+          "settings": {
+            "label": "Out of the Blue",
+            "swatch_color": "#a5b4fc",
+            "bg_color": "#dce4f7",
+            "btn_color": "#9bb1e4"
+          }
+        },
+        "color_swatch_e9kLPQ": {
+          "type": "color_swatch",
+          "settings": {
+            "label": "Peach of Mind",
+            "swatch_color": "#e99f7d",
+            "bg_color": "#fae2d4",
+            "btn_color": "#e99f7d"
+          }
+        },
+        "color_swatch_9eq8hP": {
+          "type": "color_swatch",
+          "settings": {
+            "label": "Rose Quartz",
+            "swatch_color": "#d88fa5",
+            "bg_color": "#f8e5e8",
+            "btn_color": "#d88fa5"
+          }
+        },
+        "color_swatch_d8harY": {
+          "type": "color_swatch",
+          "settings": {
+            "label": "Electric Coral",
+            "swatch_color": "#fb7185",
+            "bg_color": "#ffe4e6",
+            "btn_color": "#fb7185"
+          }
+        },
+        "color_swatch_cqkqjw": {
+          "type": "color_swatch",
+          "settings": {
+            "label": "Midnight Black",
+            "swatch_color": "#1e293b",
+            "bg_color": "#f1f5f9",
+            "btn_color": "#1e293b"
+          }
+        },
+        "color_swatch_DKpqLd": {
+          "type": "color_swatch",
+          "settings": {
+            "label": "Shy Marshmallow",
+            "swatch_color": "#ffffff",
+            "bg_color": "#f8fafc",
+            "btn_color": "#64748b"
+          }
+        }
+      },
+      "block_order": [
+        "color_swatch_dpzyAJ",
+        "color_swatch_e9kLPQ",
+        "color_swatch_9eq8hP",
+        "color_swatch_d8harY",
+        "color_swatch_cqkqjw",
+        "color_swatch_DKpqLd"
+      ],
+      "name": "Product Swatch Buy Box",
+      "settings": {
+        "product": "sipwise-lite",
+        "font_family": "'Figtree', sans-serif",
+        "custom_title": "",
+        "show_trademark_symbol": true,
+        "tagline_text": "Award winning. Leak-proof. 24 hours cold.",
+        "show_reviews": true,
+        "reviews_count_text": "33135 reviews",
+        "mock_sizes": "24oz, 32oz, 40oz",
+        "show_customize_button": false,
+        "customize_btn_text": "Customize",
+        "customize_url": "",
+        "atc_btn_text": "Add to cart",
+        "show_footer_links": true,
+        "link_1_text": "30-Day Returns",
+        "link_1_url": "",
+        "link_2_text": "Limited Lifetime Warranty",
+        "link_2_url": "",
+        "link_3_text": "FAQs",
+        "link_3_url": "",
+        "show_installments": true,
+        "container_width": 1320,
+        "padding_top_desktop": 64,
+        "padding_top_mobile": 40
+      }
+    },
     "custom_columns_new_dBCjfR": {
       "type": "custom-columns-new",
       "blocks": {
@@ -635,7 +811,12 @@
             "shadow_vertical_offset": 6,
             "shadow_spread": 0,
             "shadow_blur": 16,
+            "round_corners_equally": true,
             "border_radius": 12,
+            "border_radius_top_left": 12,
+            "border_radius_top_right": 12,
+            "border_radius_bottom_right": 12,
+            "border_radius_bottom_left": 12,
             "vertical_desktop_padding": 15,
             "horizontal_desktop_padding": 15,
             "vertical_mobile_padding": 14,
@@ -647,6 +828,7 @@
               "settings": {
                 "visibility": "always-display",
                 "title": "Custom columns",
+                "heading_tag": "h2",
                 "heading_size": "h1",
                 "custom_desktop_size": 39,
                 "custom_mobile_size": 28,
@@ -838,7 +1020,12 @@
             "shadow_vertical_offset": 6,
             "shadow_spread": 0,
             "shadow_blur": 16,
+            "round_corners_equally": true,
             "border_radius": 12,
+            "border_radius_top_left": 12,
+            "border_radius_top_right": 12,
+            "border_radius_bottom_right": 12,
+            "border_radius_bottom_left": 12,
             "vertical_desktop_padding": 15,
             "horizontal_desktop_padding": 15,
             "vertical_mobile_padding": 14,
@@ -918,7 +1105,12 @@
             "shadow_vertical_offset": 6,
             "shadow_spread": 0,
             "shadow_blur": 16,
+            "round_corners_equally": true,
             "border_radius": 12,
+            "border_radius_top_left": 12,
+            "border_radius_top_right": 12,
+            "border_radius_bottom_right": 12,
+            "border_radius_bottom_left": 12,
             "vertical_desktop_padding": 15,
             "horizontal_desktop_padding": 15,
             "vertical_mobile_padding": 14,
@@ -966,7 +1158,12 @@
             "shadow_vertical_offset": 6,
             "shadow_spread": 0,
             "shadow_blur": 16,
+            "round_corners_equally": true,
             "border_radius": 12,
+            "border_radius_top_left": 12,
+            "border_radius_top_right": 12,
+            "border_radius_bottom_right": 12,
+            "border_radius_bottom_left": 12,
             "vertical_desktop_padding": 15,
             "horizontal_desktop_padding": 15,
             "vertical_mobile_padding": 14,
@@ -1421,6 +1618,7 @@
   "order": [
     "main",
     "related-products",
+    "product_swatch_buybox_Aix94r",
     "custom_columns_new_dBCjfR",
     "eba88da5-80ac-47fc-aa75-997cfe7b2e59",
     "4fc05ee5-1c30-4863-b88f-81cb6fa7c41a",
