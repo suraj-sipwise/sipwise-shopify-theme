@@ -1,7 +1,8 @@
 {% comment %}
-  Sipwise Theme — Product Swatch Buy Box Section
-  Interactive color-swatch buy box with live hover preview, click commitment,
-  AJAX cart integration, and zero layout shift.
+  Sipwise Theme — Owala-Style Product Swatch Buy Box Section
+  Full-viewport pastel background transition on hover & commit,
+  dynamic Add to Cart button styling, segmented size capsule,
+  and exact Owala reference layout & typography.
 {% endcomment %}
 
 {{ 'product-swatch.css' | asset_url | stylesheet_tag }}
@@ -16,17 +17,23 @@
   assign color_option_name = ''
   assign has_color_option = false
 
+  assign size_option_index = 1
+  assign size_option_name = ''
+  assign has_size_option = false
+
   for option in current_product.options_with_values
     assign opt_name_lower = option.name | downcase
     if opt_name_lower contains 'color' or opt_name_lower contains 'colour' or opt_name_lower contains 'shade' or opt_name_lower contains 'finish' or opt_name_lower contains 'style'
       assign color_option_index = forloop.index0
       assign color_option_name = option.name
       assign has_color_option = true
-      break
+    elsif opt_name_lower contains 'size' or opt_name_lower contains 'volume' or opt_name_lower contains 'capacity' or opt_name_lower contains 'oz'
+      assign size_option_index = forloop.index0
+      assign size_option_name = option.name
+      assign has_size_option = true
     endif
   endfor
 
-  # If no color option was found by name, default to the first option if multiple variants exist
   if has_color_option == false and current_product.options_with_values.size > 0
     assign color_option_index = 0
     assign color_option_name = current_product.options_with_values[0].name
@@ -34,30 +41,19 @@
   endif
 
   assign swatch_blocks = section.blocks | where: 'type', 'color_swatch'
-  assign perk_blocks = section.blocks | where: 'type', 'perk'
-  assign tab_blocks = section.blocks | where: 'type', 'collapsible_tab'
-
   assign selected_color_value = current_variant.options[color_option_index] | default: ''
+  assign selected_size_value = current_variant.options[size_option_index] | default: ''
 -%}
 
 {%- style -%}
   #SwatchBuyBox-{{ section_id }} {
-    --sbb-container-width: {{ section.settings.container_width | default: 1280 }}px;
-    --sbb-padding-y-desktop: {{ section.settings.padding_top_desktop | default: 60 }}px;
-    --sbb-padding-y-mobile: {{ section.settings.padding_top_mobile | default: 36 }}px;
-    --sbb-grid-gap-desktop: {{ section.settings.grid_gap_desktop | default: 56 }}px;
-    --sbb-grid-gap-mobile: {{ section.settings.grid_gap_mobile | default: 32 }}px;
-    --sbb-stage-radius: {{ section.settings.stage_radius | default: 28 }}px;
-    --sbb-stage-bg: {{ section.settings.stage_bg_color | default: '#f8fafc' }};
+    --sbb-container-width: {{ section.settings.container_width | default: 1320 }}px;
+    --sbb-padding-y-desktop: {{ section.settings.padding_top_desktop | default: 64 }}px;
+    --sbb-padding-y-mobile: {{ section.settings.padding_top_mobile | default: 40 }}px;
+    --sbb-grid-gap-desktop: {{ section.settings.grid_gap_desktop | default: 64 }}px;
+    --sbb-grid-gap-mobile: {{ section.settings.grid_gap_mobile | default: 36 }}px;
     --sbb-text-color: {{ section.settings.text_color | default: '#0f172a' }};
-    --sbb-accent-color: {{ section.settings.accent_color | default: '#1a56db' }};
-    --sbb-btn-bg: {{ section.settings.btn_bg_color | default: '#0f172a' }};
-    --sbb-btn-text: {{ section.settings.btn_text_color | default: '#ffffff' }};
-    --sbb-btn-hover-bg: {{ section.settings.btn_hover_bg_color | default: '#1e293b' }};
-    --sbb-badge-custom-bg: {{ section.settings.custom_badge_bg | default: '#1a56db' }};
-    --sbb-badge-custom-color: {{ section.settings.custom_badge_text_color | default: '#ffffff' }};
-    --sbb-aspect-ratio: {{ section.settings.image_aspect_ratio | default: '1 / 1' }};
-    background-color: {{ section.settings.section_bg_color | default: '#ffffff' }};
+    --sbb-font-family: {{ section.settings.font_family | default: "'Figtree', sans-serif" }};
   }
 {%- endstyle -%}
 
@@ -72,33 +68,9 @@
     {%- if current_product != blank -%}
       <div class="swatch-buybox-grid">
         
-        {% comment %} ================= LEFT COLUMN: PRODUCT STAGE ================= {% endcomment %}
+        {% comment %} ================= LEFT COLUMN: PRODUCT STAGE & CAROUSEL ================= {% endcomment %}
         <div class="swatch-buybox-stage-wrapper">
           <div class="swatch-buybox-stage">
-            
-            {% comment %} Badges {% endcomment %}
-            <div class="swatch-buybox-stage-badges">
-              {%- if section.settings.show_sale_badge and current_variant.compare_at_price > current_variant.price -%}
-                {%- assign initial_savings = current_variant.compare_at_price | minus: current_variant.price | times: 100.0 | divided_by: current_variant.compare_at_price | round -%}
-                <span class="swatch-buybox-badge swatch-buybox-badge--sale">
-                  Save {{ initial_savings }}%
-                </span>
-              {%- endif -%}
-
-              {%- if section.settings.badge_bestseller_text != blank -%}
-                <span class="swatch-buybox-badge swatch-buybox-badge--bestseller">
-                  {{ section.settings.badge_bestseller_text }}
-                </span>
-              {%- endif -%}
-
-              {%- if section.settings.custom_badge_text != blank -%}
-                <span class="swatch-buybox-badge swatch-buybox-badge--custom">
-                  {{ section.settings.custom_badge_text }}
-                </span>
-              {%- endif -%}
-            </div>
-
-            {% comment %} Main Image Stage with Reserved Dimensions (CLS prevention) {% endcomment %}
             <div class="swatch-buybox-image-wrap">
               {%- if has_color_option and current_product.options_with_values[color_option_index].values.size > 0 -%}
                 {%- for color_val in current_product.options_with_values[color_option_index].values -%}
@@ -123,13 +95,13 @@
                     <img
                       src="{{ img_obj | image_url: width: 1000 }}"
                       srcset="{{ img_obj | image_url: width: 500 }} 500w, {{ img_obj | image_url: width: 800 }} 800w, {{ img_obj | image_url: width: 1200 }} 1200w"
-                      sizes="(min-width: 990px) 500px, 90vw"
+                      sizes="(min-width: 990px) 440px, 85vw"
                       alt="{{ img_obj.alt | default: current_product.title | escape }} - {{ color_val | escape }}"
                       class="swatch-buybox-img {% if is_active_img %}is-active{% else %}is-inactive{% endif %}"
                       data-variant-id="{{ rep_variant.id }}"
                       data-color-name="{{ color_val | escape }}"
                       width="{{ img_obj.width | default: 800 }}"
-                      height="{{ img_obj.height | default: 800 }}"
+                      height="{{ img_obj.height | default: 900 }}"
                       loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
                       {% if forloop.first %}fetchpriority="high"{% endif %}
                     >
@@ -141,12 +113,12 @@
                   <img
                     src="{{ fallback_img | image_url: width: 1000 }}"
                     srcset="{{ fallback_img | image_url: width: 500 }} 500w, {{ fallback_img | image_url: width: 800 }} 800w, {{ fallback_img | image_url: width: 1200 }} 1200w"
-                    sizes="(min-width: 990px) 500px, 90vw"
+                    sizes="(min-width: 990px) 440px, 85vw"
                     alt="{{ fallback_img.alt | default: current_product.title | escape }}"
                     class="swatch-buybox-img is-active"
                     data-variant-id="{{ current_variant.id }}"
                     width="{{ fallback_img.width | default: 800 }}"
-                    height="{{ fallback_img.height | default: 800 }}"
+                    height="{{ fallback_img.height | default: 900 }}"
                     loading="eager"
                     fetchpriority="high"
                   >
@@ -154,73 +126,115 @@
               {%- endif -%}
             </div>
 
+            {% comment %} Bottom Carousel Dots & Arrows Navigation (< ● ○ ○ ○ ○ >) {% endcomment %}
+            <div class="swatch-buybox-gallery-nav" aria-label="Product image gallery controls">
+              <button type="button" class="swatch-buybox-nav-arrow" data-gallery-prev aria-label="Previous image">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+              </button>
+              
+              <div class="swatch-buybox-nav-dots">
+                <button type="button" class="swatch-buybox-nav-dot is-active" aria-label="Slide 1"></button>
+                <button type="button" class="swatch-buybox-nav-dot" aria-label="Slide 2"></button>
+                <button type="button" class="swatch-buybox-nav-dot" aria-label="Slide 3"></button>
+                <button type="button" class="swatch-buybox-nav-dot" aria-label="Slide 4"></button>
+                <button type="button" class="swatch-buybox-nav-dot" aria-label="Slide 5"></button>
+              </div>
+
+              <button type="button" class="swatch-buybox-nav-arrow" data-gallery-next aria-label="Next image">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </button>
+            </div>
+
           </div>
         </div>
 
-        {% comment %} ================= RIGHT COLUMN: INFO PANEL & BUY BOX ================= {% endcomment %}
+        {% comment %} ================= RIGHT COLUMN: BUY BOX CONTROLS ================= {% endcomment %}
         <div class="swatch-buybox-info">
           
-          {% comment %} Eyebrow / Brand {% endcomment %}
-          {%- if section.settings.eyebrow_text != blank or current_product.vendor != blank -%}
-            <p class="swatch-buybox-eyebrow">
-              {{ section.settings.eyebrow_text | default: current_product.vendor }}
-            </p>
-          {%- endif -%}
+          {% comment %} Title & Registered Symbol {% endcomment %}
+          <div class="swatch-buybox-header">
+            <h1 class="swatch-buybox-title">
+              {{ section.settings.custom_title | default: current_product.title }}
+              {%- if section.settings.show_trademark_symbol -%}
+                <span class="swatch-buybox-trademark">®</span>
+              {%- endif -%}
+            </h1>
 
-          {% comment %} Title {% endcomment %}
-          <h1 class="swatch-buybox-title">
-            {{ current_product.title }}
-          </h1>
+            {% comment %} Tagline / Subtitle {% endcomment %}
+            {%- if section.settings.tagline_text != blank -%}
+              <p class="swatch-buybox-tagline">
+                {{ section.settings.tagline_text }}
+              </p>
+            {%- endif -%}
+          </div>
 
-          {% comment %} Star Reviews Summary {% endcomment %}
+          {% comment %} Star Reviews Rating {% endcomment %}
           {%- if section.settings.show_reviews -%}
             <div class="swatch-buybox-reviews">
               <div class="swatch-buybox-stars" aria-label="5 out of 5 stars">
                 ★★★★★
               </div>
               <span class="swatch-buybox-review-count">
-                {{ section.settings.reviews_rating | default: '4.9' }} ({{ section.settings.reviews_count | default: '1,420+' }} reviews)
+                {{ section.settings.reviews_count_text | default: '33135 reviews' }}
               </span>
             </div>
           {%- endif -%}
 
-          {% comment %} Price Block {% endcomment %}
-          <div class="swatch-buybox-price-row">
-            <span class="swatch-buybox-price-current">
-              {{ current_variant.price | money }}
-            </span>
-            <span
-              class="swatch-buybox-price-compare"
-              {% unless current_variant.compare_at_price > current_variant.price %}hidden{% endunless %}
-            >
-              {{ current_variant.compare_at_price | money }}
-            </span>
-            <span
-              class="swatch-buybox-price-discount"
-              {% unless current_variant.compare_at_price > current_variant.price %}hidden{% endunless %}
-            >
-              {%- if current_variant.compare_at_price > current_variant.price -%}
-                Save {{ current_variant.compare_at_price | minus: current_variant.price | times: 100.0 | divided_by: current_variant.compare_at_price | round }}%
-              {%- endif -%}
-            </span>
-          </div>
-
-          <div class="swatch-buybox-divider"></div>
-
-          {% comment %} ================= COLOR SWATCH SELECTOR ================= {% endcomment %}
-          {%- if has_color_option and current_product.options_with_values[color_option_index].values.size > 0 -%}
-            <div class="swatch-buybox-option-group" data-option-group="color">
-              <div class="swatch-buybox-option-header">
-                <span class="swatch-buybox-option-label">{{ color_option_name }}:</span>
-                <span class="swatch-buybox-color-name">
-                  {{ selected_color_value | default: current_product.options_with_values[color_option_index].values[0] }}
-                </span>
+          {% comment %} Size Selector (Segmented Capsule Bar) {% endcomment %}
+          {%- if has_size_option and current_product.options_with_values[size_option_index].values.size > 0 -%}
+            <div class="swatch-buybox-size-group">
+              <p class="swatch-buybox-group-label">{{ size_option_name }}</p>
+              <div class="swatch-buybox-size-capsule" role="radiogroup" aria-label="{{ size_option_name }} selection">
+                {%- for size_val in current_product.options_with_values[size_option_index].values -%}
+                  {%- assign is_active_size = false -%}
+                  {%- if current_variant.options[size_option_index] == size_val or forloop.first and current_variant.options[size_option_index] == blank -%}
+                    {%- assign is_active_size = true -%}
+                  {%- endif -%}
+                  <button
+                    type="button"
+                    class="swatch-buybox-size-btn {% if is_active_size %}is-active{% endif %}"
+                    role="radio"
+                    aria-checked="{% if is_active_size %}true{% else %}false{% endif %}"
+                    aria-pressed="{% if is_active_size %}true{% else %}false{% endif %}"
+                    data-option-index="{{ size_option_index }}"
+                    data-option-value="{{ size_val | escape }}"
+                  >
+                    {{ size_val }}
+                  </button>
+                {%- endfor -%}
               </div>
+            </div>
+          {%- elsif section.settings.mock_sizes != blank -%}
+            {% comment %} Fallback sizes if product only has 1 size {% endcomment %}
+            <div class="swatch-buybox-size-group">
+              <p class="swatch-buybox-group-label">Size</p>
+              <div class="swatch-buybox-size-capsule" role="radiogroup" aria-label="Size selection">
+                {%- assign mock_size_list = section.settings.mock_sizes | split: ',' -%}
+                {%- for mock_s in mock_size_list -%}
+                  {%- assign s_clean = mock_s | strip -%}
+                  <button
+                    type="button"
+                    class="swatch-buybox-size-btn {% if forloop.first %}is-active{% endif %}"
+                    role="radio"
+                    aria-checked="{% if forloop.first %}true{% else %}false{% endif %}"
+                  >
+                    {{ s_clean }}
+                  </button>
+                {%- endfor -%}
+              </div>
+            </div>
+          {%- endif -%}
 
-              <div class="swatch-buybox-swatches-grid" role="radiogroup" aria-label="{{ color_option_name }} options">
+          {% comment %} Color Name & Swatches Grid {% endcomment %}
+          {%- if has_color_option and current_product.options_with_values[color_option_index].values.size > 0 -%}
+            <div class="swatch-buybox-color-group">
+              <p class="swatch-buybox-color-title">
+                {{ selected_color_value | default: current_product.options_with_values[color_option_index].values[0] }}
+              </p>
+
+              <div class="swatch-buybox-swatches-grid" role="radiogroup" aria-label="Color options">
                 {%- for color_val in current_product.options_with_values[color_option_index].values -%}
                   {%- liquid
-                    # 1. Find representative variant for this color
                     assign rep_variant = null
                     for v in current_product.variants
                       if v.options[color_option_index] == color_val
@@ -229,9 +243,11 @@
                       endif
                     endfor
 
-                    # 2. Determine Swatch Hex Color
-                    # A. Check product metafield: custom.swatch_colors
+                    # Color determination
                     assign resolved_hex = null
+                    assign custom_bg_color = null
+                    assign custom_btn_color = null
+
                     if current_product.metafields.custom.swatch_colors != blank
                       assign mf_colors = current_product.metafields.custom.swatch_colors
                       if mf_colors[color_val] != blank
@@ -239,46 +255,70 @@
                       endif
                     endif
 
-                    # B. Check merchant section schema blocks
                     if resolved_hex == null
                       for block in swatch_blocks
                         assign block_label_clean = block.settings.label | strip | downcase
                         assign color_val_clean = color_val | strip | downcase
                         if block_label_clean == color_val_clean
                           assign resolved_hex = block.settings.swatch_color
-                          assign secondary_hex = block.settings.swatch_color_secondary
+                          assign custom_bg_color = block.settings.bg_color
+                          assign custom_btn_color = block.settings.btn_color
                           break
                         endif
                       endfor
                     endif
 
-                    # C. Smart Fallback Dictionary for Popular Color Names
+                    # Reference-Exact Color Dictionary
                     if resolved_hex == null
                       assign c_lower = color_val | downcase | strip
-                      if c_lower contains 'ocean blue' or c_lower contains 'cyan' or c_lower contains 'sky' or c_lower contains 'teal'
-                        assign resolved_hex = '#0ea5e9'
-                      elsif c_lower contains 'midnight' or c_lower contains 'black' or c_lower contains 'carbon' or c_lower contains 'onyx' or c_lower contains 'dark'
-                        assign resolved_hex = '#1e293b'
-                      elsif c_lower contains 'coral' or c_lower contains 'orange' or c_lower contains 'sunset' or c_lower contains 'peach'
+                      if c_lower contains 'out of the blue' or c_lower contains 'blue' or c_lower contains 'periwinkle'
+                        assign resolved_hex = '#a5b4fc'
+                        assign custom_bg_color = '#dce4f7'
+                        assign custom_btn_color = '#9bb1e4'
+                      elsif c_lower contains 'peach' or c_lower contains 'peach of mind'
+                        assign resolved_hex = '#e99f7d'
+                        assign custom_bg_color = '#fae2d4'
+                        assign custom_btn_color = '#e99f7d'
+                      elsif c_lower contains 'rose' or c_lower contains 'rose quartz' or c_lower contains 'blush'
+                        assign resolved_hex = '#d88fa5'
+                        assign custom_bg_color = '#f8e5e8'
+                        assign custom_btn_color = '#d88fa5'
+                      elsif c_lower contains 'hot pink' or c_lower contains 'magenta'
+                        assign resolved_hex = '#ec4899'
+                        assign custom_bg_color = '#fce7f3'
+                        assign custom_btn_color = '#ec4899'
+                      elsif c_lower contains 'coral' or c_lower contains 'electric coral'
                         assign resolved_hex = '#fb7185'
-                      elsif c_lower contains 'navy' or c_lower contains 'deep blue' or c_lower contains 'royal'
-                        assign resolved_hex = '#1e3a8a'
-                      elsif c_lower contains 'electric blue' or c_lower contains 'blue' or c_lower contains 'cobalt'
-                        assign resolved_hex = '#2563eb'
-                      elsif c_lower contains 'marshmallow' or c_lower contains 'white' or c_lower contains 'snow' or c_lower contains 'cream'
-                        assign resolved_hex = '#f8fafc'
-                      elsif c_lower contains 'sage' or c_lower contains 'olive' or c_lower contains 'green' or c_lower contains 'forest' or c_lower contains 'matcha'
-                        assign resolved_hex = '#10b981'
-                      elsif c_lower contains 'pink' or c_lower contains 'blush' or c_lower contains 'rose' or c_lower contains 'berry'
-                        assign resolved_hex = '#f43f5e'
-                      elsif c_lower contains 'purple' or c_lower contains 'lavender' or c_lower contains 'lilac' or c_lower contains 'violet'
-                        assign resolved_hex = '#a855f7'
-                      elsif c_lower contains 'yellow' or c_lower contains 'gold' or c_lower contains 'lemon'
-                        assign resolved_hex = '#eab308'
-                      elsif c_lower contains 'grey' or c_lower contains 'gray' or c_lower contains 'silver' or c_lower contains 'slate'
-                        assign resolved_hex = '#64748b'
+                        assign custom_bg_color = '#ffe4e6'
+                        assign custom_btn_color = '#fb7185'
+                      elsif c_lower contains 'midnight' or c_lower contains 'black'
+                        assign resolved_hex = '#1e293b'
+                        assign custom_bg_color = '#f1f5f9'
+                        assign custom_btn_color = '#1e293b'
+                      elsif c_lower contains 'white' or c_lower contains 'marshmallow'
+                        assign resolved_hex = '#ffffff'
+                        assign custom_bg_color = '#f8fafc'
+                        assign custom_btn_color = '#64748b'
+                      elsif c_lower contains 'teal' or c_lower contains 'mint'
+                        assign resolved_hex = '#5eead4'
+                        assign custom_bg_color = '#e6fffa'
+                        assign custom_btn_color = '#14b8a6'
+                      elsif c_lower contains 'sage' or c_lower contains 'green'
+                        assign resolved_hex = '#a7f3d0'
+                        assign custom_bg_color = '#ecfdf5'
+                        assign custom_btn_color = '#10b981'
+                      elsif c_lower contains 'yellow' or c_lower contains 'lemon'
+                        assign resolved_hex = '#fef08a'
+                        assign custom_bg_color = '#fefce8'
+                        assign custom_btn_color = '#eab308'
+                      elsif c_lower contains 'lavender' or c_lower contains 'purple'
+                        assign resolved_hex = '#c4b5fd'
+                        assign custom_bg_color = '#f5f3ff'
+                        assign custom_btn_color = '#8b5cf6'
                       else
-                        assign resolved_hex = '#0f172a'
+                        assign resolved_hex = '#93c5fd'
+                        assign custom_bg_color = '#eff6ff'
+                        assign custom_btn_color = '#3b82f6'
                       endif
                     endif
 
@@ -292,22 +332,19 @@
 
                   <button
                     type="button"
-                    class="swatch-buybox-swatch {% if is_active_swatch %}is-active{% endif %} {% if rep_variant.available == false %}is-sold-out{% endif %} {% if secondary_hex != blank %}swatch-buybox-swatch--twotone{% endif %}"
+                    class="swatch-buybox-swatch {% if is_active_swatch %}is-active{% endif %} {% if rep_variant.available == false %}is-sold-out{% endif %}"
                     role="radio"
                     aria-checked="{% if is_active_swatch %}true{% else %}false{% endif %}"
                     aria-pressed="{% if is_active_swatch %}true{% else %}false{% endif %}"
-                    aria-label="Color: {{ color_val | escape }}"
+                    aria-label="{{ color_val | escape }}"
                     data-color-name="{{ color_val | escape }}"
                     data-color-hex="{{ resolved_hex }}"
+                    data-bg-color="{{ custom_bg_color }}"
+                    data-btn-color="{{ custom_btn_color }}"
                     data-variant-id="{{ rep_variant.id }}"
                     data-price="{{ rep_variant.price | money }}"
-                    data-price-raw="{{ rep_variant.price }}"
-                    data-compare-price="{{ rep_variant.compare_at_price | money }}"
-                    data-compare-price-raw="{{ rep_variant.compare_at_price | default: 0 }}"
                     data-available="{{ rep_variant.available }}"
-                    data-option-index="{{ color_option_index }}"
-                    data-option-value="{{ color_val | escape }}"
-                    style="--swatch-btn-color: {{ resolved_hex }};{% if secondary_hex != blank %} --swatch-btn-color-secondary: {{ secondary_hex }};{% endif %}"
+                    style="--swatch-btn-color: {{ resolved_hex }};"
                     tabindex="0"
                   ></button>
                 {%- endfor -%}
@@ -315,166 +352,92 @@
             </div>
           {%- endif -%}
 
-          {% comment %} ================= SECONDARY OPTIONS (e.g. Size/Volume) ================= {% endcomment %}
-          {%- for option in current_product.options_with_values -%}
-            {%- if forloop.index0 != color_option_index -%}
-              {%- assign opt_index = forloop.index0 -%}
-              <div class="swatch-buybox-option-group" data-option-group="secondary-{{ opt_index }}">
-                <div class="swatch-buybox-option-header">
-                  <span class="swatch-buybox-option-label">{{ option.name }}:</span>
-                </div>
-                <div class="swatch-buybox-pills-grid" role="radiogroup" aria-label="{{ option.name }} options">
-                  {%- for opt_val in option.values -%}
-                    {%- assign is_active_pill = false -%}
-                    {%- if current_variant.options[opt_index] == opt_val or forloop.first and current_variant.options[opt_index] == blank -%}
-                      {%- assign is_active_pill = true -%}
-                    {%- endif -%}
-                    <button
-                      type="button"
-                      class="swatch-buybox-pill {% if is_active_pill %}is-active{% endif %}"
-                      role="radio"
-                      aria-checked="{% if is_active_pill %}true{% else %}false{% endif %}"
-                      aria-pressed="{% if is_active_pill %}true{% else %}false{% endif %}"
-                      data-option-index="{{ opt_index }}"
-                      data-option-value="{{ opt_val | escape }}"
-                    >
-                      {{ opt_val }}
-                    </button>
-                  {%- endfor -%}
-                </div>
-              </div>
+          {% comment %} Price & Customize Row {% endcomment %}
+          <div class="swatch-buybox-price-row">
+            <span class="swatch-buybox-price-current">
+              {{ current_variant.price | money }}
+            </span>
+            {%- if section.settings.show_customize_button -%}
+              <a href="{{ section.settings.customize_url | default: '#' }}" class="swatch-buybox-customize-btn">
+                {{ section.settings.customize_btn_text | default: 'Customize' }}
+              </a>
             {%- endif -%}
-          {%- endfor -%}
+          </div>
 
-          {% comment %} ================= ACTIONS ROW: QUANTITY & ADD TO CART ================= {% endcomment %}
-          <div class="swatch-buybox-actions-wrap">
-            
+          {% comment %} Add to Cart & Quantity Row {% endcomment %}
+          <div class="swatch-buybox-atc-wrap">
             {%- assign product_form_id = 'SwatchBuyBoxForm-' | append: section_id -%}
-            {%- form 'product', current_product, id: product_form_id, class: 'swatch-buybox-form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+            {%- form 'product', current_product, id: product_form_id, class: 'swatch-buybox-form', novalidate: 'novalidate' -%}
               <input type="hidden" name="id" value="{{ current_variant.id }}">
               
               <div class="swatch-buybox-atc-row">
-                {%- if section.settings.show_quantity_selector -%}
-                  <div class="swatch-buybox-qty-wrap">
-                    <button type="button" class="swatch-buybox-qty-btn" data-qty-minus aria-label="Decrease quantity">−</button>
-                    <input
-                      type="number"
-                      name="quantity"
-                      class="swatch-buybox-qty-input"
-                      value="1"
-                      min="1"
-                      aria-label="Quantity"
-                    >
-                    <button type="button" class="swatch-buybox-qty-btn" data-qty-plus aria-label="Increase quantity">+</button>
-                  </div>
-                {%- else -%}
-                  <input type="hidden" name="quantity" value="1">
-                {%- endif -%}
-
                 <button
                   type="submit"
                   name="add"
                   class="swatch-buybox-atc-btn"
                   {% unless current_variant.available %}disabled="disabled"{% endunless %}
-                  data-default-text="{{ section.settings.atc_btn_text | default: 'Add to Cart' }}"
+                  data-default-text="{{ section.settings.atc_btn_text | default: 'Add to cart' }}"
                 >
                   <span class="swatch-buybox-spinner" aria-hidden="true"></span>
                   <span class="swatch-buybox-atc-text">
                     {%- if current_variant.available -%}
-                      {{ section.settings.atc_btn_text | default: 'Add to Cart' }}
+                      {{ section.settings.atc_btn_text | default: 'Add to cart' }}
                     {%- else -%}
                       Sold Out
                     {%- endif -%}
                   </span>
                 </button>
-              </div>
 
-              {%- if section.settings.show_dynamic_checkout -%}
-                <div class="swatch-buybox-dynamic-checkout" style="margin-top: 10px;">
-                  {{ form | payment_button }}
+                <div class="swatch-buybox-qty-wrap">
+                  <button type="button" class="swatch-buybox-qty-btn" data-qty-minus aria-label="Decrease quantity">−</button>
+                  <input
+                    type="number"
+                    name="quantity"
+                    class="swatch-buybox-qty-input"
+                    value="1"
+                    min="1"
+                    aria-label="Quantity"
+                  >
+                  <button type="button" class="swatch-buybox-qty-btn" data-qty-plus aria-label="Increase quantity">+</button>
                 </div>
-              {%- endif -%}
+              </div>
             {%- endform -%}
 
-            {% comment %} Inline Error Banner {% endcomment %}
             <div class="swatch-buybox-error-message" role="alert" hidden></div>
-
-            {% comment %} Stock / Availability Status Indicator {% endcomment %}
-            {%- if section.settings.show_stock_status -%}
-              <div class="swatch-buybox-stock-status {% unless current_variant.available %}swatch-buybox-stock-status--out{% endunless %}">
-                <span class="swatch-buybox-stock-dot"></span>
-                {%- if current_variant.available -%}
-                  In Stock — Ready to Ship
-                {%- else -%}
-                  Out of Stock
-                {%- endif -%}
-              </div>
-            {%- endif -%}
-
           </div>
 
-          {% comment %} ================= PERKS & TRUST GUARANTEES ================= {% endcomment %}
-          {%- if perk_blocks.size > 0 -%}
-            <div class="swatch-buybox-perks">
-              {%- for block in perk_blocks -%}
-                <div class="swatch-buybox-perk-item" {{ block.shopify_attributes }}>
-                  <span class="swatch-buybox-perk-icon">
-                    {%- case block.settings.icon -%}
-                      {%- when 'truck' -%}
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
-                      {%- when 'shield' -%}
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-                      {%- when 'refresh' -%}
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
-                      {%- when 'lock' -%}
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-                      {%- when 'drop' -%}
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>
-                      {%- else -%}
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                    {%- endcase -%}
-                  </span>
-                  <span>{{ block.settings.title }}</span>
-                </div>
-              {%- endfor -%}
+          {% comment %} Footer Links (Returns | Warranty | FAQs) {% endcomment %}
+          {%- if section.settings.show_footer_links -%}
+            <div class="swatch-buybox-footer-links">
+              <a href="{{ section.settings.link_1_url | default: '#' }}">{{ section.settings.link_1_text | default: '30-Day Returns' }}</a>
+              <span class="swatch-buybox-divider-pipe">|</span>
+              <a href="{{ section.settings.link_2_url | default: '#' }}">{{ section.settings.link_2_text | default: 'Limited Lifetime Warranty' }}</a>
+              <span class="swatch-buybox-divider-pipe">|</span>
+              <a href="{{ section.settings.link_3_url | default: '#' }}">{{ section.settings.link_3_text | default: 'FAQs' }}</a>
             </div>
           {%- endif -%}
 
-          {% comment %} ================= COLLAPSIBLE TABS / ACCORDIONS ================= {% endcomment %}
-          {%- if tab_blocks.size > 0 -%}
-            <div class="swatch-buybox-tabs">
-              {%- for block in tab_blocks -%}
-                <details class="swatch-buybox-tab-details" {{ block.shopify_attributes }}>
-                  <summary class="swatch-buybox-tab-summary">
-                    <span>{{ block.settings.heading }}</span>
-                    <svg class="swatch-buybox-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                  </summary>
-                  <div class="swatch-buybox-tab-content">
-                    {{ block.settings.content }}
-                    {%- if block.settings.page != blank -%}
-                      {{ block.settings.page.content }}
-                    {%- endif -%}
-                  </div>
-                </details>
-              {%- endfor -%}
-            </div>
+          {% comment %} Shop Pay / Installment Text {% endcomment %}
+          {%- if section.settings.show_installments -%}
+            <p class="swatch-buybox-installments">
+              Pay over time for orders over $35.00 with <span class="swatch-buybox-shoppay-badge">shop Pay</span> <a href="#">Learn more</a>
+            </p>
           {%- endif -%}
 
         </div>
 
       </div>
 
-      {% comment %} Embedded JSON for Multi-Option Matching {% endcomment %}
+      {% comment %} Embedded JSON for Variant Data {% endcomment %}
       <script type="application/json" class="swatch-buybox-variants-data">
         {{ current_product.variants | json }}
       </script>
 
     {%- else -%}
-      {% comment %} Onboarding Placeholder for Theme Editor {% endcomment %}
       <div style="padding: 60px 20px; text-align: center; background: #f8fafc; border-radius: 20px; border: 2px dashed #cbd5e1;">
         <h2 style="font-size: 22px; font-weight: 800; color: #0f172a; margin-bottom: 8px;">Product Swatch Buy Box</h2>
         <p style="color: #64748b; font-size: 15px; max-width: 480px; margin: 0 auto 20px;">
-          Select a product in the section settings on the left to display its interactive color swatches and live buy box.
+          Select a product in the section settings to display its interactive color swatches and live buy box.
         </p>
       </div>
     {%- endif -%}
@@ -495,163 +458,31 @@
     },
     {
       "type": "header",
-      "content": "Layout & Sizing"
-    },
-    {
-      "type": "range",
-      "id": "container_width",
-      "min": 1000,
-      "max": 1440,
-      "step": 20,
-      "unit": "px",
-      "label": "Container Max Width",
-      "default": 1280
-    },
-    {
-      "type": "range",
-      "id": "padding_top_desktop",
-      "min": 20,
-      "max": 120,
-      "step": 4,
-      "unit": "px",
-      "label": "Desktop Padding Y",
-      "default": 60
-    },
-    {
-      "type": "range",
-      "id": "padding_top_mobile",
-      "min": 16,
-      "max": 80,
-      "step": 4,
-      "unit": "px",
-      "label": "Mobile Padding Y",
-      "default": 36
-    },
-    {
-      "type": "range",
-      "id": "grid_gap_desktop",
-      "min": 24,
-      "max": 80,
-      "step": 4,
-      "unit": "px",
-      "label": "Desktop Column Gap",
-      "default": 56
-    },
-    {
-      "type": "range",
-      "id": "grid_gap_mobile",
-      "min": 16,
-      "max": 48,
-      "step": 4,
-      "unit": "px",
-      "label": "Mobile Column Gap",
-      "default": 32
-    },
-    {
-      "type": "range",
-      "id": "stage_radius",
-      "min": 0,
-      "max": 48,
-      "step": 2,
-      "unit": "px",
-      "label": "Product Stage Corner Radius",
-      "default": 28
-    },
-    {
-      "type": "select",
-      "id": "image_aspect_ratio",
-      "label": "Product Image Aspect Ratio",
-      "options": [
-        { "value": "1 / 1", "label": "Square (1:1)" },
-        { "value": "4 / 5", "label": "Portrait (4:5)" },
-        { "value": "3 / 4", "label": "Tall (3:4)" }
-      ],
-      "default": "1 / 1"
-    },
-    {
-      "type": "header",
-      "content": "Colors & Styling"
-    },
-    {
-      "type": "color",
-      "id": "section_bg_color",
-      "label": "Section Background",
-      "default": "#ffffff"
-    },
-    {
-      "type": "color",
-      "id": "stage_bg_color",
-      "label": "Product Stage Background",
-      "default": "#f8fafc"
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "label": "Text Color",
-      "default": "#0f172a"
-    },
-    {
-      "type": "color",
-      "id": "accent_color",
-      "label": "Accent Color",
-      "default": "#1a56db"
-    },
-    {
-      "type": "color",
-      "id": "btn_bg_color",
-      "label": "ATC Button Background",
-      "default": "#0f172a"
-    },
-    {
-      "type": "color",
-      "id": "btn_text_color",
-      "label": "ATC Button Text Color",
-      "default": "#ffffff"
-    },
-    {
-      "type": "color",
-      "id": "btn_hover_bg_color",
-      "label": "ATC Button Hover Background",
-      "default": "#1e293b"
-    },
-    {
-      "type": "header",
-      "content": "Product Badges & Eyebrow"
+      "content": "Typography & Headings"
     },
     {
       "type": "text",
-      "id": "eyebrow_text",
-      "label": "Eyebrow / Subtitle Text",
-      "default": "Sipwise® Original"
+      "id": "font_family",
+      "label": "Font Family CSS",
+      "default": "'Figtree', sans-serif"
+    },
+    {
+      "type": "text",
+      "id": "custom_title",
+      "label": "Custom Heading (Optional)",
+      "info": "Leave blank to use product title"
     },
     {
       "type": "checkbox",
-      "id": "show_sale_badge",
-      "label": "Show Sale Savings Badge",
+      "id": "show_trademark_symbol",
+      "label": "Show Registered Symbol (®)",
       "default": true
     },
     {
       "type": "text",
-      "id": "badge_bestseller_text",
-      "label": "Bestseller Badge Text",
-      "default": "Bestseller"
-    },
-    {
-      "type": "text",
-      "id": "custom_badge_text",
-      "label": "Custom Badge Text"
-    },
-    {
-      "type": "color",
-      "id": "custom_badge_bg",
-      "label": "Custom Badge Background",
-      "default": "#1a56db"
-    },
-    {
-      "type": "color",
-      "id": "custom_badge_text_color",
-      "label": "Custom Badge Text Color",
-      "default": "#ffffff"
+      "id": "tagline_text",
+      "label": "Tagline / Subtitle",
+      "default": "Award winning. Leak-proof. 24 hours cold."
     },
     {
       "type": "header",
@@ -665,43 +496,130 @@
     },
     {
       "type": "text",
-      "id": "reviews_rating",
-      "label": "Rating Score",
-      "default": "4.9"
-    },
-    {
-      "type": "text",
-      "id": "reviews_count",
-      "label": "Review Count Text",
-      "default": "1,420+"
+      "id": "reviews_count_text",
+      "label": "Reviews Text",
+      "default": "33135 reviews"
     },
     {
       "type": "header",
-      "content": "Buy Box Actions"
+      "content": "Sizes & Customization"
+    },
+    {
+      "type": "text",
+      "id": "mock_sizes",
+      "label": "Fallback Size List (comma separated)",
+      "default": "24oz, 32oz, 40oz",
+      "info": "Used if product does not have multiple sizes"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_customize_button",
+      "label": "Show Customize Pill Button",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "customize_btn_text",
+      "label": "Customize Button Text",
+      "default": "Customize"
+    },
+    {
+      "type": "url",
+      "id": "customize_url",
+      "label": "Customize Link URL"
+    },
+    {
+      "type": "header",
+      "content": "Add to Cart Button"
     },
     {
       "type": "text",
       "id": "atc_btn_text",
-      "label": "Add to Cart Button Text",
-      "default": "Add to Cart"
+      "label": "Add to Cart Text",
+      "default": "Add to cart"
+    },
+    {
+      "type": "header",
+      "content": "Footer Value Links"
     },
     {
       "type": "checkbox",
-      "id": "show_quantity_selector",
-      "label": "Show Quantity Selector",
+      "id": "show_footer_links",
+      "label": "Show Footer Trust Links",
       "default": true
     },
     {
-      "type": "checkbox",
-      "id": "show_dynamic_checkout",
-      "label": "Show Dynamic Checkout Button (Buy it Now)",
-      "default": true
+      "type": "text",
+      "id": "link_1_text",
+      "label": "Link 1 Text",
+      "default": "30-Day Returns"
+    },
+    {
+      "type": "url",
+      "id": "link_1_url",
+      "label": "Link 1 URL"
+    },
+    {
+      "type": "text",
+      "id": "link_2_text",
+      "label": "Link 2 Text",
+      "default": "Limited Lifetime Warranty"
+    },
+    {
+      "type": "url",
+      "id": "link_2_url",
+      "label": "Link 2 URL"
+    },
+    {
+      "type": "text",
+      "id": "link_3_text",
+      "label": "Link 3 Text",
+      "default": "FAQs"
+    },
+    {
+      "type": "url",
+      "id": "link_3_url",
+      "label": "Link 3 URL"
     },
     {
       "type": "checkbox",
-      "id": "show_stock_status",
-      "label": "Show Stock Status Indicator",
+      "id": "show_installments",
+      "label": "Show Shop Pay Installments Note",
       "default": true
+    },
+    {
+      "type": "header",
+      "content": "Layout Sizing"
+    },
+    {
+      "type": "range",
+      "id": "container_width",
+      "min": 1000,
+      "max": 1440,
+      "step": 20,
+      "unit": "px",
+      "label": "Container Max Width",
+      "default": 1320
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "min": 24,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Desktop Padding Y",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 16,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Mobile Padding Y",
+      "default": 40
     }
   ],
   "blocks": [
@@ -713,68 +631,25 @@
           "type": "text",
           "id": "label",
           "label": "Color Name / Option Value",
-          "info": "Must match the variant option name exactly (e.g., 'Ocean Blue' or 'Midnight Black')."
+          "info": "e.g. 'Out of the Blue', 'Peach of Mind', or 'Rose Quartz'"
         },
         {
           "type": "color",
           "id": "swatch_color",
-          "label": "Swatch Primary Hex Color",
-          "default": "#0f172a"
+          "label": "Swatch Dot Hex Color",
+          "default": "#a5b4fc"
         },
         {
           "type": "color",
-          "id": "swatch_color_secondary",
-          "label": "Swatch Secondary Hex (for two-tone swatches)"
-        }
-      ]
-    },
-    {
-      "type": "perk",
-      "name": "Trust Perk / Guarantee",
-      "limit": 6,
-      "settings": [
-        {
-          "type": "select",
-          "id": "icon",
-          "label": "Icon",
-          "options": [
-            { "value": "truck", "label": "Shipping Truck" },
-            { "value": "shield", "label": "Security Shield" },
-            { "value": "refresh", "label": "Returns Arrow" },
-            { "value": "lock", "label": "Padlock" },
-            { "value": "drop", "label": "Water Drop / Leak Proof" },
-            { "value": "check", "label": "Checkmark" }
-          ],
-          "default": "truck"
+          "id": "bg_color",
+          "label": "Custom Pastel Section Background (Optional)",
+          "info": "Leave blank to auto-calculate soft pastel tint"
         },
         {
-          "type": "text",
-          "id": "title",
-          "label": "Perk Title",
-          "default": "Free 2-3 Day Shipping"
-        }
-      ]
-    },
-    {
-      "type": "collapsible_tab",
-      "name": "Collapsible Tab",
-      "settings": [
-        {
-          "type": "text",
-          "id": "heading",
-          "label": "Heading",
-          "default": "Product Details & Specs"
-        },
-        {
-          "type": "richtext",
-          "id": "content",
-          "label": "Content",
-          "default": "<p>Triple-layer vacuum insulation keeps your beverage ice cold for up to 24 hours. Leak-proof FreeSip spout with built-in straw and wide-mouth opening.</p>"
-        },
-        {
-          "type": "page",
-          "id": "page",
-          "label": "Or Load Content from Page"
+          "type": "color",
+          "id": "btn_color",
+          "label": "Custom Add to Cart Button Color (Optional)",
+          "info": "Leave blank to match swatch color"
         }
       ]
     }
@@ -786,64 +661,55 @@
         {
           "type": "color_swatch",
           "settings": {
-            "label": "Ocean Blue",
-            "swatch_color": "#0ea5e9"
+            "label": "Out of the Blue",
+            "swatch_color": "#a5b4fc",
+            "bg_color": "#dce4f7",
+            "btn_color": "#9bb1e4"
           }
         },
         {
           "type": "color_swatch",
           "settings": {
-            "label": "Midnight Black",
-            "swatch_color": "#1e293b"
+            "label": "Peach of Mind",
+            "swatch_color": "#e99f7d",
+            "bg_color": "#fae2d4",
+            "btn_color": "#e99f7d"
+          }
+        },
+        {
+          "type": "color_swatch",
+          "settings": {
+            "label": "Rose Quartz",
+            "swatch_color": "#d88fa5",
+            "bg_color": "#f8e5e8",
+            "btn_color": "#d88fa5"
           }
         },
         {
           "type": "color_swatch",
           "settings": {
             "label": "Electric Coral",
-            "swatch_color": "#fb7185"
+            "swatch_color": "#fb7185",
+            "bg_color": "#ffe4e6",
+            "btn_color": "#fb7185"
           }
         },
         {
-          "type": "perk",
+          "type": "color_swatch",
           "settings": {
-            "icon": "truck",
-            "title": "Free Express Shipping"
+            "label": "Midnight Black",
+            "swatch_color": "#1e293b",
+            "bg_color": "#f1f5f9",
+            "btn_color": "#1e293b"
           }
         },
         {
-          "type": "perk",
+          "type": "color_swatch",
           "settings": {
-            "icon": "shield",
-            "title": "Lifetime Leak-Proof Warranty"
-          }
-        },
-        {
-          "type": "perk",
-          "settings": {
-            "icon": "refresh",
-            "title": "30-Day Hassle-Free Returns"
-          }
-        },
-        {
-          "type": "perk",
-          "settings": {
-            "icon": "drop",
-            "title": "BPA & Lead Free Stainless Steel"
-          }
-        },
-        {
-          "type": "collapsible_tab",
-          "settings": {
-            "heading": "Features & Dimensions",
-            "content": "<p>• Triple-layer insulated stainless steel<br>• Patented 2-in-1 spout for sipping or swigging<br>• Dishwasher safe lid & cup-holder friendly base</p>"
-          }
-        },
-        {
-          "type": "collapsible_tab",
-          "settings": {
-            "heading": "Shipping & Returns",
-            "content": "<p>Orders processed within 24 hours. Free standard 2-3 day shipping on all orders. Easy 30-day returns.</p>"
+            "label": "Shy Marshmallow",
+            "swatch_color": "#ffffff",
+            "bg_color": "#f8fafc",
+            "btn_color": "#64748b"
           }
         }
       ]

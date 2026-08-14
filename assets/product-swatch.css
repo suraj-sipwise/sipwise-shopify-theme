@@ -1,11 +1,12 @@
 /* ==========================================================================
-   Sipwise Theme — Product Swatch Buy Box Styles
+   Sipwise Theme — Owala-Style Product Swatch Buy Box Styles
    Scoped class namespace: .swatch-buybox-
    ========================================================================== */
 
+@import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap');
+
 :root {
-  --swatch-buybox-transition-timing: cubic-bezier(0.16, 1, 0.3, 1);
-  --swatch-buybox-transition-duration: 0.45s;
+  --swatch-buybox-transition: 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .swatch-buybox-section {
@@ -13,139 +14,82 @@
   position: relative;
   overflow: hidden;
   box-sizing: border-box;
+  font-family: var(--sbb-font-family, 'Figtree', sans-serif) !important;
+  background-color: var(--sbb-active-bg, #dce4f7);
+  color: var(--sbb-text-color, #0f172a);
+  transition: background-color var(--swatch-buybox-transition);
+}
+
+.swatch-buybox-section * {
+  font-family: inherit;
+  box-sizing: border-box;
 }
 
 .swatch-buybox-container {
   width: 100%;
-  max-width: var(--sbb-container-width, 1280px);
+  max-width: var(--sbb-container-width, 1320px);
   margin: 0 auto;
-  padding: var(--sbb-padding-y-desktop, 60px) 24px;
-  box-sizing: border-box;
+  padding: var(--sbb-padding-y-desktop, 64px) 32px;
 }
 
 @media screen and (max-width: 749px) {
   .swatch-buybox-container {
-    padding: var(--sbb-padding-y-mobile, 36px) 16px;
+    padding: var(--sbb-padding-y-mobile, 40px) 20px;
   }
 }
 
 /* Two-Column Grid */
 .swatch-buybox-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--sbb-grid-gap-desktop, 56px);
-  align-items: start;
+  grid-template-columns: 1fr 1.05fr;
+  gap: var(--sbb-grid-gap-desktop, 64px);
+  align-items: center;
 }
 
 @media screen and (max-width: 989px) {
   .swatch-buybox-grid {
     grid-template-columns: 1fr;
-    gap: var(--sbb-grid-gap-mobile, 32px);
+    gap: var(--sbb-grid-gap-mobile, 36px);
   }
 }
 
 /* ==========================================================================
-   LEFT COLUMN: PRODUCT STAGE (IMAGE + COLORED BACKGROUND PANEL)
+   LEFT COLUMN: PRODUCT STAGE & BOTTLE CAROUSEL
    ========================================================================== */
 
 .swatch-buybox-stage-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   position: relative;
   width: 100%;
-  position: sticky;
-  top: 24px;
 }
 
 .swatch-buybox-stage {
   position: relative;
   width: 100%;
-  border-radius: var(--sbb-stage-radius, 28px);
-  background: var(--sbb-stage-bg, #f8fafc);
-  overflow: hidden;
-  box-shadow: var(--sbb-stage-shadow, 0 10px 30px -5px rgba(15, 23, 42, 0.06), 0 0 0 1px rgba(15, 23, 42, 0.04));
-  transition: background-color var(--swatch-buybox-transition-duration) var(--swatch-buybox-transition-timing),
-              box-shadow var(--swatch-buybox-transition-duration) var(--swatch-buybox-transition-timing);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 40px 24px;
-  box-sizing: border-box;
 }
 
-/* Dynamic Ambient Glow / Backdrop Tint Layer */
-.swatch-buybox-stage::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: radial-gradient(
-    circle at 50% 50%,
-    var(--product-swatch-glow, rgba(0, 0, 0, 0.04)) 0%,
-    transparent 72%
-  );
-  opacity: var(--sbb-glow-opacity, 0.85);
-  pointer-events: none;
-  transition: background var(--swatch-buybox-transition-duration) var(--swatch-buybox-transition-timing),
-              opacity 0.3s ease;
-  z-index: 1;
-}
-
-/* Stage Badges (Sale, Bestseller, etc.) */
-.swatch-buybox-stage-badges {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  z-index: 10;
-}
-
-.swatch-buybox-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 14px;
-  border-radius: 100px;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-  line-height: 1;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-}
-
-.swatch-buybox-badge--sale {
-  background: #ef4444;
-  color: #ffffff;
-}
-
-.swatch-buybox-badge--bestseller {
-  background: #0f172a;
-  color: #ffffff;
-}
-
-.swatch-buybox-badge--custom {
-  background: var(--sbb-badge-custom-bg, #1a56db);
-  color: var(--sbb-badge-custom-color, #ffffff);
-}
-
-/* Main Image Wrapper with Reserved Aspect Ratio (Prevents CLS) */
+/* Reserved Aspect Ratio Image Stage (Zero CLS) */
 .swatch-buybox-image-wrap {
   position: relative;
   width: 100%;
-  max-width: 480px;
-  margin: 0 auto;
-  aspect-ratio: var(--sbb-aspect-ratio, 1 / 1);
+  max-width: 440px;
+  height: 520px;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 2;
 }
 
 @media screen and (max-width: 749px) {
   .swatch-buybox-image-wrap {
-    max-width: 360px;
+    max-width: 320px;
+    height: 400px;
   }
 }
 
@@ -156,10 +100,10 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
-  object-position: center bottom;
-  filter: drop-shadow(0 14px 22px rgba(15, 23, 42, 0.12));
-  transition: opacity 0.35s ease,
-              transform 0.45s var(--swatch-buybox-transition-timing),
+  object-position: center center;
+  filter: drop-shadow(0 20px 24px rgba(15, 23, 42, 0.12));
+  transition: opacity 0.4s ease,
+              transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
               filter 0.3s ease;
   will-change: opacity, transform;
 }
@@ -177,329 +121,422 @@
   pointer-events: none;
 }
 
-/* Hover Preview Micro-Zoom */
-.swatch-buybox-stage:hover .swatch-buybox-img.is-active {
-  transform: scale(1.02);
+/* Bottom Gallery Pagination (< ● ○ ○ ○ ○ >) */
+.swatch-buybox-gallery-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.swatch-buybox-nav-arrow {
+  background: transparent;
+  border: none;
+  color: #0f172a;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  opacity: 0.8;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.swatch-buybox-nav-arrow:hover {
+  opacity: 1;
+  transform: scale(1.15);
+}
+
+.swatch-buybox-nav-arrow svg {
+  width: 18px;
+  height: 18px;
+}
+
+.swatch-buybox-nav-dots {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.swatch-buybox-nav-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  border: 1.5px solid #0f172a;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.swatch-buybox-nav-dot.is-active {
+  background: #0f172a;
+  transform: scale(1.15);
 }
 
 /* ==========================================================================
-   RIGHT COLUMN: INFO PANEL & BUY BOX
+   RIGHT COLUMN: BUY BOX & SELECTION CONTROLS
    ========================================================================== */
 
 .swatch-buybox-info {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  box-sizing: border-box;
+  max-width: 540px;
 }
 
-/* Eyebrow / Vendor */
-.swatch-buybox-eyebrow {
+/* Header & Title */
+.swatch-buybox-header {
   display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--sbb-accent-color, #1a56db);
-  margin: 0;
+  flex-direction: column;
+  gap: 4px;
 }
 
-/* Product Title */
 .swatch-buybox-title {
-  font-size: clamp(24px, 3.2vw, 36px);
+  font-size: clamp(30px, 3.6vw, 42px);
   font-weight: 800;
-  line-height: 1.15;
-  letter-spacing: -0.025em;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
   color: var(--sbb-text-color, #0f172a);
   margin: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
 }
 
-/* Star Reviews Bar */
+.swatch-buybox-title .swatch-buybox-trademark {
+  font-size: 0.45em;
+  font-weight: 700;
+  vertical-align: super;
+}
+
+.swatch-buybox-tagline {
+  font-size: 15px;
+  font-weight: 500;
+  color: #475569;
+  margin: 4px 0 0 0;
+  line-height: 1.4;
+}
+
+/* Star Reviews */
 .swatch-buybox-reviews {
   display: flex;
   align-items: center;
   gap: 8px;
   font-size: 14px;
-  color: #64748b;
+  color: #334155;
+  margin-top: 2px;
 }
 
 .swatch-buybox-stars {
   display: inline-flex;
-  color: #f59e0b;
   gap: 2px;
-  font-size: 16px;
-  line-height: 1;
+  color: #0f172a;
+  font-size: 15px;
 }
 
 .swatch-buybox-review-count {
-  font-weight: 600;
+  font-size: 13px;
+  font-weight: 500;
   color: #475569;
 }
 
-/* Price Row */
-.swatch-buybox-price-row {
+/* ==========================================================================
+   SIZE SELECTOR (SEGMENTED CAPSULE BAR)
+   ========================================================================== */
+
+.swatch-buybox-size-group {
   display: flex;
-  align-items: baseline;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: -4px;
+  flex-direction: column;
+  gap: 8px;
 }
 
-.swatch-buybox-price-current {
-  font-size: clamp(26px, 3vw, 32px);
-  font-weight: 800;
-  color: var(--sbb-text-color, #0f172a);
-  letter-spacing: -0.02em;
-  line-height: 1;
+.swatch-buybox-group-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0f172a;
+  margin: 0;
 }
 
-.swatch-buybox-price-compare {
-  font-size: clamp(18px, 2vw, 22px);
-  font-weight: 500;
-  color: #94a3b8;
-  text-decoration: line-through;
-  line-height: 1;
-}
-
-.swatch-buybox-price-discount {
+.swatch-buybox-size-capsule {
   display: inline-flex;
   align-items: center;
-  padding: 4px 10px;
-  border-radius: 6px;
-  font-size: 12px;
+  background: rgba(15, 23, 42, 0.08);
+  border-radius: 9999px;
+  padding: 3px;
+  gap: 2px;
+  width: fit-content;
+  max-width: 100%;
+}
+
+.swatch-buybox-size-btn {
+  border: none;
+  background: transparent;
+  color: #1e293b;
+  font-size: 14px;
   font-weight: 700;
-  background: #fef2f2;
-  color: #dc2626;
-  border: 1px solid #fee2e2;
-  line-height: 1;
+  padding: 8px 24px;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+  white-space: nowrap;
 }
 
-.swatch-buybox-price-discount[hidden] {
-  display: none !important;
+.swatch-buybox-size-btn:hover:not(.is-active) {
+  color: #000000;
 }
 
-/* Divider */
-.swatch-buybox-divider {
-  width: 100%;
-  height: 1px;
-  background: #e2e8f0;
-  margin: 4px 0;
+.swatch-buybox-size-btn.is-active {
+  background: #2d3748;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.18);
 }
 
 /* ==========================================================================
    COLOR SWATCHES SELECTOR
    ========================================================================== */
 
-.swatch-buybox-option-group {
+.swatch-buybox-color-group {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-.swatch-buybox-option-header {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 8px;
-}
-
-.swatch-buybox-option-label {
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--sbb-text-color, #0f172a);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.swatch-buybox-color-name {
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--sbb-accent-color, #1a56db);
+.swatch-buybox-color-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #0f172a;
+  margin: 0;
   transition: color 0.2s ease;
 }
 
 .swatch-buybox-swatches-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 14px;
+  gap: 10px;
   align-items: center;
+  max-width: 440px;
 }
 
-/* Individual Color Swatch Button */
+/* Circular Swatch Button */
 .swatch-buybox-swatch {
   position: relative;
-  width: 38px;
-  height: 38px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   padding: 0;
   margin: 0;
   border: 2px solid #ffffff;
   cursor: pointer;
-  background-color: var(--swatch-btn-color, #0f172a);
-  background-image: var(--swatch-btn-pattern, none);
-  background-size: cover;
-  background-position: center;
-  box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.12), 0 2px 6px rgba(0, 0, 0, 0.06);
+  background-color: var(--swatch-btn-color, #0ea5e9);
+  box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.15);
   outline: 2px solid transparent;
-  outline-offset: 3px;
-  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
-              outline-color 0.25s ease,
-              box-shadow 0.25s ease;
+  outline-offset: 2px;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+              outline-color 0.2s ease,
+              box-shadow 0.2s ease;
   -webkit-tap-highlight-color: transparent;
   box-sizing: border-box;
 }
 
-/* Hover State (Desktop) */
+/* Hover State */
 @media (hover: hover) {
   .swatch-buybox-swatch:hover {
-    transform: translateY(-2px) scale(1.08);
-    box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.2), 0 6px 12px rgba(0, 0, 0, 0.1);
+    transform: scale(1.15);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
   }
 }
 
-/* Active / Selected Swatch State */
+/* Active State: Clean Outer Black Ring */
 .swatch-buybox-swatch.is-active,
 .swatch-buybox-swatch[aria-pressed="true"] {
-  outline-color: var(--swatch-ring-color, var(--sbb-text-color, #0f172a));
-  transform: scale(1.08);
-  box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.2), 0 4px 10px rgba(0, 0, 0, 0.1);
+  outline-color: #000000 !important;
+  transform: scale(1.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
 }
 
-/* Accessible Focus Visible */
 .swatch-buybox-swatch:focus-visible {
-  outline-color: var(--sbb-accent-color, #1a56db) !important;
-  outline-offset: 4px;
+  outline-color: #000000 !important;
+  outline-offset: 3px;
 }
 
-/* Two-tone / Split Color Swatch */
-.swatch-buybox-swatch--twotone {
-  background: linear-gradient(
-    135deg,
-    var(--swatch-btn-color, #0f172a) 50%,
-    var(--swatch-btn-color-secondary, #3b82f6) 50%
-  );
-}
-
-/* Swatch Out of Stock Diagonal Slash */
+/* Diagonal Out of Stock Slash */
 .swatch-buybox-swatch.is-sold-out::after {
   content: '';
   position: absolute;
   top: 50%;
   left: -2px;
   right: -2px;
-  height: 2px;
+  height: 1.5px;
   background: #ef4444;
   transform: translateY(-50%) rotate(-45deg);
   pointer-events: none;
-  opacity: 0.85;
+  opacity: 0.9;
 }
 
 /* ==========================================================================
-   SECONDARY OPTIONS (e.g. SIZE / CAPACITY PILLS)
+   PRICE & CUSTOMIZE ROW
    ========================================================================== */
 
-.swatch-buybox-pills-grid {
+.swatch-buybox-price-row {
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.swatch-buybox-pill {
-  min-height: 42px;
-  padding: 8px 18px;
-  border-radius: 10px;
-  border: 1.5px solid #e2e8f0;
-  background: #ffffff;
-  color: var(--sbb-text-color, #0f172a);
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  box-sizing: border-box;
+  gap: 20px;
 }
 
-.swatch-buybox-pill:hover {
-  border-color: #94a3b8;
-  background: #f8fafc;
+.swatch-buybox-price-current {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--sbb-text-color, #0f172a);
 }
 
-.swatch-buybox-pill.is-active,
-.swatch-buybox-pill[aria-pressed="true"] {
-  border-color: var(--sbb-text-color, #0f172a);
-  background: var(--sbb-text-color, #0f172a);
-  color: #ffffff;
-  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.12);
+.swatch-buybox-customize-btn {
+  background: rgba(15, 23, 42, 0.08);
+  border: none;
+  color: #0f172a;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 10px 32px;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  text-decoration: none;
 }
 
-.swatch-buybox-pill.is-sold-out {
-  opacity: 0.5;
-  text-decoration: line-through;
+.swatch-buybox-customize-btn:hover {
+  background: rgba(15, 23, 42, 0.14);
 }
 
 /* ==========================================================================
-   QUANTITY SELECTOR & BUY ACTIONS ROW
+   ADD TO CART & QUANTITY CAPSULE ROW
    ========================================================================== */
-
-.swatch-buybox-actions-wrap {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  margin-top: 4px;
-}
 
 .swatch-buybox-atc-row {
   display: flex;
-  gap: 12px;
-  align-items: stretch;
+  align-items: center;
+  gap: 14px;
 }
 
 @media screen and (max-width: 480px) {
   .swatch-buybox-atc-row {
-    flex-direction: column;
+    flex-direction: row;
   }
 }
 
-/* Quantity Selector */
-.swatch-buybox-qty-wrap {
+/* Add To Cart Button (Capsule with Dynamic Accent Color) */
+.swatch-buybox-atc-btn {
+  flex: 1;
+  height: 52px;
+  min-height: 52px;
+  border: none;
+  border-radius: 9999px;
+  background: var(--sbb-active-btn, #9bb1e4);
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  cursor: pointer;
   display: inline-flex;
   align-items: center;
-  border: 1.5px solid #cbd5e1;
-  border-radius: 12px;
-  background: #ffffff;
-  height: 52px;
-  box-sizing: border-box;
-  flex-shrink: 0;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 32px;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.1);
+  transition: background-color var(--swatch-buybox-transition),
+              transform 0.2s ease,
+              box-shadow 0.2s ease;
+  position: relative;
   overflow: hidden;
 }
 
+.swatch-buybox-atc-btn:hover:not(:disabled) {
+  transform: translateY(-1.5px);
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.16);
+  filter: brightness(0.96);
+}
+
+.swatch-buybox-atc-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.swatch-buybox-atc-btn:disabled {
+  background: #cbd5e1 !important;
+  color: #64748b !important;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+/* Spinner */
+.swatch-buybox-atc-btn.is-loading .swatch-buybox-atc-text {
+  opacity: 0;
+}
+
+.swatch-buybox-atc-btn .swatch-buybox-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin-top: -10px;
+  margin-left: -10px;
+  border: 2.5px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  opacity: 0;
+  animation: sbb-spin 0.7s linear infinite;
+}
+
+.swatch-buybox-atc-btn.is-loading .swatch-buybox-spinner {
+  opacity: 1;
+}
+
+@keyframes sbb-spin {
+  to { transform: rotate(360deg); }
+}
+
+.swatch-buybox-atc-btn.is-success {
+  background: #16a34a !important;
+}
+
+/* Quantity Capsule Selector */
+.swatch-buybox-qty-wrap {
+  display: inline-flex;
+  align-items: center;
+  border: 1.5px solid #0f172a;
+  border-radius: 9999px;
+  height: 52px;
+  padding: 0 8px;
+  background: transparent;
+  flex-shrink: 0;
+}
+
 .swatch-buybox-qty-btn {
-  width: 42px;
+  width: 32px;
   height: 100%;
   border: none;
   background: transparent;
-  color: #334155;
-  font-size: 18px;
+  color: #0f172a;
+  font-size: 17px;
   font-weight: 700;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background-color 0.15s ease, color 0.15s ease;
   padding: 0;
+  transition: opacity 0.15s ease;
 }
 
 .swatch-buybox-qty-btn:hover {
-  background: #f1f5f9;
-  color: #0f172a;
+  opacity: 0.7;
 }
 
 .swatch-buybox-qty-input {
-  width: 46px;
+  width: 30px;
   height: 100%;
   border: none;
   background: transparent;
@@ -517,263 +554,77 @@
   margin: 0;
 }
 
-/* Add To Cart Button */
-.swatch-buybox-atc-btn {
-  flex: 1;
-  height: 52px;
-  min-height: 52px;
-  border: none;
-  border-radius: 12px;
-  background: var(--sbb-btn-bg, #0f172a);
-  color: var(--sbb-btn-text, #ffffff);
-  font-size: 16px;
-  font-weight: 700;
-  letter-spacing: 0.01em;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 0 24px;
-  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.14);
-  transition: transform 0.2s ease,
-              background-color 0.2s ease,
-              box-shadow 0.2s ease,
-              opacity 0.2s ease;
-  position: relative;
-  overflow: hidden;
-  box-sizing: border-box;
-}
+/* ==========================================================================
+   FOOTER TRUST LINKS & SHOP PAY
+   ========================================================================== */
 
-.swatch-buybox-atc-btn:hover:not(:disabled) {
-  background: var(--sbb-btn-hover-bg, #1e293b);
-  transform: translateY(-1.5px);
-  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.2);
-}
-
-.swatch-buybox-atc-btn:active:not(:disabled) {
-  transform: translateY(0);
-}
-
-.swatch-buybox-atc-btn:disabled {
-  background: #cbd5e1 !important;
-  color: #64748b !important;
-  cursor: not-allowed;
-  box-shadow: none;
-  transform: none;
-}
-
-/* ATC Button Loading State */
-.swatch-buybox-atc-btn.is-loading .swatch-buybox-atc-text {
-  opacity: 0;
-}
-
-.swatch-buybox-atc-btn .swatch-buybox-spinner {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 22px;
-  height: 22px;
-  margin-top: -11px;
-  margin-left: -11px;
-  border: 2.5px solid rgba(255, 255, 255, 0.3);
-  border-top-color: #ffffff;
-  border-radius: 50%;
-  opacity: 0;
-  animation: sbb-spin 0.75s linear infinite;
-  pointer-events: none;
-}
-
-.swatch-buybox-atc-btn.is-loading .swatch-buybox-spinner {
-  opacity: 1;
-}
-
-@keyframes sbb-spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* Success Added Feedback */
-.swatch-buybox-atc-btn.is-success {
-  background: #16a34a !important;
-}
-
-/* Dynamic Checkout Button wrapper */
-.swatch-buybox-dynamic-checkout {
-  width: 100%;
-}
-
-.swatch-buybox-dynamic-checkout .shopify-payment-button__button {
-  border-radius: 12px !important;
-  min-height: 52px !important;
-}
-
-/* Inventory / Stock Status Indicator */
-.swatch-buybox-stock-status {
+.swatch-buybox-footer-links {
   display: flex;
   align-items: center;
-  gap: 8px;
+  flex-wrap: wrap;
+  gap: 6px;
   font-size: 13px;
   font-weight: 600;
-  color: #16a34a;
+  color: #0f172a;
+  margin-top: 4px;
 }
 
-.swatch-buybox-stock-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #22c55e;
-  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.2);
-  display: inline-block;
-  animation: sbb-pulse 2s infinite ease-in-out;
+.swatch-buybox-footer-links a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
-.swatch-buybox-stock-status--low {
-  color: #ea580c;
-}
-.swatch-buybox-stock-status--low .swatch-buybox-stock-dot {
-  background: #f97316;
-  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.2);
+.swatch-buybox-footer-links .swatch-buybox-divider-pipe {
+  color: #94a3b8;
 }
 
-.swatch-buybox-stock-status--out {
-  color: #dc2626;
-}
-.swatch-buybox-stock-status--out .swatch-buybox-stock-dot {
-  background: #ef4444;
-  box-shadow: none;
-  animation: none;
-}
-
-@keyframes sbb-pulse {
-  0%, 100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  50% {
-    transform: scale(1.25);
-    opacity: 0.75;
-  }
+.swatch-buybox-installments {
+  font-size: 13px;
+  color: #475569;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: 0;
 }
 
-/* Error Message Banner */
+.swatch-buybox-shoppay-badge {
+  background: #5a31f4;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 4px;
+  letter-spacing: -0.02em;
+}
+
+.swatch-buybox-installments a {
+  color: #0f172a;
+  text-decoration: underline;
+  font-weight: 600;
+}
+
+/* Error Banner */
 .swatch-buybox-error-message {
-  padding: 10px 14px;
+  padding: 10px 16px;
   background: #fef2f2;
   border: 1px solid #fecaca;
-  border-radius: 8px;
+  border-radius: 12px;
   color: #b91c1c;
   font-size: 13px;
   font-weight: 500;
-  line-height: 1.4;
 }
 
 .swatch-buybox-error-message[hidden] {
   display: none !important;
 }
 
-/* ==========================================================================
-   PERKS & TRUST GUARANTEES LIST
-   ========================================================================== */
-
-.swatch-buybox-perks {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px 16px;
-  padding: 16px 0 0 0;
-  border-top: 1px solid #f1f5f9;
-}
-
-@media screen and (max-width: 480px) {
-  .swatch-buybox-perks {
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
-}
-
-.swatch-buybox-perk-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 13px;
-  font-weight: 600;
-  color: #334155;
-}
-
-.swatch-buybox-perk-icon {
-  width: 20px;
-  height: 20px;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--sbb-accent-color, #1a56db);
-}
-
-.swatch-buybox-perk-icon svg {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-/* ==========================================================================
-   COLLAPSIBLE TABS / ACCORDIONS
-   ========================================================================== */
-
-.swatch-buybox-tabs {
-  margin-top: 8px;
-  border-top: 1px solid #e2e8f0;
-}
-
-.swatch-buybox-tab-details {
-  border-bottom: 1px solid #e2e8f0;
-}
-
-.swatch-buybox-tab-summary {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 14px 0;
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--sbb-text-color, #0f172a);
-  cursor: pointer;
-  list-style: none;
-  user-select: none;
-}
-
-.swatch-buybox-tab-summary::-webkit-details-marker {
-  display: none;
-}
-
-.swatch-buybox-tab-icon {
-  width: 16px;
-  height: 16px;
-  transition: transform 0.25s ease;
-}
-
-.swatch-buybox-tab-details[open] .swatch-buybox-tab-icon {
-  transform: rotate(180deg);
-}
-
-.swatch-buybox-tab-content {
-  padding-bottom: 16px;
-  font-size: 14px;
-  line-height: 1.6;
-  color: #475569;
-}
-
-/* ==========================================================================
-   ACCESSIBILITY & PREFERS REDUCED MOTION
-   ========================================================================== */
-
+/* Reduced Motion */
 @media (prefers-reduced-motion: reduce) {
-  .swatch-buybox-container *,
-  .swatch-buybox-stage,
-  .swatch-buybox-stage::before,
+  .swatch-buybox-section,
+  .swatch-buybox-section *,
   .swatch-buybox-img,
-  .swatch-buybox-swatch,
   .swatch-buybox-atc-btn {
     transition: none !important;
     animation: none !important;
